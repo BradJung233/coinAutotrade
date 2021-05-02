@@ -70,7 +70,7 @@ print("bestk:", globalK)
 # 자동매매 시작
 while True:
     try:
-        time.sleep(0.5)
+        time.sleep(2)
         now = datetime.datetime.now()
         start_time = get_start_time("KRW-ETH")
         end_time = start_time + datetime.timedelta(days=1)

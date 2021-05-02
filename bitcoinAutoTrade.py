@@ -71,7 +71,7 @@ while True:
     try:
         # globalK = funbBestK()
 
-        time.sleep(0.5)
+        time.sleep(2)
 
         now = datetime.datetime.now()
         start_time = get_start_time("KRW-BTC")
