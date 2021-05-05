@@ -35,7 +35,7 @@ def get_current_price(ticker):
     return pyupbit.get_orderbook(tickers=ticker)[0]["orderbook_units"][0]["ask_price"]
 
 def get_ror(k=0.5):
-    df = pyupbit.get_ohlcv("KRW-ETH",count=7)
+    df = pyupbit.get_ohlcv("KRW-ETH",count=4)
     df['range'] = (df['high'] - df['low']) * k
     df['target'] = df['open'] + df['range'].shift(1)
 
@@ -70,12 +70,12 @@ print("bestk:", globalK)
 # 자동매매 시작
 while True:
     try:
-        time.sleep(2)
+        time.sleep(6.3)
         now = datetime.datetime.now()
         start_time = get_start_time("KRW-ETH")
         end_time = start_time + datetime.timedelta(days=1)
 
-        if start_time < now < end_time - datetime.timedelta(seconds=1000):
+        if start_time + datetime.timedelta(seconds=300) < now < end_time - datetime.timedelta(seconds=1000):
             target_price = get_target_price("KRW-ETH", globalK)
             current_price = get_current_price("KRW-ETH")
             if target_price < current_price:   
