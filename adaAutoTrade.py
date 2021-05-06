@@ -87,7 +87,7 @@ while True:
                 if ada_m is None:
                     ada_m = 0
                 krw = limit - ada_m    
-                if krw > 5000 and krw < limit  and globalK > 0:
+                if krw > 5000 and krw <= limit  and globalK > 0:
                     upbit.buy_market_order("KRW-ADA", krw*0.9995)
             ada_m = upbit.get_amount("ADA")  
             if ada_m > 390000:

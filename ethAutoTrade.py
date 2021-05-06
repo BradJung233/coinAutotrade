@@ -85,7 +85,7 @@ while True:
                 if eth_m is None:
                     eth_m = 0
                 krw = limit - eth_m
-                if krw > 5000 and krw < limit and globalK > 0:
+                if krw > 5000 and krw <= limit and globalK > 0:
                     upbit.buy_market_order("KRW-ETH", krw*0.9995)
             eth_m = upbit.get_amount("ETH")  
             if eth_m > 4900000:

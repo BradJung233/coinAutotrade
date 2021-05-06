@@ -87,7 +87,7 @@ while True:
                 if btc_m is None:
                     btc_m = 0
                 krw = limit - btc_m    
-                if krw > 5000 and krw < limit  and globalK > 0:
+                if krw > 5000 and krw <= limit  and globalK > 0:
                     upbit.buy_market_order("KRW-BTC", krw*0.9995) 
             btc_m = upbit.get_amount("BTC")  
             if btc_m > 4400000:

@@ -87,7 +87,7 @@ while True:
                 if xrp_m is None:
                     xrp_m = 0
                 krw = limit - xrp_m    
-                if krw > 5000 and krw < limit  and globalK > 0:
+                if krw > 5000 and krw <= limit  and globalK > 0:
                     upbit.buy_market_order("KRW-XRP", krw*0.9995)
             xrp_m = upbit.get_amount("XRP")  
             if xrp_m > 390000:
