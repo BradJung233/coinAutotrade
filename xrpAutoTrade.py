@@ -82,7 +82,7 @@ while True:
             current_price = get_current_price("KRW-XRP")
             if target_price < current_price:
                 krw = get_balance("KRW")
-                limit = 400000
+                limit = 1100000
                 xrp_m = upbit.get_amount("XRP")
                 if xrp_m is None:
                     xrp_m = 0
@@ -90,7 +90,7 @@ while True:
                 if krw > 5000 and krw <= limit  and globalK > 0:
                     upbit.buy_market_order("KRW-XRP", krw*0.9995)
             xrp_m = upbit.get_amount("XRP")  
-            if xrp_m > 390000:
+            if xrp_m > 1090000:
                 time.sleep(100)                       
         else:
             xrp = get_balance("XRP")
