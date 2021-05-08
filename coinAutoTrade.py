@@ -100,6 +100,7 @@ while True:
                 current_price = get_current_price("KRW-"+coin)
                 # print(globals()['globalK{}'.format(coin)])
                 # print("tar ",target_price, "cur ", current_price)
+                print(coin)
                 if target_price < current_price:
                     krw = get_balance("KRW")
                     limit = globals()['limit{}'.format(coin)]
@@ -115,10 +116,10 @@ while True:
                     time.sleep(10)                
         else:
             for coin in coins:
-            coinjan = get_balance(coin)
-            if coinjan > 0.00008:
-                upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
-                globals()['globalK{}'.format(coin)] = get_bestK("KRW-" + coin)
+                coinjan = get_balance(coin)
+                if coinjan > 0.00008:
+                    upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
+                    globals()['globalK{}'.format(coin)] = get_bestK("KRW-" + coin)
             time.sleep(1)
     except Exception as e:
         print(e)
