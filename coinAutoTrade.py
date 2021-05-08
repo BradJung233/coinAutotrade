@@ -10,10 +10,11 @@ globalKETH = 0.5
 globalKADA = 0.5
 globalKXRP = 0.5
 limitBTC = 5000000
-limitETH = 4500000
+limitETH = 4900000
 limitADA = 1100000
 limitXRP = 1100000
-coins = ["BTC", "ETH", "ADA", "XRP"]
+# coins = ["BTC", "ETH", "ADA", "XRP"]
+coins = ["BTC", "ETH"]
 
 def get_target_price(ticker, k):
     """변동성 돌파 전략으로 매수 목표가 조회"""
@@ -93,7 +94,7 @@ while True:
         start_time = get_start_time("KRW-BTC")
         end_time = start_time + datetime.timedelta(days=1)
         
-        if start_time + datetime.timedelta(seconds=300) < now < end_time - datetime.timedelta(seconds=1000):
+        if start_time + datetime.timedelta(seconds=3000) < now < end_time - datetime.timedelta(seconds=1000):
             for coin in coins:
                 target_price = get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)])
                 current_price = get_current_price("KRW-"+coin)
