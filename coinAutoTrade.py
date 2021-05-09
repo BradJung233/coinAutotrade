@@ -88,7 +88,7 @@ while True:
     try:
         # globalK = funbBestK()
 
-        time.sleep(1.0)
+        time.sleep(0.8)
 
         now = datetime.datetime.now()
         start_time = get_start_time("KRW-BTC")
@@ -100,20 +100,19 @@ while True:
                 current_price = get_current_price("KRW-"+coin)
                 # print(globals()['globalK{}'.format(coin)])
                 # print("tar ",target_price, "cur ", current_price)
-                print(coin)
                 if target_price < current_price:
                     krw = get_balance("KRW")
                     limit = globals()['limit{}'.format(coin)]
-                    # print("limit:",limit)
                     coin_m = upbit.get_amount(coin)
                     if coin_m is None:
                         coin_m = 0
                     krw = limit - coin_m    
                     if krw > 5000 and krw <= limit  and globals()['globalK{}'.format(coin)] > 0:
                         upbit.buy_market_order("KRW-" + coin, krw*0.9995) 
-                coin_m = upbit.get_amount(coin)  
-                if coin_m > limit * 0.95:
-                    time.sleep(10)                
+                        # print(coin,"샀다")
+                    coin_m = upbit.get_amount(coin)  
+                    if coin_m > limit * 0.95:
+                        time.sleep(10)                
         else:
             for coin in coins:
                 coinjan = get_balance(coin)
