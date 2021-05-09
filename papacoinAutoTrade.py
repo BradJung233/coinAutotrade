@@ -3,14 +3,14 @@ import pyupbit
 import datetime
 import numpy as np
 
-access = "NBfy02ssHZPdySYKdZIHHNRyv0Ke2Tk8qzvlxV0z"
-secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"
+access = "vFsEvg4XGphDZTrlMU1eJAi8VrxRKXOfxjUHxeXy"
+secret = "2rak0ZwgzMk45PfYZPseG1Y07Omora7xD9qGMR0M"
 globalKBTC = 0.5
 globalKETH = 0.5
 globalKADA = 0.5
 globalKXRP = 0.5
-limitBTC = 5000000
-limitETH = 4900000
+limitBTC = 2500000
+limitETH = 2500000
 limitADA = 1100000
 limitXRP = 1100000
 # coins = ["BTC", "ETH", "ADA", "XRP"]
@@ -124,7 +124,7 @@ while True:
         print(e)
         time.sleep(1)
 
-# 백그라운드 실행: nohup python3 bitcoinAutoTrade.py > output.log &
+# 백그라운드 실행: nohup python3 papacoinAutoTrade.py > output.log &
 # 실행되고 있는지 확인: ps ax | grep .py
 # 프로세스 종료(PID는 ps ax | grep .py를 했을때 확인 가능): kill -9 PID     
 # 코인종류 조회 :print(pyupbit.get_tickers())     

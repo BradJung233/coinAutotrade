@@ -14,7 +14,7 @@ limitETH = 4900000
 limitADA = 1100000
 limitXRP = 1100000
 # coins = ["BTC", "ETH", "ADA", "XRP"]
-coins = ["BTC", "ETH"]
+coins = ["BTC", "ADA"]
 
 def get_target_price(ticker, k):
     """변동성 돌파 전략으로 매수 목표가 조회"""
@@ -124,7 +124,7 @@ while True:
         print(e)
         time.sleep(1)
 
-# 백그라운드 실행: nohup python3 bitcoinAutoTrade.py > output.log &
+# 백그라운드 실행: nohup python3 coinAutoTrade.py > output.log &
 # 실행되고 있는지 확인: ps ax | grep .py
 # 프로세스 종료(PID는 ps ax | grep .py를 했을때 확인 가능): kill -9 PID     
 # 코인종류 조회 :print(pyupbit.get_tickers())     
