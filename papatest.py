@@ -27,21 +27,21 @@ print(upbit.get_amount("BTC"))     # 코인 매수 금액 조회
 
 # print(pyupbit.get_ohlcv("KRW-ADA", interval="day", count=1))
 
-df = pyupbit.get_ohlcv("KRW-BTC", interval="day", count=2)
-target_price = df.iloc[0]['close'] + (df.iloc[0]['high'] - df.iloc[0]['low']) * 0.1
-print(target_price)
+# df = pyupbit.get_ohlcv("KRW-BTC", interval="day", count=2)
+# target_price = df.iloc[0]['close'] + (df.iloc[0]['high'] - df.iloc[0]['low']) * 0.1
+# print(target_price)
 
-df = pyupbit.get_ohlcv("KRW-ETH", interval="day", count=2)
-target_price = df.iloc[0]['close'] + (df.iloc[0]['high'] - df.iloc[0]['low']) * 0.1
-print(target_price)
+# df = pyupbit.get_ohlcv("KRW-ETH", interval="day", count=2)
+# target_price = df.iloc[0]['close'] + (df.iloc[0]['high'] - df.iloc[0]['low']) * 0.1
+# print(target_price)
 
-df = pyupbit.get_ohlcv("KRW-ADA", interval="day", count=2)
-target_price = df.iloc[0]['close'] + (df.iloc[0]['high'] - df.iloc[0]['low']) * 0.1
-print(target_price)
+# df = pyupbit.get_ohlcv("KRW-ADA", interval="day", count=2)
+# target_price = df.iloc[0]['close'] + (df.iloc[0]['high'] - df.iloc[0]['low']) * 0.1
+# print(target_price)
 
-df = pyupbit.get_ohlcv("KRW-XRP", interval="day", count=2)
-target_price = df.iloc[0]['close'] + (df.iloc[0]['high'] - df.iloc[0]['low']) * 0.1
-print(target_price)
+# df = pyupbit.get_ohlcv("KRW-XRP", interval="day", count=2)
+# target_price = df.iloc[0]['close'] + (df.iloc[0]['high'] - df.iloc[0]['low']) * 0.1
+# print(target_price)
 # print(pyupbit.get_tickers()) 
 
 # get_start_time("KRW-ETH")
