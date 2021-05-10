@@ -103,16 +103,17 @@ while True:
                 current_price = get_current_price("KRW-"+coin)
                 # print(globals()['globalK{}'.format(coin)])
                 # print("tar ",target_price, "cur ", current_price)
-                krw = get_balance("KRW")
-                if target_price < current_price or krw ==0 :
+                target_price = 0
+                if target_price < current_price:
                     krw = get_balance("KRW")
                     limit = globals()['limit{}'.format(coin)]
                     coin_m = upbit.get_amount(coin)
+                    print("여기")
                     if coin_m is None:
                         coin_m = 0
                     krw = limit - coin_m    
                     # if krw > 5000 and krw <= limit  and globals()['globalK{}'.format(coin)] > 0:
-                    if krw == 0  and globals()['globalK{}'.format(coin)] > 0:
+                    if target_price == 0  and globals()['globalK{}'.format(coin)] > 0:
                         # upbit.buy_market_order("KRW-" + coin, krw*0.9995) 
                         print(coin,"샀다")
                     coin_m = upbit.get_amount(coin)  
