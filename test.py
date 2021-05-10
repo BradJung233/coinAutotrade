@@ -7,8 +7,8 @@ access = "NBfy02ssHZPdySYKdZIHHNRyv0Ke2Tk8qzvlxV0z"          # 본인 값으로 
 secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"          # 본인 값으로 변경
 upbit = pyupbit.Upbit(access, secret)
 
-print(upbit.get_balances("KRW-BTC"))     # KRW-BTC 조회
-print(upbit.get_balance("KRW"))         # 보유 현금 조회
+# print(upbit.get_balances("KRW-BTC"))     # KRW-BTC 조회
+# print(upbit.get_balance("KRW"))         # 보유 현금 조회
 print(upbit.get_amount("ETH"))     # 코인 매수 금액 조회
 print(upbit.get_amount("BTC"))     # 코인 매수 금액 조회
 
