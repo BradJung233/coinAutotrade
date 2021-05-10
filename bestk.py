@@ -3,7 +3,7 @@ import numpy as np
 
 
 def get_ror(k=0.5):
-    df = pyupbit.get_ohlcv("KRW-ADA",count=4)
+    df = pyupbit.get_ohlcv("KRW-ETH",count=4)
     df['range'] = (df['high'] - df['low']) * k
     df['target'] = df['open'] + df['range'].shift(1)
 
@@ -24,6 +24,6 @@ for k in np.arange(0.1, 1.0, 0.1):
         ror2 = ror
         bestK = k
     print("%.1f %f" % (k, ror))
-if ror2 < 1.01:
+if ror2 < 1.02:
     bestK = 0
 print("ff:", ror2, bestK)

@@ -5,10 +5,10 @@ import numpy as np
 
 access = "vFsEvg4XGphDZTrlMU1eJAi8VrxRKXOfxjUHxeXy"
 secret = "2rak0ZwgzMk45PfYZPseG1Y07Omora7xD9qGMR0M"
-globalKBTC = 0.5
-globalKETH = 0.5
-globalKADA = 0.5
-globalKXRP = 0.5
+globalKBTC = 0.0
+globalKETH = 0.0
+globalKADA = 0.0
+globalKXRP = 0.0
 limitBTC = 2500000
 limitETH = 2500000
 limitADA = 1100000
@@ -70,13 +70,10 @@ def get_bestK(ticker):
 # 로그인
 upbit = pyupbit.Upbit(access, secret)
 print("autotrade start")
-# print(upbit.get_balances("KRW-BTC"))     # KRW-BTC 조회 
-# print(upbit.get_balance("KRW"))         # 보유 현금 조회
-print(upbit.get_amount("ETH"))     # 코인 매수 금액 조회
-print(upbit.get_amount("BTC"))     # 코인 매수 금액 조회
+
 for coin in coins:
     print(coin)
-    globals()['globalK{}'.format(coin)] = get_bestK("KRW-"+coin)
+    # globals()['globalK{}'.format(coin)] = get_bestK("KRW-"+coin)
     time.sleep(1)
     print("ddddd")
 # globalKETH = get_bestK("KRW-ETH")
