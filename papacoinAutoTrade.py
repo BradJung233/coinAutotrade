@@ -99,7 +99,7 @@ while True:
                 target_price = get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)])
                 current_price = get_current_price("KRW-"+coin)
                 # print(globals()['globalK{}'.format(coin)])
-                # print("tar ",target_price, "cur ", current_price)
+                print("tar ",target_price, "cur ", current_price)
                 if target_price < current_price:
                     krw = get_balance("KRW")
                     limit = globals()['limit{}'.format(coin)]
