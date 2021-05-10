@@ -71,9 +71,7 @@ def get_bestK(ticker):
 upbit = pyupbit.Upbit(access, secret)
 print("autotrade start")
 
-p
-
-rint(upbit.get_balances("KRW-BTC"))     # KRW-BTC 조회
+print(upbit.get_balances("KRW-BTC"))     # KRW-BTC 조회 
 print(upbit.get_balance("KRW"))         # 보유 현금 조회
 print(upbit.get_amount("ETH"))     # 코인 매수 금액 조회
 print(upbit.get_amount("BTC"))     # 코인 매수 금액 조회
