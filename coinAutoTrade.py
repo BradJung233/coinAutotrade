@@ -5,16 +5,16 @@ import numpy as np
 
 access = "NBfy02ssHZPdySYKdZIHHNRyv0Ke2Tk8qzvlxV0z"
 secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"
-globalKBTC = 0.5
-globalKETH = 0.5
-globalKADA = 0.5
-globalKXRP = 0.5
+globalKBTC = 0.0
+globalKETH = 0.0
+globalKADA = 0.0
+globalKXRP = 0.0
 limitBTC = 5000000
 limitETH = 4900000
 limitADA = 1100000
 limitXRP = 1100000
 # coins = ["BTC", "ETH", "ADA", "XRP"]
-coins = ["BTC", "ADA"]
+coins = ["BTC", "ETH", "ADA"]
 
 def get_target_price(ticker, k):
     """변동성 돌파 전략으로 매수 목표가 조회"""
