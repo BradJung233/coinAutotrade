@@ -63,7 +63,7 @@ def get_bestK(ticker):
         if ror2 < ror:
             ror2 = ror
             bestK = k
-    if ror2 < 1.01:
+    if ror2 < 1.02:
         bestK = 0            
     return round(bestK,1)
 

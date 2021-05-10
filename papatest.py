@@ -3,8 +3,8 @@
 import pyupbit
 import pandas as pd # pandas모듈 불러오기
 
-access = "NBfy02ssHZPdySYKdZIHHNRyv0Ke2Tk8qzvlxV0z"          # 본인 값으로 변경
-secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"          # 본인 값으로 변경
+access = "vFsEvg4XGphDZTrlMU1eJAi8VrxRKXOfxjUHxeXy"
+secret = "2rak0ZwgzMk45PfYZPseG1Y07Omora7xD9qGMR0M"
 upbit = pyupbit.Upbit(access, secret)
 
 # print(upbit.get_balances("KRW-BTC"))     # KRW-BTC 조회
