@@ -75,8 +75,10 @@ print("autotrade start")
 print(upbit.get_amount("ETH"))     # 코인 매수 금액 조회
 print(upbit.get_amount("BTC"))     # 코인 매수 금액 조회
 for coin in coins:
+    print(coin)
     globals()['globalK{}'.format(coin)] = get_bestK("KRW-"+coin)
     time.sleep(1)
+    print("ddddd")
 # globalKETH = get_bestK("KRW-ETH")
 # globalKADA = get_bestK("KRW-ADA")
 # globalKXRP = get_bestK("KRW-XRP")
