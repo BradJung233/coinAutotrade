@@ -7,10 +7,10 @@ access = "vFsEvg4XGphDZTrlMU1eJAi8VrxRKXOfxjUHxeXy"
 secret = "2rak0ZwgzMk45PfYZPseG1Y07Omora7xD9qGMR0M"
 upbit = pyupbit.Upbit(access, secret)
 
-# print(upbit.get_balances("KRW-BTC"))     # KRW-BTC 조회
-# print(upbit.get_balance("KRW"))         # 보유 현금 조회
-# print(upbit.get_amount("ETH"))     # 코인 매수 금액 조회
-# print(upbit.get_amount("BTC"))     # 코인 매수 금액 조회
+print(upbit.get_balances("KRW-BTC"))     # KRW-BTC 조회
+print(upbit.get_balance("KRW"))         # 보유 현금 조회
+print(upbit.get_amount("ETH"))     # 코인 매수 금액 조회
+print(upbit.get_amount("BTC"))     # 코인 매수 금액 조회
 
 # print(upbit.get_order("KRW-BTC",state='done',kind='normal', contain_req=False))
 # print(pyupbit.get_tickers())  
