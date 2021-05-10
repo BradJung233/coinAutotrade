@@ -73,10 +73,9 @@ print("autotrade start")
 
 for coin in coins:
     print(coin)
-    print(get_bestK("KRW-"+coin))
-    # globals()['globalK{}'.format(coin)] = get_bestK("KRW-"+coin)
+    globals()['globalK{}'.format(coin)] = get_bestK("KRW-"+coin)
     time.sleep(1)
-    print("ddddd")
+    # print("ddddd")
 # globalKETH = get_bestK("KRW-ETH")
 # globalKADA = get_bestK("KRW-ADA")
 # globalKXRP = get_bestK("KRW-XRP")
