@@ -10,7 +10,7 @@ globalKETH = 0.0
 globalKADA = 0.0
 globalKXRP = 0.0
 limitBTC = 2500000
-limitETH = 5300000
+limitETH = 2500000
 limitADA = 1100000
 limitXRP = 1100000
 # coins = ["BTC", "ETH", "ADA", "XRP"]
@@ -72,7 +72,6 @@ upbit = pyupbit.Upbit(access, secret)
 print("autotrade start")
 
 for coin in coins:
-    print(coin)
     globals()['globalK{}'.format(coin)] = get_bestK("KRW-"+coin)
     time.sleep(1)
     # print("ddddd")
@@ -91,19 +90,19 @@ while True:
     try:
         # globalK = funbBestK()
 
-        time.sleep(0.8)
+        time.sleep(0.6)
 
         now = datetime.datetime.now()
         start_time = get_start_time("KRW-BTC")
         end_time = start_time + datetime.timedelta(days=1)
         
-        if start_time + datetime.timedelta(seconds=300) < now < end_time - datetime.timedelta(seconds=1000):
+        if start_time + datetime.timedelta(seconds=30) < now < end_time - datetime.timedelta(seconds=1000):
             for coin in coins:
                 target_price = get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)])
                 current_price = get_current_price("KRW-"+coin)
                 # print(globals()['globalK{}'.format(coin)])
                 # print("tar ",target_price, "cur ", current_price)
-                if target_price < current_price:
+                if target_price < current_price < target_price * 1.0005:
                     krw = get_balance("KRW")
                     limit = globals()['limit{}'.format(coin)]
                     coin_m = upbit.get_amount(coin)
