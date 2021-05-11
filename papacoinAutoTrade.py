@@ -2,6 +2,7 @@ import time
 import pyupbit
 import datetime
 import numpy as np
+import math
 
 access = "vFsEvg4XGphDZTrlMU1eJAi8VrxRKXOfxjUHxeXy"
 secret = "2rak0ZwgzMk45PfYZPseG1Y07Omora7xD9qGMR0M"
@@ -10,7 +11,7 @@ globalKETH = 0.0
 globalKADA = 0.0
 globalKXRP = 0.0
 limitBTC = 2500000
-limitETH = 2500000
+limitETH = 2700000
 limitADA = 1100000
 limitXRP = 1100000
 # coins = ["BTC", "ETH", "ADA", "XRP"]
@@ -96,13 +97,14 @@ while True:
         start_time = get_start_time("KRW-BTC")
         end_time = start_time + datetime.timedelta(days=1)
         
-        if start_time + datetime.timedelta(seconds=30) < now < end_time - datetime.timedelta(seconds=1000):
+        if start_time + datetime.timedelta(seconds=30) < now < end_time - datetime.timedelta(seconds=300):
             for coin in coins:
                 target_price = get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)])
                 current_price = get_current_price("KRW-"+coin)
                 # print(globals()['globalK{}'.format(coin)])
                 # print("tar ",target_price, "cur ", current_price)
-                if target_price <= current_price < target_price * 1.0005:
+                # print("floor:",math.floor(target_price))
+                if math.floor(target_price) <= current_price < target_price * 1.0005:
                     krw = get_balance("KRW")
                     limit = globals()['limit{}'.format(coin)]
                     coin_m = upbit.get_amount(coin)

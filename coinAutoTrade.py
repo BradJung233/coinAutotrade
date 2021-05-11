@@ -2,6 +2,7 @@ import time
 import pyupbit
 import datetime
 import numpy as np
+import math
 
 access = "NBfy02ssHZPdySYKdZIHHNRyv0Ke2Tk8qzvlxV0z"
 secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"
@@ -94,13 +95,13 @@ while True:
         start_time = get_start_time("KRW-BTC")
         end_time = start_time + datetime.timedelta(days=1)
         
-        if start_time + datetime.timedelta(seconds=30) < now < end_time - datetime.timedelta(seconds=1000):
+        if start_time + datetime.timedelta(seconds=30) < now < end_time - datetime.timedelta(seconds=300):
             for coin in coins:
                 target_price = get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)])
                 current_price = get_current_price("KRW-"+coin)
                 # print(globals()['globalK{}'.format(coin)])
                 # print("tar ",target_price, "cur ", current_price)
-                if target_price <= current_price < target_price * 1.0005:
+                if math.floor(target_price) <= current_price < target_price * 1.0005:
                     krw = get_balance("KRW")
                     limit = globals()['limit{}'.format(coin)]
                     coin_m = upbit.get_amount(coin)
