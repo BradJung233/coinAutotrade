@@ -100,7 +100,7 @@ while True:
                 current_price = get_current_price("KRW-"+coin)
                 # print(globals()['globalK{}'.format(coin)])
                 # print("tar ",target_price, "cur ", current_price)
-                if target_price < current_price < target_price * 1.0005:
+                if target_price <= current_price < target_price * 1.0005:
                     krw = get_balance("KRW")
                     limit = globals()['limit{}'.format(coin)]
                     coin_m = upbit.get_amount(coin)
