@@ -94,7 +94,7 @@ while True:
         start_time = get_start_time("KRW-BTC")
         end_time = start_time + datetime.timedelta(days=1)
         
-        if start_time + datetime.timedelta(seconds=3000) < now < end_time - datetime.timedelta(seconds=1000):
+        if start_time + datetime.timedelta(seconds=300) < now < end_time - datetime.timedelta(seconds=1000):
             for coin in coins:
                 target_price = get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)])
                 current_price = get_current_price("KRW-"+coin)
