@@ -37,7 +37,7 @@ upbit = pyupbit.Upbit(access, secret)
 # target_price = df.iloc[0]['close'] + (df.iloc[0]['high'] - df.iloc[0]['low']) * 0.1
 # print(target_price)
 
-df = pyupbit.get_ohlcv("KRW-ADA", interval="day", count=2)
+df = pyupbit.get_ohlcv("KRW-XLM", interval="day", count=2)
 target_price = df.iloc[0]['close'] + (df.iloc[0]['high'] - df.iloc[0]['low']) * 0.1
 print(target_price)
 

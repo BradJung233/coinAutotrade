@@ -10,17 +10,20 @@ globalKBTC = 0.0
 globalKETH = 0.0
 globalKADA = 0.0
 globalKXRP = 0.0
+globalKXLM = 0.0
 limitBTC = 5000000
 limitETH = 4900000
 limitADA = 1100000
 limitXRP = 1100000
+limitXLM = 1500000
 
 plusBTC = 10000
 plusETH = 5000
 plusADA = 10
 plusXRP = 10
+plusXLM = 3
 # coins = ["BTC", "ETH", "ADA", "XRP"]
-coins = ["BTC","ADA"]
+coins = ["BTC","ADA","XLM"]
 
 def get_target_price(ticker, k):
     """변동성 돌파 전략으로 매수 목표가 조회"""
