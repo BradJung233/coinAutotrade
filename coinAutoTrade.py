@@ -12,22 +12,28 @@ globalKADA = 0.0
 globalKXRP = 0.0
 globalKXLM = 0.0
 globalKDOT = 0.0
+globalKEOS = 0.0
+globalKWAVES = 0.0
 
-limitBTC = 5000000
-limitETH = 4900000
-limitADA = 1100000
-limitXRP = 1100000
-limitXLM = 1500000
-limitDOT = 1000000
+limitBTC = 3000000
+limitETH = 3000000
+limitADA = 2000000
+limitXRP = 2000000
+limitXLM = 2000000
+limitDOT = 2000000
+limitEOS = 2000000
+limitWAVES = 2000000
 
-plusBTC = 10000
-plusETH = 5000
-plusADA = 10
-plusXRP = 10
-plusXLM = 3
-plusDOT = 30
+offsetBTC = 10000
+offsetETH = 5000
+offsetADA = 10
+offsetXRP = 10
+offsetXLM = 3
+offsetDOT = 30
+offsetEOS = 30
+offsetWAVES = 30
 # coins = ["BTC", "ETH", "ADA", "XRP"]
-coins = ["BTC","ADA","XLM","DOT"]
+coins = ["BTC","ADA","XLM","EOS","WAVES"]
 
 def get_target_price(ticker, k):
     """변동성 돌파 전략으로 매수 목표가 조회"""
@@ -121,8 +127,8 @@ while True:
                 # print(globals()['globalK{}'.format(coin)])
                 # print("tar ",target_price, "cur ", current_price)
                 # print(coin, target_price)
-                # print(coin, target_price + globals()['plus{}'.format(coin)])
-                if (target_price <= current_price < target_price + globals()['plus{}'.format(coin)]) and current_price > ma5:
+                # print(coin, target_price + globals()['offset{}'.format(coin)])
+                if (target_price <= current_price < target_price + globals()['offset{}'.format(coin)]) and current_price > ma5:
                     krw = get_balance("KRW")
                     limit = globals()['limit{}'.format(coin)]
                     coin_m = upbit.get_amount(coin)
