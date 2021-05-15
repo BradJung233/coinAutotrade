@@ -47,5 +47,9 @@ print(target_price)
 # print(pyupbit.get_tickers()) 
 print(math.floor(target_price))
 
-print(math.floor(target_price/10)*10)
+"""이동 평균선 조회"""
+df = pyupbit.get_ohlcv("KRW-XLM", interval="day", count=5)
+ma5 = df['close'].rolling(5).mean().iloc[-1]
+
+print(ma5)
 # get_start_time("KRW-ETH")

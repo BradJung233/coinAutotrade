@@ -11,19 +11,23 @@ globalKETH = 0.0
 globalKADA = 0.0
 globalKXRP = 0.0
 globalKXLM = 0.0
+globalKDOT = 0.0
+
 limitBTC = 5000000
 limitETH = 4900000
 limitADA = 1100000
 limitXRP = 1100000
 limitXLM = 1500000
+limitDOT = 1000000
 
 plusBTC = 10000
 plusETH = 5000
 plusADA = 10
 plusXRP = 10
 plusXLM = 3
+plusDOT = 30
 # coins = ["BTC", "ETH", "ADA", "XRP"]
-coins = ["BTC","ADA","XLM"]
+coins = ["BTC","ADA","XLM","DOT"]
 
 def get_target_price(ticker, k):
     """변동성 돌파 전략으로 매수 목표가 조회"""
@@ -76,21 +80,22 @@ def get_bestK(ticker):
         bestK = 0            
     return round(bestK,1)
 
+def get_ma5(ticker):
+    """5일 이동 평균선 조회"""
+    df = pyupbit.get_ohlcv(ticker, interval="day", count=5)
+    ma5 = df['close'].rolling(5).mean().iloc[-1]
+    return ma5
+
 # 로그인
 upbit = pyupbit.Upbit(access, secret)
 print("autotrade start")
 for coin in coins:
     globals()['globalK{}'.format(coin)] = get_bestK("KRW-"+coin)
-    time.sleep(1)
-# globalKETH = get_bestK("KRW-ETH")
-# globalKADA = get_bestK("KRW-ADA")
-# globalKXRP = get_bestK("KRW-XRP")
-# time.sleep(1)
+    print(coin, globals()['globalK{}'.format(coin)])
+    print(coin," target_price:", get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)]))
 
-print("btc bestk:", globalKBTC)
-print("eth bestk:", globalKETH)
-print("ada bestk:", globalKADA)
-print("xrp bestk:", globalKXRP)
+
+time.sleep(3)
 
 # 자동매매 시작
 while True:
@@ -107,11 +112,13 @@ while True:
             for coin in coins:
                 target_price = get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)])
                 current_price = get_current_price("KRW-"+coin)
+                ma5 = get_ma5("KRW-"+coin)
+                print(coin, "ma5:", ma5)
                 # print(globals()['globalK{}'.format(coin)])
                 # print("tar ",target_price, "cur ", current_price)
                 # print(coin, target_price)
                 # print(coin, target_price + globals()['plus{}'.format(coin)])
-                if target_price <= current_price < target_price + globals()['plus{}'.format(coin)]:
+                if (target_price <= current_price < target_price + globals()['plus{}'.format(coin)]) and globals()['globalK{}'.format(coin)] > 0 and current_price > ma5:
                     krw = get_balance("KRW")
                     limit = globals()['limit{}'.format(coin)]
                     coin_m = upbit.get_amount(coin)
@@ -119,7 +126,7 @@ while True:
                     if coin_m is None:
                         coin_m = 0
                     krw = limit - coin_m    
-                    if krw > 5000 and krw <= limit  and globals()['globalK{}'.format(coin)] > 0:
+                    if krw > 5000 and krw <= limit:
                         upbit.buy_market_order("KRW-" + coin, krw*0.9995) 
                 coin_m = upbit.get_amount(coin)  
                 limit = globals()['limit{}'.format(coin)]
