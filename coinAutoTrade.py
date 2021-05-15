@@ -92,7 +92,8 @@ print("autotrade start")
 for coin in coins:
     globals()['globalK{}'.format(coin)] = get_bestK("KRW-"+coin)
     print(coin, globals()['globalK{}'.format(coin)])
-    print(coin," target_price:", get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)]))
+    print(coin,"target_price:", get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)]))
+    time.sleep(1)
 
 
 time.sleep(3)
