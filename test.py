@@ -45,5 +45,7 @@ print(target_price)
 # target_price = df.iloc[0]['close'] + (df.iloc[0]['high'] - df.iloc[0]['low']) * 0.0
 # print(target_price)
 # print(pyupbit.get_tickers()) 
+print(math.floor(target_price))
+
 print(math.floor(target_price/10)*10)
 # get_start_time("KRW-ETH")

@@ -14,6 +14,11 @@ limitBTC = 2500000
 limitETH = 2700000
 limitADA = 1100000
 limitXRP = 1100000
+
+plusBTC = 10000
+plusETH = 5000
+plusADA = 10
+plusXRP = 10
 # coins = ["BTC", "ETH", "ADA", "XRP"]
 coins = ["BTC", "ETH"]
 
@@ -103,7 +108,7 @@ while True:
                 # print("tar ",target_price, "cur ", current_price)
                 # print(coin, target_price)
                 # print(coin, math.floor(target_price/10)*10 )
-                if math.floor(target_price/10)*10 <= current_price < target_price * 1.0005:
+                if target_price <= current_price < target_price + globals()['plus{}'.format(coin)]:
                     krw = get_balance("KRW")
                     limit = globals()['limit{}'.format(coin)]
                     coin_m = upbit.get_amount(coin)
