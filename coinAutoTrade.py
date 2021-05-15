@@ -89,11 +89,12 @@ def get_ma5(ticker):
 # 로그인
 upbit = pyupbit.Upbit(access, secret)
 print("autotrade start")
+
 for coin in coins:
     globals()['globalK{}'.format(coin)] = get_bestK("KRW-"+coin)
     print(coin, globals()['globalK{}'.format(coin)])
     print(coin,"target_price:", get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)]))
-    time.sleep(1)
+    time.sleep(1) # 속도가 느리면 다음 코인 값을 못 갖고와 에러남. 그래서 sleep
 
 
 time.sleep(3)
@@ -111,6 +112,8 @@ while True:
         
         if start_time + datetime.timedelta(seconds=30) < now < end_time - datetime.timedelta(seconds=300):
             for coin in coins:
+                if globals()['globalK{}'.format(coin)] == 0:
+                    continue 
                 target_price = get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)])
                 current_price = get_current_price("KRW-"+coin)
                 ma5 = get_ma5("KRW-"+coin)
@@ -119,7 +122,7 @@ while True:
                 # print("tar ",target_price, "cur ", current_price)
                 # print(coin, target_price)
                 # print(coin, target_price + globals()['plus{}'.format(coin)])
-                if (target_price <= current_price < target_price + globals()['plus{}'.format(coin)]) and globals()['globalK{}'.format(coin)] > 0 and current_price > ma5:
+                if (target_price <= current_price < target_price + globals()['plus{}'.format(coin)]) and current_price > ma5:
                     krw = get_balance("KRW")
                     limit = globals()['limit{}'.format(coin)]
                     coin_m = upbit.get_amount(coin)
