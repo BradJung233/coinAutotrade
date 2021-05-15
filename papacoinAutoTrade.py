@@ -71,11 +71,9 @@ def get_bestK(ticker):
 # 로그인
 upbit = pyupbit.Upbit(access, secret)
 print("autotrade start")
-
 for coin in coins:
     globals()['globalK{}'.format(coin)] = get_bestK("KRW-"+coin)
     time.sleep(1)
-    # print("ddddd")
 # globalKETH = get_bestK("KRW-ETH")
 # globalKADA = get_bestK("KRW-ADA")
 # globalKXRP = get_bestK("KRW-XRP")
@@ -101,24 +99,21 @@ while True:
             for coin in coins:
                 target_price = get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)])
                 current_price = get_current_price("KRW-"+coin)
-                # print(11)
                 # print(globals()['globalK{}'.format(coin)])
                 # print("tar ",target_price, "cur ", current_price)
-                # print("floor:",math.floor(target_price))
-
-                if math.floor(target_price) <= current_price < target_price * 1.0005:
+                # print(coin, target_price)
+                # print(coin, math.floor(target_price/10)*10 )
+                if math.floor(target_price/10)*10 <= current_price < target_price * 1.0005:
                     krw = get_balance("KRW")
                     limit = globals()['limit{}'.format(coin)]
                     coin_m = upbit.get_amount(coin)
-                    # print("여기")
+                    
                     if coin_m is None:
                         coin_m = 0
                     krw = limit - coin_m    
                     if krw > 5000 and krw <= limit  and globals()['globalK{}'.format(coin)] > 0:
                         upbit.buy_market_order("KRW-" + coin, krw*0.9995) 
                 coin_m = upbit.get_amount(coin)  
-                if coin_m is None:
-                    coin_m = 0                
                 limit = globals()['limit{}'.format(coin)]
                 if coin_m > limit * 0.95:
                     time.sleep(2)                
@@ -133,7 +128,7 @@ while True:
         print(e)
         time.sleep(1)
 
-# 백그라운드 실행: nohup python3 papacoinAutoTrade.py > output.log &
+# 백그라운드 실행: nohup python3 coinAutoTrade.py > output.log &
 # 실행되고 있는지 확인: ps ax | grep .py
 # 프로세스 종료(PID는 ps ax | grep .py를 했을때 확인 가능): kill -9 PID     
 # 코인종류 조회 :print(pyupbit.get_tickers())     

@@ -15,7 +15,7 @@ limitETH = 4900000
 limitADA = 1100000
 limitXRP = 1100000
 # coins = ["BTC", "ETH", "ADA", "XRP"]
-coins = ["BTC", "ETH", "ADA"]
+coins = ["BTC","ADA"]
 
 def get_target_price(ticker, k):
     """변동성 돌파 전략으로 매수 목표가 조회"""
@@ -101,8 +101,9 @@ while True:
                 current_price = get_current_price("KRW-"+coin)
                 # print(globals()['globalK{}'.format(coin)])
                 # print("tar ",target_price, "cur ", current_price)
-
-                if math.floor(target_price) <= current_price < target_price * 1.0005:
+                # print(coin, target_price)
+                # print(coin, math.floor(target_price/10)*10 )
+                if math.floor(target_price/10)*10 <= current_price < target_price * 1.0005:
                     krw = get_balance("KRW")
                     limit = globals()['limit{}'.format(coin)]
                     coin_m = upbit.get_amount(coin)
