@@ -110,13 +110,12 @@ while True:
     try:
         # globalK = funbBestK()
 
-        time.sleep(0.6)
 
         now = datetime.datetime.now()
         start_time = get_start_time("KRW-BTC")
         end_time = start_time + datetime.timedelta(days=1)
         
-        if start_time + datetime.timedelta(seconds=30) < now < end_time - datetime.timedelta(seconds=300):
+        if start_time + datetime.timedelta(seconds=30) < now < end_time:
             for coin in coins:
                 if globals()['globalK{}'.format(coin)] == 0:
                     continue 
@@ -141,7 +140,8 @@ while True:
                 coin_m = upbit.get_amount(coin)  
                 limit = globals()['limit{}'.format(coin)]
                 if coin_m > limit * 0.95:
-                    time.sleep(2)                
+                    time.sleep(2)         
+                time.sleep(0.5)               
         else:
             for coin in coins:
                 coinjan = get_balance(coin)
