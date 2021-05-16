@@ -62,7 +62,7 @@ def get_current_price(ticker):
     return pyupbit.get_orderbook(tickers=ticker)[0]["orderbook_units"][0]["ask_price"]
 
 def get_ror(k=0.5, ticker="KRW-BTC"):
-    df = pyupbit.get_ohlcv(ticker,count=4)
+    df = pyupbit.get_ohlcv(ticker,count=5)
     df['range'] = (df['high'] - df['low']) * k
     df['target'] = df['open'] + df['range'].shift(1)
 
