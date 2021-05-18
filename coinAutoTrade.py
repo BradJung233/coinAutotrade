@@ -18,6 +18,7 @@ globalKBCH = 0.0
 globalKLTC = 0.0
 globalKFLOW = 0.0
 globalKXTZ = 0.0
+globalKLINK = 0.0
 
 limitBTC = 2000000
 limitETH = 2000000
@@ -31,6 +32,7 @@ limitBCH = 2000000
 limitLTC = 2000000
 limitFLOW = 2000000
 limitXTZ = 2000000
+limitLINK = 2000000
 
 offsetBTC = 10000
 offsetETH = 5000
@@ -44,9 +46,10 @@ offsetBCH = 1500
 offsetLTC = 300
 offsetFLOW = 30
 offsetXTZ = 15
+offsetLINK = 50
 
-# coins = ["BTC", "ETH", "ADA", "XLM", "EOS", "XRP", "DOT" ,"WAVES","BCH","LTC","FLOW", "XTZ"]
-coins = ["BTC","ADA","XLM","EOS","BCH","LTC","FLOW", "XTZ","WAVES"]
+# coins = ["BTC", "ETH", "ADA", "XLM", "EOS", "XRP", "DOT" ,"WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
+coins = ["BTC","ADA","XLM","EOS","BCH","LTC","FLOW", "XTZ","WAVES","LINK"]
 
 def get_target_price(ticker, k):
     """변동성 돌파 전략으로 매수 목표가 조회"""
@@ -69,6 +72,7 @@ def get_balance(ticker):
                 return float(b['balance'])
             else:
                 return 0
+    return 0            
 
 def get_current_price(ticker):
     """현재가 조회"""
@@ -135,6 +139,9 @@ while True:
                 target_price = get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)])
                 current_price = get_current_price("KRW-"+coin)
                 ma5 = get_ma5("KRW-"+coin)
+                if ma5 is None:
+                    print(coin, "ma5 None")
+                    continue
                 print(coin, "ma5:", ma5)
                 # print(globals()['globalK{}'.format(coin)])
                 # print("tar ",target_price, "cur ", current_price)
@@ -144,13 +151,19 @@ while True:
                     krw = get_balance("KRW")
                     limit = globals()['limit{}'.format(coin)]
                     coin_m = upbit.get_amount(coin)
-                    
+                    if krw is None:
+                        continue
+                    if limit is None:
+                        print(coin,"continue")
+                        continue                        
                     if coin_m is None:
                         coin_m = 0
                     krw = limit - coin_m    
                     if krw > 5000 and krw <= limit:
                         upbit.buy_market_order("KRW-" + coin, krw*0.9995) 
                 coin_m = upbit.get_amount(coin)  
+                if coin_m is None:
+                    coin_m = 0                
                 limit = globals()['limit{}'.format(coin)]
                 if coin_m > limit * 0.95:
                     time.sleep(2)         

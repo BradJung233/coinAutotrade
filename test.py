@@ -41,6 +41,7 @@ df = pyupbit.get_ohlcv("KRW-XLM", interval="day", count=2)
 target_price = df.iloc[0]['close'] + (df.iloc[0]['high'] - df.iloc[0]['low']) * 0.1
 print(target_price)
 
+
 # df = pyupbit.get_ohlcv("KRW-XRP", interval="day", count=2)
 # target_price = df.iloc[0]['close'] + (df.iloc[0]['high'] - df.iloc[0]['low']) * 0.0
 # print(target_price)
@@ -48,7 +49,7 @@ print(target_price)
 print(math.floor(target_price))
 
 """이동 평균선 조회"""
-df = pyupbit.get_ohlcv("KRW-XLM", interval="day", count=5)
+df = pyupbit.get_ohlcv("KRW-ADA", interval="day", count=5)
 ma5 = df['close'].rolling(5).mean().iloc[-1]
 
 print(ma5)
