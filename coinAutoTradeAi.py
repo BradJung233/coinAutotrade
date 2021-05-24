@@ -3,6 +3,8 @@ import pyupbit
 import datetime
 import numpy as np
 import math
+import schedule
+from fbprophet import Prophet
 
 access = "NBfy02ssHZPdySYKdZIHHNRyv0Ke2Tk8qzvlxV0z"
 secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"
@@ -47,6 +49,23 @@ offsetLTC = 300
 offsetFLOW = 30
 offsetXTZ = 15
 offsetLINK = 50
+
+close_price_BTC = 0
+close_price_ETH = 0
+close_price_ADA = 0
+close_price_XRP = 0
+close_price_XLM = 0
+close_price_DOT = 0
+close_price_EOS = 0
+close_price_WAVES = 0
+close_price_BCH = 0
+close_price_LTC = 0
+close_price_FLOW = 0
+close_price_XTZ = 0
+close_price_LINK = 0
+
+
+
 
 coins = ["BTC", "ETH", "ADA", "XLM", "EOS", "XRP", "DOT" ,"WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
 # coins = ["BTC","ADA","XLM","EOS","BCH","LTC","FLOW", "XTZ","WAVES","LINK"]
@@ -109,15 +128,55 @@ def get_ma5(ticker):
     ma5 = df['close'].rolling(5).mean().iloc[-1]
     return ma5
 
-# 로그인
-upbit = pyupbit.Upbit(access, secret)
-print("autotrade start")
+predicted_close_price = 0
+def predict_price(ticker):
+    """Prophet으로 당일 종가 가격 예측"""
+    global predicted_close_price
+    df = pyupbit.get_ohlcv(ticker, interval="minute60")
+    df = df.reset_index()
+    df['ds'] = df['index']
+    df['y'] = df['close']
+    data = df[['ds','y']]
+    model = Prophet()
+    model.fit(data)
+    future = model.make_future_dataframe(periods=24, freq='H')
+    forecast = model.predict(future)
+    closeDf = forecast[forecast['ds'] == forecast.iloc[-1]['ds'].replace(hour=9)]
+    if len(closeDf) == 0:
+        closeDf = forecast[forecast['ds'] == data.iloc[-1]['ds'].replace(hour=9)]
+    closeValue = closeDf['yhat'].values[0]
+    predicted_close_price = closeValue
 
+def predict_price_loop():
+    global predicted_close_price
+    for coin in coins:
+        predict_price("KRW-" + coin)
+        time.sleep(1)    
+        globals()['close_price_{}'.format(coin)] = predicted_close_price
+
+    
 for coin in coins:
+    predict_price("KRW-" + coin)
+    time.sleep(1)
+    globals()['close_price_{}'.format(coin)] = predicted_close_price
+    time.sleep(1)
+    print(coin,'close_price:', globals()['close_price_{}'.format(coin)] )
     globals()['globalK{}'.format(coin)] = get_bestK("KRW-"+coin)
     print(coin, globals()['globalK{}'.format(coin)])
     print(coin,"target_price:", get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)]))
     time.sleep(1) # 속도가 느리면 다음 코인 값을 못 갖고와 에러남. 그래서 sleep
+
+schedule.every().hour.do(lambda: predict_price_loop())
+
+# 로그인
+upbit = pyupbit.Upbit(access, secret)
+print("autotrade start")
+
+# for coin in coins:
+#     globals()['globalK{}'.format(coin)] = get_bestK("KRW-"+coin)
+#     print(coin, globals()['globalK{}'.format(coin)])
+#     print(coin,"target_price:", get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)]))
+#     time.sleep(1) # 속도가 느리면 다음 코인 값을 못 갖고와 에러남. 그래서 sleep
 
 
 time.sleep(3)
@@ -127,32 +186,32 @@ while True:
     try:
         # globalK = funbBestK()
 
-
         now = datetime.datetime.now()
         start_time = get_start_time("KRW-BTC")
         end_time = start_time + datetime.timedelta(days=1)
-        
         if start_time + datetime.timedelta(seconds=30) < now < end_time:
             for coin in coins:
+                print(coin, "target:", get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)]), "predict:", globals()['close_price_{}'.format(coin)])
                 if globals()['globalK{}'.format(coin)] == 0:
                     time.sleep(1)        
                     continue 
                 target_price = get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)])
-                time.sleep(1)        
                 current_price = get_current_price("KRW-"+coin)
-                ma5 = get_ma5("KRW-"+coin)
-                if ma5 is None:
-                    print(coin, "ma5 None")
-                    continue
-                print(coin, "ma5:", ma5)
+                # ma5 = get_ma5("KRW-"+coin)
+                # if ma5 is None:
+                #     print(coin, "ma5 None")
+                #     continue
+                # print(coin, "ma5:", ma5)
                 # print(globals()['globalK{}'.format(coin)])
                 # print("tar ",target_price, "cur ", current_price)
                 # print(coin, target_price)
-                # print(coin, target_price + globals()['offset{}'.format(coin)])
-                if (target_price <= current_price < target_price + globals()['offset{}'.format(coin)]) and current_price > ma5:
+                print(coin, target_price)
+                if (target_price <= current_price < target_price + globals()['offset{}'.format(coin)]) and target_price * 1.01 < globals()['close_price_{}'.format(coin)]:
                     krw = get_balance("KRW")
                     limit = globals()['limit{}'.format(coin)]
                     coin_m = upbit.get_amount(coin)
+                    print(4)
+
                     if krw is None:
                         continue
                     if limit is None:
