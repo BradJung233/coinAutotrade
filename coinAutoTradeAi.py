@@ -22,19 +22,19 @@ globalKFLOW = 0.0
 globalKXTZ = 0.0
 globalKLINK = 0.0
 
-limitBTC = 2000000
-limitETH = 2000000
-limitADA = 2000000
-limitXRP = 2000000
-limitXLM = 2000000
-limitDOT = 2000000
-limitEOS = 2000000
-limitWAVES = 2000000
-limitBCH = 2000000
-limitLTC = 2000000
-limitFLOW = 2000000
-limitXTZ = 2000000
-limitLINK = 2000000
+limitBTC = 1000000
+limitETH = 1000000
+limitADA = 1000000
+limitXRP = 1000000
+limitXLM = 1000000
+limitDOT = 1000000
+limitEOS = 1000000
+limitWAVES = 1000000
+limitBCH = 1000000
+limitLTC = 1000000
+limitFLOW = 1000000
+limitXTZ = 1000000
+limitLINK = 1000000
 
 offsetBTC = 10000
 offsetETH = 5000
@@ -67,8 +67,9 @@ close_price_LINK = 0
 
 
 
-coins = ["BTC", "ETH", "ADA", "XLM", "EOS", "XRP", "DOT" ,"WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
-# coins = ["BTC","ADA","XLM","EOS","BCH","LTC","FLOW", "XTZ","WAVES","LINK"]
+# coins = ["BTC", "ETH", "ADA", "XLM", "EOS", "XRP", "DOT" ,"WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
+coins = ["WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
+
 
 def get_target_price(ticker, k):
     """변동성 돌파 전략으로 매수 목표가 조회"""
