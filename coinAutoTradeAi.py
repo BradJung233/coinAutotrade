@@ -67,8 +67,8 @@ close_price_LINK = 0
 
 
 
-coins = ["BTC", "ETH", "ADA", "XLM", "EOS", "XRP", "DOT" ,"WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
-# coins = ["WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
+# coins = ["BTC", "ETH", "ADA", "XLM", "EOS", "XRP", "DOT" ,"WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
+coins = ["WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
 
 
 def get_target_price(ticker, k):
@@ -152,10 +152,13 @@ def predict_price_loop():
     global predicted_close_price
     for coin in coins:
         predict_price("KRW-" + coin)
-        time.sleep(1)    
+        time.sleep(1.5)    
         globals()['close_price_{}'.format(coin)] = predicted_close_price
+        print("predict:",coin, predicted_close_price)
+    print("----------------------")
+    time.sleep(2)        
 
-    
+
 for coin in coins:
     predict_price("KRW-" + coin)
     time.sleep(1)
@@ -167,7 +170,8 @@ for coin in coins:
     print(coin,"target_price:", get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)]))
     time.sleep(1) # 속도가 느리면 다음 코인 값을 못 갖고와 에러남. 그래서 sleep
 
-schedule.every().hour.do(lambda: predict_price_loop())
+schedule.every(30).minutes.do(lambda: predict_price_loop())
+# schedule.every(20).seconds.do(lambda: predict_price_loop())
 
 # 로그인
 upbit = pyupbit.Upbit(access, secret)
@@ -190,6 +194,7 @@ while True:
         now = datetime.datetime.now()
         start_time = get_start_time("KRW-BTC")
         end_time = start_time + datetime.timedelta(days=1)
+        schedule.run_pending()
         if start_time + datetime.timedelta(seconds=30) < now < end_time:
             for coin in coins:
                 print(coin, "target:", get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)]), "predict:", globals()['close_price_{}'.format(coin)])
@@ -204,14 +209,13 @@ while True:
                 #     continue
                 # print(coin, "ma5:", ma5)
                 # print(globals()['globalK{}'.format(coin)])
-                # print("tar ",target_price, "cur ", current_price)
+                print(coin, "tar ",target_price, "cur ", current_price)
                 # print(coin, target_price)
-                print(coin, target_price)
+                # print(coin, target_price)
                 if (target_price <= current_price < target_price + globals()['offset{}'.format(coin)]) and target_price * 1.01 < globals()['close_price_{}'.format(coin)]:
                     krw = get_balance("KRW")
                     limit = globals()['limit{}'.format(coin)]
                     coin_m = upbit.get_amount(coin)
-                    print(4)
 
                     if krw is None:
                         continue

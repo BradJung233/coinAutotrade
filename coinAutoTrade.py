@@ -48,8 +48,8 @@ offsetFLOW = 30
 offsetXTZ = 15
 offsetLINK = 50
 
-coins = ["BTC", "ETH", "ADA", "XLM", "EOS", "XRP", "DOT" ,"WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
-# coins = ["BTC","ADA","XLM","EOS","BCH","LTC","FLOW", "XTZ","WAVES","LINK"]
+# coins = ["BTC", "ETH", "ADA", "XLM", "EOS", "XRP", "DOT" ,"WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
+coins = ["BTC", "ETH", "ADA", "XLM", "EOS", "XRP", "DOT" ]
 
 def get_target_price(ticker, k):
     """변동성 돌파 전략으로 매수 목표가 조회"""
