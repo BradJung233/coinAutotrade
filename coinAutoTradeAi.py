@@ -67,8 +67,8 @@ close_price_LINK = 0
 
 
 
-# coins = ["BTC", "ETH", "ADA", "XLM", "EOS", "XRP", "DOT" ,"WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
-coins = ["WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
+coins = ["BTC", "ETH", "ADA", "XLM", "EOS", "XRP", "DOT" ,"WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
+# coins = ["WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
 
 
 def get_target_price(ticker, k):
