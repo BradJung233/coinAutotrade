@@ -3,6 +3,7 @@ import pyupbit
 import datetime
 import numpy as np
 import math
+import schedule
 
 access = "NBfy02ssHZPdySYKdZIHHNRyv0Ke2Tk8qzvlxV0z"
 secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"
@@ -109,6 +110,16 @@ def get_ma5(ticker):
     ma5 = df['close'].rolling(5).mean().iloc[-1]
     return ma5
 
+def get_bestK_loop():
+    for coin in coins:
+        globals()['globalK{}'.format(coin)] = get_bestK("KRW-" + coin)
+        time.sleep(1)
+        print("loop",coin, globals()['globalK{}'.format(coin)])
+        
+  
+schedule.every().day.at("10:53").do(lambda: get_bestK_loop())
+
+
 # 로그인
 upbit = pyupbit.Upbit(access, secret)
 print("autotrade start")
@@ -131,7 +142,7 @@ while True:
         now = datetime.datetime.now()
         start_time = get_start_time("KRW-BTC")
         end_time = start_time + datetime.timedelta(days=1)
-        
+        schedule.run_pending()
         if start_time + datetime.timedelta(seconds=30) < now < end_time:
             for coin in coins:
                 if globals()['globalK{}'.format(coin)] == 0:
@@ -175,7 +186,7 @@ while True:
                 coinjan = get_balance(coin)
                 if coinjan > 0.00008:
                     upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
-                    globals()['globalK{}'.format(coin)] = get_bestK("KRW-" + coin)
+                    # globals()['globalK{}'.format(coin)] = get_bestK("KRW-" + coin)
             time.sleep(1)
     except Exception as e:
         print(e)
