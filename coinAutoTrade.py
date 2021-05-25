@@ -117,7 +117,7 @@ def get_bestK_loop():
         print("loop",coin, globals()['globalK{}'.format(coin)])
         
   
-schedule.every().day.at("10:53").do(lambda: get_bestK_loop())
+schedule.every().day.at("09:01").do(lambda: get_bestK_loop())
 
 
 # 로그인
