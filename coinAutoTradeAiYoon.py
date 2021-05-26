@@ -8,6 +8,7 @@ from fbprophet import Prophet
 
 access = "oXNV9A36Dglx1IPXFsc38829tSV51WkKM17ghsV6"
 secret = "KaUQe2rrVexFP85U34Ro9xUGzdCxJSH2DmHXS1g4"
+
 globalK_BTC = 0.0
 globalK_ETH = 0.0
 globalK_ADA = 0.0
@@ -132,15 +133,7 @@ def get_ma5(ticker):
 predicted_close_price = 0
 def predict_price(ticker):
     """Prophet으로 당일 종가 가격 예측"""
-    _now = datetime.datetime.now()
-    _start_time = get_start_time("KRW-BTC")
-    _end_time = _start_time + datetime.timedelta(days=1)    
-    date_diff = _end_time - _now
-    date_diff_hour = round(date_diff.seconds/3600)
     global predicted_close_price
-    if date_diff_hour < 1:
-        predicted_close_price = 0
-        return    
     df = pyupbit.get_ohlcv(ticker, interval="minute60")
     df = df.reset_index()
     df['ds'] = df['index']
@@ -148,7 +141,7 @@ def predict_price(ticker):
     data = df[['ds','y']]
     model = Prophet()
     model.fit(data)
-    future = model.make_future_dataframe(periods=date_diff_hour, freq='H')
+    future = model.make_future_dataframe(periods=24, freq='H')
     forecast = model.predict(future)
     closeDf = forecast[forecast['ds'] == forecast.iloc[-1]['ds'].replace(hour=9)]
     if len(closeDf) == 0:
@@ -187,7 +180,7 @@ for coin in coins:
     print(coin,"target_price:", get_target_price("KRW-"+coin, globals()['globalK_{}'.format(coin)]))
     time.sleep(1) # 속도가 느리면 다음 코인 값을 못 갖고와 에러남. 그래서 sleep
 
-schedule.every(10).minutes.do(lambda: predict_price_loop())
+schedule.every(20).minutes.do(lambda: predict_price_loop())
 schedule.every().day.at("09:01").do(lambda: get_bestK_loop())
 schedule.every().day.at("09:02").do(lambda: predict_price_loop())
 
