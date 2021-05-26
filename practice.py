@@ -160,28 +160,7 @@ def predict_price_loop():
     print("----------------------")
     time.sleep(2)        
 
-def get_bestK_loop():
-    for coin in coins:
-        get_bestK("KRW-"+coin)
-        time.sleep(1)
-    
 
-for coin in coins:
-    globals()['globalK{}'.format(coin)] = get_bestK("KRW-"+coin)
-    time.sleep(1)
-    if globals()['globalK{}'.format(coin)] == 0:
-        continue
-    predict_price("KRW-" + coin)
-    time.sleep(1)
-    globals()['close_price_{}'.format(coin)] = predicted_close_price
-    print(coin,'close_price:', globals()['close_price_{}'.format(coin)] )
-    print(coin, globals()['globalK{}'.format(coin)])
-    print(coin,"target_price:", get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)]))
-    time.sleep(1) # 속도가 느리면 다음 코인 값을 못 갖고와 에러남. 그래서 sleep
-
-schedule.every(10).minutes.do(lambda: predict_price_loop())
-schedule.every().day.at("09:01").do(lambda: get_bestK_loop())
-schedule.every().day.at("09:02").do(lambda: predict_price_loop())
 
 # schedule.every(20).seconds.do(lambda: predict_price_loop())
 
@@ -202,57 +181,8 @@ while True:
         end_time = start_time + datetime.timedelta(days=1)
         schedule.run_pending()
         if start_time + datetime.timedelta(seconds=30) < now < end_time:
-            for coin in coins:
-                current_price = get_current_price("KRW-"+coin)
-                # print(coin, "k:",globals()['globalK{}'.format(coin)])
-                # print(coin,"curren:",current_price, "target:", get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)]), "predict:", globals()['close_price_{}'.format(coin)])
-                if globals()['globalK{}'.format(coin)] == 0 and current_price *1.05 > globals()['close_price_{}'.format(coin)]:
-                    time.sleep(1)        
-                    continue 
-                target_price = get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)])
-
-                # print(globals()['globalK{}'.format(coin)])
-                print(coin,"curren:",current_price, "predict:", globals()['close_price_{}'.format(coin)])
-                # print(coin, target_price)
-                # if ((target_price <= current_price < target_price + globals()['offset{}'.format(coin)]) and target_price * 1.01 < globals()['close_price_{}'.format(coin)])or current_price *1.05 < globals()['close_price_{}'.format(coin)]:
-                if  current_price * 1.05 < globals()['close_price_{}'.format(coin)]:
-                    krw = get_balance("KRW")
-                    limit = globals()['limit{}'.format(coin)]
-                    coin_m = upbit.get_amount(coin)
-
-                    if krw is None or krw < 5000:
-                        continue
-                    if limit is None:
-                        print(coin,"continue")
-                        continue                        
-                    if coin_m is None:
-                        coin_m = 0
-                    buyamt = limit - coin_m    
-                    if buyamt > 5000 and buyamt <= limit:
-                        if buyamt > krw:
-                            buyamt = krw
-                        print("-------buy",coin, krw, "---------")
-                        upbit.buy_market_order("KRW-" + coin, buyamt*0.9995) 
-                if current_price *0.975 > globals()['close_price_{}'.format(coin)]:
-                    coinjan = get_balance(coin)
-                    print("-------sell",coin, current_price, "---------")
-                    upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
-                    print("-------sell",coin, current_price, "---------")
-
-                coin_m = upbit.get_amount(coin)  
-                if coin_m is None:
-                    coin_m = 0                
-                limit = globals()['limit{}'.format(coin)]
-                if coin_m > limit * 0.95:
-                    time.sleep(2)         
-                time.sleep(0.5)  
-            print("------------------------------------------------------")
+            time.sleep(0.5)               
         else:
-            for coin in coins:
-                coinjan = get_balance(coin)
-                if coinjan > 0.00008:
-                    upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
-                    # globals()['globalK{}'.format(coin)] = get_bestK("KRW-" + coin)
             time.sleep(1)
     except Exception as e:
         print(e)
