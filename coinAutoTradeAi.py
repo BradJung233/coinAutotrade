@@ -8,47 +8,47 @@ from fbprophet import Prophet
 
 access = "NBfy02ssHZPdySYKdZIHHNRyv0Ke2Tk8qzvlxV0z"
 secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"
-globalKBTC = 0.0
-globalKETH = 0.0
-globalKADA = 0.0
-globalKXRP = 0.0
-globalKXLM = 0.0
-globalKDOT = 0.0
-globalKEOS = 0.0
-globalKWAVES = 0.0
-globalKBCH = 0.0
-globalKLTC = 0.0
-globalKFLOW = 0.0
-globalKXTZ = 0.0
-globalKLINK = 0.0
+globalK_BTC = 0.0
+globalK_ETH = 0.0
+globalK_ADA = 0.0
+globalK_XRP = 0.0
+globalK_XLM = 0.0
+globalK_DOT = 0.0
+globalK_EOS = 0.0
+globalK_WAVES = 0.0
+globalK_BCH = 0.0
+globalK_LTC = 0.0
+globalK_FLOW = 0.0
+globalK_XTZ = 0.0
+globalK_LINK = 0.0
 
-limitBTC = 1000000
-limitETH = 1000000
-limitADA = 1000000
-limitXRP = 1000000
-limitXLM = 1000000
-limitDOT = 1000000
-limitEOS = 1000000
-limitWAVES = 1000000
-limitBCH = 1000000
-limitLTC = 1000000
-limitFLOW = 1000000
-limitXTZ = 1000000
-limitLINK = 1000000
+limit_BTC = 1000000
+limit_ETH = 1000000
+limit_ADA = 1000000
+limit_XRP = 1000000
+limit_XLM = 1000000
+limit_DOT = 1000000
+limit_EOS = 1000000
+limit_WAVES = 1000000
+limit_BCH = 1000000
+limit_LTC = 1000000
+limit_FLOW = 1000000
+limit_XTZ = 1000000
+limit_LINK = 1000000
 
-offsetBTC = 10000
-offsetETH = 5000
-offsetADA = 10
-offsetXRP = 10
-offsetXLM = 3
-offsetDOT = 30
-offsetEOS = 30
-offsetWAVES = 30
-offsetBCH = 1500
-offsetLTC = 300
-offsetFLOW = 30
-offsetXTZ = 15
-offsetLINK = 50
+offset_BTC = 10000
+offset_ETH = 5000
+offset_ADA = 10
+offset_XRP = 10
+offset_XLM = 3
+offset_DOT = 30
+offset_EOS = 30
+offset_WAVES = 30
+offset_BCH = 1500
+offset_LTC = 300
+offset_FLOW = 30
+offset_XTZ = 15
+offset_LINK = 50
 
 close_price_BTC = 0
 close_price_ETH = 0
@@ -159,7 +159,7 @@ def predict_price(ticker):
 def predict_price_loop():
     global predicted_close_price
     for coin in coins:
-        if globals()['globalK{}'.format(coin)] == 0:
+        if globals()['globalK_{}'.format(coin)] == 0:
             continue        
         predict_price("KRW-" + coin)
         time.sleep(1.5)    
@@ -175,16 +175,16 @@ def get_bestK_loop():
     
 
 for coin in coins:
-    globals()['globalK{}'.format(coin)] = get_bestK("KRW-"+coin)
+    globals()['globalK_{}'.format(coin)] = get_bestK("KRW-"+coin)
     time.sleep(1)
-    if globals()['globalK{}'.format(coin)] == 0:
+    if globals()['globalK_{}'.format(coin)] == 0:
         continue
     predict_price("KRW-" + coin)
     time.sleep(1)
     globals()['close_price_{}'.format(coin)] = predicted_close_price
     print(coin,'close_price:', globals()['close_price_{}'.format(coin)] )
-    print(coin, globals()['globalK{}'.format(coin)])
-    print(coin,"target_price:", get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)]))
+    print(coin, globals()['globalK_{}'.format(coin)])
+    print(coin,"target_price:", get_target_price("KRW-"+coin, globals()['globalK_{}'.format(coin)]))
     time.sleep(1) # 속도가 느리면 다음 코인 값을 못 갖고와 에러남. 그래서 sleep
 
 schedule.every(10).minutes.do(lambda: predict_price_loop())
@@ -203,7 +203,6 @@ time.sleep(3)
 # 자동매매 시작
 while True:
     try:
-        # globalK = funbBestK()
 
         now = datetime.datetime.now()
         start_time = get_start_time("KRW-BTC")
@@ -212,22 +211,22 @@ while True:
         if start_time + datetime.timedelta(seconds=30) < now < end_time:
             for coin in coins:
                 current_price = get_current_price("KRW-"+coin)
-                # print(coin, "k:",globals()['globalK{}'.format(coin)])
-                # print(coin,"curren:",current_price, "target:", get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)]), "predict:", globals()['close_price_{}'.format(coin)])
+                # print(coin, "k:",globals()['globalK_{}'.format(coin)])
+                # print(coin,"curren:",current_price, "target:", get_target_price("KRW-"+coin, globals()['globalK_{}'.format(coin)]), "predict:", globals()['close_price_{}'.format(coin)])
                 if globals()['close_price_{}'.format(coin)] == 0:
                     continue
-                if globals()['globalK{}'.format(coin)] == 0 and current_price *1.05 > globals()['close_price_{}'.format(coin)]:
+                if globals()['globalK_{}'.format(coin)] == 0 and current_price *1.05 > globals()['close_price_{}'.format(coin)]:
                     time.sleep(1)        
                     continue 
-                target_price = get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)])
+                target_price = get_target_price("KRW-"+coin, globals()['globalK_{}'.format(coin)])
 
-                # print(globals()['globalK{}'.format(coin)])
+                # print(globals()['globalK_{}'.format(coin)])
                 print(coin,"curren:",current_price, "predict:", globals()['close_price_{}'.format(coin)])
                 # print(coin, target_price)
-                # if ((target_price <= current_price < target_price + globals()['offset{}'.format(coin)]) and target_price * 1.01 < globals()['close_price_{}'.format(coin)])or current_price *1.05 < globals()['close_price_{}'.format(coin)]:
+                # if ((target_price <= current_price < target_price + globals()['offset_{}'.format(coin)]) and target_price * 1.01 < globals()['close_price_{}'.format(coin)])or current_price *1.05 < globals()['close_price_{}'.format(coin)]:
                 if  current_price * 1.05 < globals()['close_price_{}'.format(coin)]:
                     krw = get_balance("KRW")
-                    limit = globals()['limit{}'.format(coin)]
+                    limit = globals()['limit_{}'.format(coin)]
                     coin_m = upbit.get_amount(coin)
 
                     if krw is None or krw < 5000:
@@ -252,7 +251,7 @@ while True:
                 coin_m = upbit.get_amount(coin)  
                 if coin_m is None:
                     coin_m = 0                
-                limit = globals()['limit{}'.format(coin)]
+                limit = globals()['limit_{}'.format(coin)]
                 if coin_m > limit * 0.95:
                     time.sleep(2)         
                 time.sleep(0.5)  
@@ -262,7 +261,7 @@ while True:
                 coinjan = get_balance(coin)
                 if coinjan > 0.00008:
                     upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
-                    # globals()['globalK{}'.format(coin)] = get_bestK("KRW-" + coin)
+                    # globals()['globalK_{}'.format(coin)] = get_bestK("KRW-" + coin)
             time.sleep(1)
     except Exception as e:
         print(e)
