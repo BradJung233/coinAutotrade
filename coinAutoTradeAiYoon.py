@@ -6,8 +6,8 @@ import math
 import schedule
 from fbprophet import Prophet
 
-access = "NBfy02ssHZPdySYKdZIHHNRyv0Ke2Tk8qzvlxV0z"
-secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"
+access = "oXNV9A36Dglx1IPXFsc38829tSV51WkKM17ghsV6"
+secret = "KaUQe2rrVexFP85U34Ro9xUGzdCxJSH2DmHXS1g4"
 globalKBTC = 0.0
 globalKETH = 0.0
 globalKADA = 0.0
@@ -36,20 +36,6 @@ limitFLOW = 1000000
 limitXTZ = 1000000
 limitLINK = 1000000
 
-offsetBTC = 10000
-offsetETH = 5000
-offsetADA = 10
-offsetXRP = 10
-offsetXLM = 3
-offsetDOT = 30
-offsetEOS = 30
-offsetWAVES = 30
-offsetBCH = 1500
-offsetLTC = 300
-offsetFLOW = 30
-offsetXTZ = 15
-offsetLINK = 50
-
 close_price_BTC = 0
 close_price_ETH = 0
 close_price_ADA = 0
@@ -64,7 +50,19 @@ close_price_FLOW = 0
 close_price_XTZ = 0
 close_price_LINK = 0
 
-
+# offsetBTC = 10000
+# offsetETH = 5000
+# offsetADA = 10
+# offsetXRP = 10
+# offsetXLM = 3
+# offsetDOT = 30
+# offsetEOS = 30
+# offsetWAVES = 30
+# offsetBCH = 1500
+# offsetLTC = 300
+# offsetFLOW = 30
+# offsetXTZ = 15
+# offsetLINK = 50
 
 
 # coins = ["BTC", "ETH", "ADA", "XLM", "EOS", "XRP", "DOT" ,"WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
@@ -132,7 +130,15 @@ def get_ma5(ticker):
 predicted_close_price = 0
 def predict_price(ticker):
     """Prophet으로 당일 종가 가격 예측"""
+    _now = datetime.datetime.now()
+    _start_time = get_start_time("KRW-BTC")
+    _end_time = _start_time + datetime.timedelta(days=1)    
+    date_diff = _end_time - _now
+    date_diff_hour = round(date_diff.seconds/3600)
     global predicted_close_price
+    if date_diff_hour < 1:
+        predicted_close_price = 0
+        return    
     df = pyupbit.get_ohlcv(ticker, interval="minute60")
     df = df.reset_index()
     df['ds'] = df['index']
@@ -140,7 +146,7 @@ def predict_price(ticker):
     data = df[['ds','y']]
     model = Prophet()
     model.fit(data)
-    future = model.make_future_dataframe(periods=24, freq='H')
+    future = model.make_future_dataframe(periods=date_diff_hour, freq='H')
     forecast = model.predict(future)
     closeDf = forecast[forecast['ds'] == forecast.iloc[-1]['ds'].replace(hour=9)]
     if len(closeDf) == 0:
@@ -206,6 +212,8 @@ while True:
                 current_price = get_current_price("KRW-"+coin)
                 # print(coin, "k:",globals()['globalK{}'.format(coin)])
                 # print(coin,"curren:",current_price, "target:", get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)]), "predict:", globals()['close_price_{}'.format(coin)])
+                if globals()['close_price_{}'.format(coin)] == 0:
+                    continue
                 if globals()['globalK{}'.format(coin)] == 0 and current_price *1.05 > globals()['close_price_{}'.format(coin)]:
                     time.sleep(1)        
                     continue 

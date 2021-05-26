@@ -132,7 +132,16 @@ def get_ma5(ticker):
 predicted_close_price = 0
 def predict_price(ticker):
     """Prophet으로 당일 종가 가격 예측"""
+    _now = datetime.datetime.now()
+    _start_time = get_start_time("KRW-BTC")
+    _end_time = _start_time + datetime.timedelta(days=1)    
     global predicted_close_price
+    date_diff = _end_time - _now
+    date_diff_hour = round(date_diff.seconds/3600)
+    if date_diff_hour < 1:
+        predicted_close_price = 0
+        continue
+    print(ticker, date_diff_hour)
     df = pyupbit.get_ohlcv(ticker, interval="minute60")
     df = df.reset_index()
     df['ds'] = df['index']
@@ -151,11 +160,11 @@ def predict_price(ticker):
 def predict_price_loop():
     global predicted_close_price
     for coin in coins:
-        if globals()['globalK{}'.format(coin)] == 0:
-            continue        
+        # if globals()['globalK{}'.format(coin)] == 0:
+        #     continue        
         predict_price("KRW-" + coin)
         time.sleep(1.5)    
-        globals()['close_price_{}'.format(coin)] = predicted_close_price
+        # globals()['close_price_{}'.format(coin)] = predicted_close_price
         print("predict:",coin, predicted_close_price)
     print("----------------------")
     time.sleep(2)        
@@ -169,24 +178,26 @@ upbit = pyupbit.Upbit(access, secret)
 print("autotrade start")
 
 
-time.sleep(3)
+# time.sleep(3)
+
+predict_price_loop()
 
 # 자동매매 시작
-while True:
-    try:
-        # globalK = funbBestK()
+# while True:
+#     try:
+#         # globalK = funbBestK()
 
-        now = datetime.datetime.now()
-        start_time = get_start_time("KRW-BTC")
-        end_time = start_time + datetime.timedelta(days=1)
-        schedule.run_pending()
-        if start_time + datetime.timedelta(seconds=30) < now < end_time:
-            time.sleep(0.5)               
-        else:
-            time.sleep(1)
-    except Exception as e:
-        print(e)
-        time.sleep(1)
+#         now = datetime.datetime.now()
+#         start_time = get_start_time("KRW-BTC")
+#         end_time = start_time + datetime.timedelta(days=1)
+#         schedule.run_pending()
+#         if start_time + datetime.timedelta(seconds=30) < now < end_time:
+#             time.sleep(0.5)               
+#         else:
+#             time.sleep(1)
+#     except Exception as e:
+#         print(e)
+#         time.sleep(1)
 
 # 백그라운드 실행: nohup python3 coinAutoTradeAi.py > output.log &
 # 실행되고 있는지 확인: ps ax | grep .py

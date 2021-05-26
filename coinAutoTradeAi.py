@@ -132,7 +132,15 @@ def get_ma5(ticker):
 predicted_close_price = 0
 def predict_price(ticker):
     """Prophet으로 당일 종가 가격 예측"""
+    _now = datetime.datetime.now()
+    _start_time = get_start_time("KRW-BTC")
+    _end_time = _start_time + datetime.timedelta(days=1)    
+    date_diff = _end_time - _now
+    date_diff_hour = round(date_diff.seconds/3600)
     global predicted_close_price
+    if date_diff_hour < 1:
+        predicted_close_price = 0
+        return    
     df = pyupbit.get_ohlcv(ticker, interval="minute60")
     df = df.reset_index()
     df['ds'] = df['index']
@@ -140,7 +148,7 @@ def predict_price(ticker):
     data = df[['ds','y']]
     model = Prophet()
     model.fit(data)
-    future = model.make_future_dataframe(periods=24, freq='H')
+    future = model.make_future_dataframe(periods=date_diff_hour, freq='H')
     forecast = model.predict(future)
     closeDf = forecast[forecast['ds'] == forecast.iloc[-1]['ds'].replace(hour=9)]
     if len(closeDf) == 0:
@@ -206,6 +214,8 @@ while True:
                 current_price = get_current_price("KRW-"+coin)
                 # print(coin, "k:",globals()['globalK{}'.format(coin)])
                 # print(coin,"curren:",current_price, "target:", get_target_price("KRW-"+coin, globals()['globalK{}'.format(coin)]), "predict:", globals()['close_price_{}'.format(coin)])
+                if globals()['close_price_{}'.format(coin)] == 0:
+                    continue
                 if globals()['globalK{}'.format(coin)] == 0 and current_price *1.05 > globals()['close_price_{}'.format(coin)]:
                     time.sleep(1)        
                     continue 
