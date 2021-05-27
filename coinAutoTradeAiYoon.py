@@ -22,20 +22,24 @@ globalK_LTC = 0.0
 globalK_FLOW = 0.0
 globalK_XTZ = 0.0
 globalK_LINK = 0.0
+globalK_ENJ = 0.0
+globalK_NEO = 0.0
 
-limit_BTC = 1000000
-limit_ETH = 1000000
-limit_ADA = 1000000
-limit_XRP = 1000000
-limit_XLM = 1000000
-limit_DOT = 1000000
-limit_EOS = 1000000
-limit_WAVES = 1000000
-limit_BCH = 1000000
-limit_LTC = 1000000
-limit_FLOW = 1000000
-limit_XTZ = 1000000
-limit_LINK = 1000000
+limit_BTC = 500000
+limit_ETH = 500000
+limit_ADA = 0
+limit_XRP = 0
+limit_XLM = 0
+limit_DOT = 0
+limit_EOS = 0
+limit_WAVES = 0
+limit_BCH = 500000
+limit_LTC = 500000
+limit_FLOW = 0
+limit_XTZ = 0
+limit_LINK = 500000
+limit_ENJ = 500000
+limit_NEO = 500000
 
 
 close_price_BTC = 0
@@ -51,6 +55,8 @@ close_price_LTC = 0
 close_price_FLOW = 0
 close_price_XTZ = 0
 close_price_LINK = 0
+close_price_ENJ = 0
+close_price_NEO = 0
 
 
 # offset_BTC = 10000
@@ -68,8 +74,9 @@ close_price_LINK = 0
 # offset_LINK = 50
 
 
-# coins = ["BTC", "ETH", "ADA", "XLM", "EOS", "XRP", "DOT" ,"WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
-coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
+# coins = ["BTC", "ETH", "ADA", "XLM", "EOS", "XRP", "DOT" ,"WAVES","BCH","LTC","FLOW", "XTZ","LINK","ENJ","NEO"]
+coins = ["BTC", "ETH", "BCH", "LTC", "LINK", "ENJ", "NEO"]
+# coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
 
 
 def get_target_price(ticker, k):
