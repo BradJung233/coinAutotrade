@@ -2,5 +2,9 @@
     "python.linting.pylintEnabled": false,
     "python.linting.flake8Enabled": true,
     "python.linting.enabled": true,
+<<<<<<< HEAD
     "python.pythonPath": "/opt/anaconda3/bin/python"
+=======
+    "python.pythonPath": "C:\\Users\\hp\\.conda\\envs\\basic\\python.exe"
+>>>>>>> ce16eeb078ed78a075f695499f7ee85461b198cd
 }
