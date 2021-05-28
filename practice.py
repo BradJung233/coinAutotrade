@@ -138,10 +138,8 @@ def predict_price(ticker):
     date_diff = _end_time - _now
     date_diff_hour = round(date_diff.seconds/3600)
     global predicted_close_price
-    if date_diff_hour < 1:
-        predicted_close_price = 0
-        return
-    print(ticker, date_diff_hour)
+ 
+    # print(ticker, date_diff_hour)
     df = pyupbit.get_ohlcv(ticker, interval="minute60")
     df = df.reset_index()
     df['ds'] = df['index']
@@ -149,12 +147,16 @@ def predict_price(ticker):
     data = df[['ds','y']]
     model = Prophet()
     model.fit(data)
-    future = model.make_future_dataframe(periods=24, freq='H')
+    print("date_diff_hour",date_diff_hour)
+    future = model.make_future_dataframe(periods=6, freq='H')
+    # future = model.make_future_dataframe(periods=24, freq='H')
     forecast = model.predict(future)
+    print(forecast)
     closeDf = forecast[forecast['ds'] == forecast.iloc[-1]['ds'].replace(hour=9)]
     if len(closeDf) == 0:
         closeDf = forecast[forecast['ds'] == data.iloc[-1]['ds'].replace(hour=9)]
     closeValue = closeDf['yhat'].values[0]
+    # print("closedf:",closeDf)
     predicted_close_price = closeValue
 
 def predict_price_loop():
@@ -169,18 +171,23 @@ def predict_price_loop():
     print("----------------------")
     time.sleep(2)        
 
-
+def get_bestK_loop():
+    for coin in coins:
+        globals()['globalK{}'.format(coin)] = get_bestK("KRW-" + coin)
+        time.sleep(1)
+        print("loop",coin, globals()['globalK{}'.format(coin)])
 
 # schedule.every(20).seconds.do(lambda: predict_price_loop())
 
 # 로그인
 upbit = pyupbit.Upbit(access, secret)
-print("autotrade start")
+# print("autotrade start")
+predict_price("KRW-EOS")
 
 
 # time.sleep(3)
 
-predict_price_loop()
+# get_bestK_loop()
 
 # 자동매매 시작
 # while True:
