@@ -164,7 +164,7 @@ def predict_price_loop():
         #     continue        
         predict_price("KRW-" + coin)
         time.sleep(1.5)    
-        # globals()['close_price_{}'.format(coin)] = predicted_close_price
+        globals()['close_price_{}'.format(coin)] = predicted_close_price
         print("predict:",coin, predicted_close_price)
     print("----------------------")
     time.sleep(2)        
