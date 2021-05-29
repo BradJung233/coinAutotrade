@@ -25,21 +25,21 @@ globalK_LINK = 0.0
 globalK_ENJ = 0.0
 globalK_NEO = 0.0
 
-limit_BTC = 500000
-limit_ETH = 500000
-limit_ADA = 0
-limit_XRP = 0
-limit_XLM = 0
-limit_DOT = 0
-limit_EOS = 0
-limit_WAVES = 0
-limit_BCH = 500000
-limit_LTC = 500000
-limit_FLOW = 0
-limit_XTZ = 0
-limit_LINK = 500000
-limit_ENJ = 500000
-limit_NEO = 500000
+limit_BTC = 400000
+limit_ETH = 400000
+limit_ADA = 400000
+limit_XRP = 300000
+limit_XLM = 400000
+limit_DOT = 300000
+limit_EOS = 400000
+limit_WAVES = 400000
+limit_BCH = 400000
+limit_LTC = 400000
+limit_FLOW = 400000
+limit_XTZ = 400000
+limit_LINK = 400000
+limit_ENJ = 300000
+limit_NEO = 300000
 
 
 close_price_BTC = 0
@@ -75,7 +75,7 @@ close_price_NEO = 0
 
 
 # coins = ["BTC", "ETH", "ADA", "XLM", "EOS", "XRP", "DOT" ,"WAVES","BCH","LTC","FLOW", "XTZ","LINK","ENJ","NEO"]
-coins = ["BTC", "ETH", "BCH", "LTC", "LINK", "ENJ", "NEO"]
+coins = ["BTC", "ETH", "EOS", "BCH", "LTC", "LINK", "ENJ", "NEO", "DOT", "XRP"]
 # coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
 
 
@@ -242,7 +242,7 @@ while True:
                             buyamt = krw
                         print("-------buy",coin, krw, "---------")
                         upbit.buy_market_order("KRW-" + coin, buyamt*0.9995) 
-                if current_price *0.975 > globals()['close_price_{}'.format(coin)]:
+                if current_price *0.99 > globals()['close_price_{}'.format(coin)]:
                     coinjan = get_balance(coin)
                     print("-------sell",coin, current_price, "---------")
                     upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
