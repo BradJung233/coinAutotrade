@@ -9,61 +9,34 @@ from fbprophet import Prophet
 access = "NBfy02ssHZPdySYKdZIHHNRyv0Ke2Tk8qzvlxV0z"
 secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"
 
-globalK_BTC = 0.0
-globalK_ETH = 0.0
-globalK_ADA = 0.0
-globalK_XRP = 0.0
-globalK_XLM = 0.0
-globalK_DOT = 0.0
-globalK_EOS = 0.0
-globalK_WAVES = 0.0
-globalK_BCH = 0.0
-globalK_LTC = 0.0
-globalK_FLOW = 0.0
-globalK_XTZ = 0.0
-globalK_LINK = 0.0
 
-limit_BTC = 1000000
-limit_ETH = 1000000
-limit_ADA = 1000000
-limit_XRP = 1000000
-limit_XLM = 1000000
-limit_DOT = 1000000
-limit_EOS = 1000000
-limit_WAVES = 1000000
-limit_BCH = 1000000
-limit_LTC = 1000000
-limit_FLOW = 1000000
-limit_XTZ = 1000000
-limit_LINK = 1000000
+# limit_BTC = 1000000
+# limit_ETH = 1000000
+# limit_ADA = 1000000
+# limit_XRP = 1000000
+# limit_XLM = 1000000
+# limit_DOT = 1000000
+# limit_EOS = 1000000
+# limit_WAVES = 1000000
+# limit_BCH = 1000000
+# limit_LTC = 1000000
+# limit_FLOW = 1000000
+# limit_XTZ = 1000000
+# limit_LINK = 1000000
 
-offset_BTC = 10000
-offset_ETH = 5000
-offset_ADA = 10
-offset_XRP = 10
-offset_XLM = 3
-offset_DOT = 30
-offset_EOS = 30
-offset_WAVES = 30
-offset_BCH = 1500
-offset_LTC = 300
-offset_FLOW = 30
-offset_XTZ = 15
-offset_LINK = 50
-
-close_price_BTC = 0
-close_price_ETH = 0
-close_price_ADA = 0
-close_price_XRP = 0
-close_price_XLM = 0
-close_price_DOT = 0
-close_price_EOS = 0
-close_price_WAVES = 0
-close_price_BCH = 0
-close_price_LTC = 0
-close_price_FLOW = 0
-close_price_XTZ = 0
-close_price_LINK = 0
+# offset_BTC = 10000
+# offset_ETH = 5000
+# offset_ADA = 10
+# offset_XRP = 10
+# offset_XLM = 3
+# offset_DOT = 30
+# offset_EOS = 30
+# offset_WAVES = 30
+# offset_BCH = 1500
+# offset_LTC = 300
+# offset_FLOW = 30
+# offset_XTZ = 15
+# offset_LINK = 50
 
 
 
@@ -71,6 +44,14 @@ close_price_LINK = 0
 # coins = ["BTC", "ETH", "ADA", "XLM", "EOS", "XRP", "DOT" ,"WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
 coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
 
+"""변수 생성"""
+for coin in coins:
+    globals()['globalK_{}'.format(coin)] = 0.0
+    globals()['close_price_{}'.format(coin)] = 0
+    globals()['bef_close_price_{}'.format(coin)] = 0
+    globals()['current_price_{}'.format(coin)] = 0
+    globals()['bef_current_price_{}'.format(coin)] = 0
+    globals()['limit_{}'.format(coin)] = 1000000
 
 def get_target_price(ticker, k):
     """변동성 돌파 전략으로 매수 목표가 조회"""
@@ -157,13 +138,14 @@ def predict_price_loop():
         predict_price("KRW-" + coin)
         time.sleep(1.5)    
         globals()['close_price_{}'.format(coin)] = predicted_close_price
+        globals()['bef_current_price_{}'.format(coin)] = globals()['current_price_{}'.format(coin)] 
         print("predict:",coin, predicted_close_price)
     print("----------------------")
     time.sleep(2)        
 
 def get_bestK_loop():
     for coin in coins:
-        get_bestK("KRW-"+coin)
+        globals()['globalK_{}'.format(coin)] = get_bestK("KRW-"+coin)
         time.sleep(1)
     
 
@@ -175,14 +157,17 @@ for coin in coins:
     predict_price("KRW-" + coin)
     time.sleep(1)
     globals()['close_price_{}'.format(coin)] = predicted_close_price
+    globals()['bef_close_price_{}'.format(coin)] = predicted_close_price
+    globals()['bef_current_price_{}'.format(coin)] = globals()['current_price_{}'.format(coin)] 
     print(coin,'close_price:', globals()['close_price_{}'.format(coin)] )
     print(coin, globals()['globalK_{}'.format(coin)])
     print(coin,"target_price:", get_target_price("KRW-"+coin, globals()['globalK_{}'.format(coin)]))
     time.sleep(1) # 속도가 느리면 다음 코인 값을 못 갖고와 에러남. 그래서 sleep
 
-schedule.every(20).minutes.do(lambda: predict_price_loop())
-schedule.every().day.at("09:01").do(lambda: get_bestK_loop())
-schedule.every().day.at("09:02").do(lambda: predict_price_loop())
+schedule.every(10).minutes.do(lambda: predict_price_loop())
+schedule.every().day.at("09:02").do(lambda: get_bestK_loop())
+# schedule.every(60).minutes.do(lambda: get_bestK_loop())
+# schedule.every().day.at("09:03").do(lambda: predict_price_loop())
 
 # schedule.every(20).seconds.do(lambda: predict_price_loop())
 
@@ -201,26 +186,37 @@ while True:
         start_time = get_start_time("KRW-BTC")
         end_time = start_time + datetime.timedelta(days=1)
         schedule.run_pending()
-        if start_time + datetime.timedelta(seconds=30) < now < end_time:
+        if start_time + datetime.timedelta(seconds=60) < now < end_time:
             for coin in coins:
-                current_price = get_current_price("KRW-"+coin)
+                globals()['current_price_{}'.format(coin)]  = get_current_price("KRW-"+coin)
                 # print(coin, "k:",globals()['globalK_{}'.format(coin)])
                 # print(coin,"curren:",current_price, "target:", get_target_price("KRW-"+coin, globals()['globalK_{}'.format(coin)]), "predict:", globals()['close_price_{}'.format(coin)])
+
                 if globals()['close_price_{}'.format(coin)] == 0:
                     continue
-                if globals()['globalK_{}'.format(coin)] == 0 and current_price *1.05 > globals()['close_price_{}'.format(coin)]:
+                if globals()['globalK_{}'.format(coin)] == 0 and globals()['current_price_{}'.format(coin)]  *1.05 > globals()['close_price_{}'.format(coin)]:
                     time.sleep(1)        
                     continue 
                 target_price = get_target_price("KRW-"+coin, globals()['globalK_{}'.format(coin)])
 
-                # print(globals()['globalK_{}'.format(coin)])
-                print(coin,"curren:",current_price, "predict:", globals()['close_price_{}'.format(coin)])
+                # print(coin, globals()['limit_{}'.format(coin)])
+                print(coin,"curren:",globals()['current_price_{}'.format(coin)] , "predict:", globals()['close_price_{}'.format(coin)])
                 # print(coin, target_price)
                 # if ((target_price <= current_price < target_price + globals()['offset_{}'.format(coin)]) and target_price * 1.01 < globals()['close_price_{}'.format(coin)])or current_price *1.05 < globals()['close_price_{}'.format(coin)]:
-                if  current_price * 1.05 < globals()['close_price_{}'.format(coin)]:
+                if  globals()['current_price_{}'.format(coin)]  * 1.05 < globals()['close_price_{}'.format(coin)]:
                     krw = get_balance("KRW")
                     limit = globals()['limit_{}'.format(coin)]
                     coin_m = upbit.get_amount(coin)
+
+                    """이전 현재가보다 현재가가 낮으면 패스"""
+                    if globals()['bef_current_price_{}'.format(coin)] > globals()['current_price_{}'.format(coin)] :
+                        print(coin, "bef_current_price", globals()['bef_current_price_{}'.format(coin)], "current_price",globals()['current_price_{}'.format(coin)] )
+                        continue
+
+                    """이전 예상가보다 현재 예상가가 낮으면 패스"""
+                    if globals()['bef_close_price_{}'.format(coin)] > globals()['close_price_{}'.format(coin)]:
+                        print(coin, "bef_predict",globals()['bef_close_price_{}'.format(coin)] ,"predict:", globals()['close_price_{}'.format(coin)])
+                        continue
 
                     if krw is None or krw < 5000:
                         continue
@@ -235,11 +231,11 @@ while True:
                             buyamt = krw
                         print("-------buy",coin, krw, "---------")
                         upbit.buy_market_order("KRW-" + coin, buyamt*0.9995) 
-                if current_price *0.975 > globals()['close_price_{}'.format(coin)]:
+                if globals()['current_price_{}'.format(coin)]  *0.99 > globals()['close_price_{}'.format(coin)]:
                     coinjan = get_balance(coin)
-                    print("-------sell",coin, current_price, "---------")
+                    print("-------sell",coin, globals()['current_price_{}'.format(coin)] , "---------")
                     upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
-                    print("-------sell",coin, current_price, "---------")
+                    print("-------sell",coin, globals()['current_price_{}'.format(coin)] , "---------")
 
                 coin_m = upbit.get_amount(coin)  
                 if coin_m is None:
