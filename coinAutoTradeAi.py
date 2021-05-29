@@ -44,6 +44,7 @@ secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"
 # coins = ["BTC", "ETH", "ADA", "XLM", "EOS", "XRP", "DOT" ,"WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
 coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
 
+"""------------------------------------------이하 공통 부분---------------------------------------------------------------"""
 """변수 생성"""
 for coin in coins:
     globals()['globalK_{}'.format(coin)] = 0.0
@@ -51,6 +52,7 @@ for coin in coins:
     globals()['bef_close_price_{}'.format(coin)] = 0
     globals()['current_price_{}'.format(coin)] = 0
     globals()['bef_current_price_{}'.format(coin)] = 0
+    globals()['buy_price_{}'.format(coin)] = 0
     globals()['limit_{}'.format(coin)] = 1000000
 
 def get_target_price(ticker, k):
@@ -231,11 +233,18 @@ while True:
                             buyamt = krw
                         print("-------buy",coin, krw, "---------")
                         upbit.buy_market_order("KRW-" + coin, buyamt*0.9995) 
+                        globals()['buy_price_{}'.format(coin)] = globals()['current_price_{}'.format(coin)]
                 if globals()['current_price_{}'.format(coin)]  *0.99 > globals()['close_price_{}'.format(coin)]:
                     coinjan = get_balance(coin)
                     print("-------sell",coin, globals()['current_price_{}'.format(coin)] , "---------")
                     upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
                     print("-------sell",coin, globals()['current_price_{}'.format(coin)] , "---------")
+
+                if globals()['buy_price_{}'.format(coin)] > 0 and globals()['buy_price_{}'.format(coin)] * 0.985 > globals()['current_price_{}'.format(coin)] :
+                    coinjan = get_balance(coin)
+                    print("-------sell2",coin, globals()['current_price_{}'.format(coin)] , "---------")
+                    upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
+                    print("-------sell2",coin, globals()['current_price_{}'.format(coin)] , "---------")
 
                 coin_m = upbit.get_amount(coin)  
                 if coin_m is None:
