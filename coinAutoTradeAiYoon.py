@@ -45,7 +45,7 @@ for coin in coins:
     globals()['current_price_{}'.format(coin)] = 0
     globals()['bef_current_price_{}'.format(coin)] = 0
     globals()['buy_price_{}'.format(coin)] = 0
-    globals()['limit_{}'.format(coin)] = 1000000
+    # globals()['limit_{}'.format(coin)] = 1000000
 
 def get_target_price(ticker, k):
     """변동성 돌파 전략으로 매수 목표가 조회"""
@@ -237,7 +237,7 @@ while True:
                     print("-------sell2",coin, globals()['current_price_{}'.format(coin)] , "---------")
                     upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
                     print("-------sell2",coin, globals()['current_price_{}'.format(coin)] , "---------")
-                    
+
                 coin_m = upbit.get_amount(coin)  
                 if coin_m is None:
                     coin_m = 0                
