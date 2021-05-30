@@ -45,7 +45,7 @@ for coin in coins:
     globals()['bef_current_price_{}'.format(coin)] = 0
     globals()['buy_price_{}'.format(coin)] = 0
     globals()['sell_price_{}'.format(coin)] = 0
-    globals()['limit_{}'.format(coin)] = 1000000
+    # globals()['limit_{}'.format(coin)] = 1000000
 
 def get_target_price(ticker, k):
     """변동성 돌파 전략으로 매수 목표가 조회"""
