@@ -137,10 +137,13 @@ def predict_price(ticker):
     _end_time = _start_time + datetime.timedelta(days=1)    
     date_diff = _end_time - _now
     date_diff_hour = round(date_diff.seconds/3600)
+    
     global predicted_close_price
  
     # print(ticker, date_diff_hour)
-    df = pyupbit.get_ohlcv(ticker, interval="minute60")
+    df = pyupbit.get_ohlcv(ticker, interval="minute60",count=1000, period=1)
+    # df = pyupbit.get_ohlcv(ticker, interval="minute60")
+
     df = df.reset_index()
     df['ds'] = df['index']
     df['y'] = df['close']
@@ -148,7 +151,7 @@ def predict_price(ticker):
     model = Prophet()
     model.fit(data)
     print("date_diff_hour",date_diff_hour)
-    future = model.make_future_dataframe(periods=6, freq='H')
+    future = model.make_future_dataframe(periods=24, freq='H')
     # future = model.make_future_dataframe(periods=24, freq='H')
     forecast = model.predict(future)
     print(forecast)
@@ -182,7 +185,7 @@ def get_bestK_loop():
 # 로그인
 upbit = pyupbit.Upbit(access, secret)
 # print("autotrade start")
-predict_price("KRW-EOS")
+predict_price("KRW-ADA")
 
 
 # time.sleep(3)

@@ -45,6 +45,7 @@ secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"
 coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
 
 """------------------------------------------이하 공통 부분---------------------------------------------------------------"""
+"""v1.02"""
 """변수 생성"""
 for coin in coins:
     globals()['globalK_{}'.format(coin)] = 0.0
@@ -118,7 +119,8 @@ predicted_close_price = 0
 def predict_price(ticker):
     """Prophet으로 당일 종가 가격 예측"""
     global predicted_close_price
-    df = pyupbit.get_ohlcv(ticker, interval="minute60")
+    # df = pyupbit.get_ohlcv(ticker, interval="minute60")
+    df = pyupbit.get_ohlcv(ticker, interval="minute60",count=1000, period=1)
     df = df.reset_index()
     df['ds'] = df['index']
     df['y'] = df['close']
@@ -177,7 +179,7 @@ schedule.every().day.at("09:02").do(lambda: get_bestK_loop())
 # 로그인
 upbit = pyupbit.Upbit(access, secret)
 print("autotrade start")
-
+buy_price_ADA = 1855
 
 time.sleep(3)
 
@@ -196,14 +198,17 @@ while True:
                 # print(coin,"curren:",current_price, "target:", get_target_price("KRW-"+coin, globals()['globalK_{}'.format(coin)]), "predict:", globals()['close_price_{}'.format(coin)])
 
                 if globals()['close_price_{}'.format(coin)] == 0:
+                    time.sleep(0.5)  
                     continue
                 if globals()['globalK_{}'.format(coin)] == 0 and globals()['current_price_{}'.format(coin)]  *1.05 > globals()['close_price_{}'.format(coin)]:
-                    time.sleep(1)        
+                    time.sleep(0.5)        
                     continue 
                 target_price = get_target_price("KRW-"+coin, globals()['globalK_{}'.format(coin)])
 
                 # print(coin, globals()['limit_{}'.format(coin)])
                 print(coin,"curren:",globals()['current_price_{}'.format(coin)] , "predict:", globals()['close_price_{}'.format(coin)])
+                if globals()['buy_price_{}'.format(coin)] > 0:
+                    print("buy_price",coin, globals()['buy_price_{}'.format(coin)])
                 # print(coin, target_price)
                 # if ((target_price <= current_price < target_price + globals()['offset_{}'.format(coin)]) and target_price * 1.01 < globals()['close_price_{}'.format(coin)])or current_price *1.05 < globals()['close_price_{}'.format(coin)]:
                 if  globals()['current_price_{}'.format(coin)]  * 1.05 < globals()['close_price_{}'.format(coin)]:
@@ -214,17 +219,21 @@ while True:
                     """이전 현재가보다 현재가가 낮으면 패스"""
                     if globals()['bef_current_price_{}'.format(coin)] > globals()['current_price_{}'.format(coin)] :
                         print(coin, "bef_current_price", globals()['bef_current_price_{}'.format(coin)], "current_price",globals()['current_price_{}'.format(coin)] )
+                        time.sleep(0.5)  
                         continue
 
                     """이전 예상가보다 현재 예상가가 낮으면 패스"""
                     if globals()['bef_close_price_{}'.format(coin)] > globals()['close_price_{}'.format(coin)]:
                         print(coin, "bef_predict",globals()['bef_close_price_{}'.format(coin)] ,"predict:", globals()['close_price_{}'.format(coin)])
+                        time.sleep(0.5)  
                         continue
 
                     if krw is None or krw < 5000:
+                        time.sleep(0.5)  
                         continue
                     if limit is None:
                         print(coin,"continue")
+                        time.sleep(0.5)  
                         continue                        
                     if coin_m is None:
                         coin_m = 0
@@ -235,20 +244,21 @@ while True:
                         print("-------buy",coin, krw, "---------")
                         upbit.buy_market_order("KRW-" + coin, buyamt*0.9995) 
                         globals()['buy_price_{}'.format(coin)] = globals()['current_price_{}'.format(coin)]
+                        print("buy_price",coin, globals()['buy_price_{}'.format(coin)])
                 if globals()['sell_price_{}'.format(coin)]  == 0 and globals()['current_price_{}'.format(coin)]  *0.99 > globals()['close_price_{}'.format(coin)]:
                     coinjan = get_balance(coin)
                     print("-------sell",coin, globals()['current_price_{}'.format(coin)] , "---------")
                     upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
                     globals()['sell_price_{}'.format(coin)] =  globals()['current_price_{}'.format(coin)] 
                     print("-------sell",coin, globals()['current_price_{}'.format(coin)] , "---------")
-
-                if globals()['sell_price_{}'.format(coin)]  == 0  and globals()['buy_price_{}'.format(coin)] > 0 and globals()['buy_price_{}'.format(coin)] * 0.985 > globals()['current_price_{}'.format(coin)] :
+                    print("buy_price",coin, globals()['buy_price_{}'.format(coin)])
+                if globals()['sell_price_{}'.format(coin)]  == 0  and globals()['buy_price_{}'.format(coin)] > 0 and globals()['buy_price_{}'.format(coin)] * 0.98 > globals()['current_price_{}'.format(coin)] :
                     coinjan = get_balance(coin)
                     print("-------sell2",coin, globals()['current_price_{}'.format(coin)] , "---------")
                     upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
                     globals()['sell_price_{}'.format(coin)] =  globals()['current_price_{}'.format(coin)] 
                     print("-------sell2",coin, globals()['current_price_{}'.format(coin)] , "---------")
-
+                    print("buy_price",coin, globals()['buy_price_{}'.format(coin)])
                 coin_m = upbit.get_amount(coin)  
                 if coin_m is None:
                     coin_m = 0                
