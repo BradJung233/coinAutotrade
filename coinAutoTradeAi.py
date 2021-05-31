@@ -179,7 +179,7 @@ schedule.every().day.at("09:02").do(lambda: get_bestK_loop())
 # 로그인
 upbit = pyupbit.Upbit(access, secret)
 print("autotrade start")
-buy_price_ADA = 1855
+# buy_price_ADA = 1855
 
 time.sleep(3)
 
@@ -209,6 +209,8 @@ while True:
                 print(coin,"curren:",globals()['current_price_{}'.format(coin)] , "predict:", globals()['close_price_{}'.format(coin)])
                 if globals()['buy_price_{}'.format(coin)] > 0:
                     print("buy_price",coin, globals()['buy_price_{}'.format(coin)])
+                if globals()['sell_price_{}'.format(coin)] > 0:
+                    print("sell_price",coin, globals()['sell_price_{}'.format(coin)])                    
                 # print(coin, target_price)
                 # if ((target_price <= current_price < target_price + globals()['offset_{}'.format(coin)]) and target_price * 1.01 < globals()['close_price_{}'.format(coin)])or current_price *1.05 < globals()['close_price_{}'.format(coin)]:
                 if  globals()['current_price_{}'.format(coin)]  * 1.05 < globals()['close_price_{}'.format(coin)]:
@@ -250,15 +252,15 @@ while True:
                     print("-------sell",coin, globals()['current_price_{}'.format(coin)] , "---------")
                     upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
                     globals()['sell_price_{}'.format(coin)] =  globals()['current_price_{}'.format(coin)] 
-                    print("-------sell",coin, globals()['current_price_{}'.format(coin)] , "---------")
-                    print("buy_price",coin, globals()['buy_price_{}'.format(coin)])
+                    # print("-------sell",coin, globals()['current_price_{}'.format(coin)] , "---------")
+                    print("_____buy_price",coin, globals()['buy_price_{}'.format(coin)])
                 if globals()['sell_price_{}'.format(coin)]  == 0  and globals()['buy_price_{}'.format(coin)] > 0 and globals()['buy_price_{}'.format(coin)] * 0.98 > globals()['current_price_{}'.format(coin)] :
                     coinjan = get_balance(coin)
-                    print("-------sell2",coin, globals()['current_price_{}'.format(coin)] , "---------")
+                    # print("-------sell2",coin, globals()['current_price_{}'.format(coin)] , "---------")
                     upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
                     globals()['sell_price_{}'.format(coin)] =  globals()['current_price_{}'.format(coin)] 
                     print("-------sell2",coin, globals()['current_price_{}'.format(coin)] , "---------")
-                    print("buy_price",coin, globals()['buy_price_{}'.format(coin)])
+                    print("_______buy_price2",coin, globals()['buy_price_{}'.format(coin)])
                 coin_m = upbit.get_amount(coin)  
                 if coin_m is None:
                     coin_m = 0                
