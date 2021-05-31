@@ -170,7 +170,7 @@ schedule.every().day.at("09:02").do(lambda: get_bestK_loop())
 # 로그인
 upbit = pyupbit.Upbit(access, secret)
 print("autotrade start")
-buy_price_ADA = 1855
+# buy_price_ADA = 1855
 
 time.sleep(3)
 
