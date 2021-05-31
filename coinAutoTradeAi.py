@@ -253,7 +253,7 @@ while True:
                         print("buy_price",coin, globals()['buy_price_{}'.format(coin)])
                 if globals()['sell_price_{}'.format(coin)]  == 0 and globals()['current_price_{}'.format(coin)]  *0.99 > globals()['close_price_{}'.format(coin)]:
                     coinjan = get_balance(coin)
-                    if coinjan > 0.00008:
+                    if coinjan * globals()['current_price_{}'.format(coin)]  > 5000:
                         print("-------sell",coin, globals()['current_price_{}'.format(coin)] , "---------")
                         upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
                         globals()['sell_price_{}'.format(coin)] =  globals()['current_price_{}'.format(coin)] 
@@ -261,7 +261,7 @@ while True:
                         print("_____buy_price",coin, globals()['buy_price_{}'.format(coin)])
                 if globals()['sell_price_{}'.format(coin)]  == 0  and globals()['buy_price_{}'.format(coin)] > 0 and globals()['buy_price_{}'.format(coin)] * 0.98 > globals()['current_price_{}'.format(coin)] :
                     coinjan = get_balance(coin)
-                    if coinjan > 0.00008:
+                    if coinjan * globals()['current_price_{}'.format(coin)]  > 5000:
                         # print("-------sell2",coin, globals()['current_price_{}'.format(coin)] , "---------")
                         upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
                         globals()['sell_price_{}'.format(coin)] =  globals()['current_price_{}'.format(coin)] 
