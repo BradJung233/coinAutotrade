@@ -45,8 +45,8 @@ secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"
 coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW", "XTZ","LINK","THETA","ENJ","VET","TFUEL"]
 
 """------------------------------------------이하 공통 부분---------------------------------------------------------------"""
-"""v1.03"""
-# 매수 조건에 5일 이동선 돌파조건 추가
+"""v1.04"""
+# 매도1조건에 예측가가 매수가보다 낮을 경우에만 팔도록 조건 추가
 """변수 생성"""
 for coin in coins:
     globals()['globalK_{}'.format(coin)] = 0.0
@@ -263,7 +263,9 @@ while True:
                         upbit.buy_market_order("KRW-" + coin, buyamt*0.9995) 
                         globals()['buy_price_{}'.format(coin)] = globals()['current_price_{}'.format(coin)]
                         print("buy_price",coin, globals()['buy_price_{}'.format(coin)])
-                if globals()['sell_price_{}'.format(coin)]  == 0 and globals()['current_price_{}'.format(coin)]  *0.99 > globals()['close_price_{}'.format(coin)]:
+                """매도1조건"""        
+                if (globals()['sell_price_{}'.format(coin)]  == 0 and globals()['current_price_{}'.format(coin)]  *0.99 > globals()['close_price_{}'.format(coin)] and
+                    globals()['buy_price_{}'.format(coin)] < globals()['current_price_{}'.format(coin)]):
                     coinjan = get_balance(coin)
                     if coinjan * globals()['current_price_{}'.format(coin)]  > 5000:
                         print("-------sell",coin, globals()['current_price_{}'.format(coin)] , "---------")
@@ -271,6 +273,7 @@ while True:
                         globals()['sell_price_{}'.format(coin)] =  globals()['current_price_{}'.format(coin)] 
                         # print("-------sell",coin, globals()['current_price_{}'.format(coin)] , "---------")
                         print("_____buy_price",coin, globals()['buy_price_{}'.format(coin)])
+                """매도2조건"""           
                 if globals()['sell_price_{}'.format(coin)]  == 0  and globals()['buy_price_{}'.format(coin)] > 0 and globals()['buy_price_{}'.format(coin)] * 0.95 > globals()['current_price_{}'.format(coin)] :
                     coinjan = get_balance(coin)
                     if coinjan * globals()['current_price_{}'.format(coin)]  > 5000:
