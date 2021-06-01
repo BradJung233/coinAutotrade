@@ -36,7 +36,8 @@ coins = ["BTC", "ETH", "EOS", "BCH", "LTC", "LINK", "ENJ", "NEO", "DOT", "XRP"]
 # coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
 
 """------------------------------------------이하 공통 부분---------------------------------------------------------------"""
-"""v1.02"""
+"""v1.03"""
+# 매수 조건에 5일 이동선 돌파조건 추가
 """변수 생성"""
 for coin in coins:
     globals()['globalK_{}'.format(coin)] = 0.0
@@ -170,8 +171,16 @@ schedule.every().day.at("09:02").do(lambda: get_bestK_loop())
 # 로그인
 upbit = pyupbit.Upbit(access, secret)
 print("autotrade start")
-# buy_price_ADA = 1855
+# ------buy_price, sell_price 입력하는 곳---------------
+# 프로그램이 돌아가는 중 종료했을 경우에만 입력하면 됨
+# buy_price: 매수가 대비 현재가가 일정비율 이상 떨어졌을 경우 매도하는데, 이 기준이 되는 매수가.
+# sell_price: 장중에 매도한 코인을 다시 사지 않기 위한 기준. 0보다 크면 상관없다.
 
+# buy_price_ADA = 1855
+# sell_price_LINK = 36980
+# sell_price_ENJ = 36980
+# buy_price_ENJ = 1950
+# ------------------------------------------------
 time.sleep(3)
 
 # 자동매매 시작
@@ -194,10 +203,15 @@ while True:
                 if globals()['globalK_{}'.format(coin)] == 0 and globals()['current_price_{}'.format(coin)]  *1.05 > globals()['close_price_{}'.format(coin)]:
                     time.sleep(0.5)        
                     continue 
+                ma5 = get_ma5("KRW-"+coin)
+                if ma5 is None:
+                    print(coin, "ma5 None")
+                    time.sleep(0.2)  
+                    continue                
                 target_price = get_target_price("KRW-"+coin, globals()['globalK_{}'.format(coin)])
 
                 # print(coin, globals()['limit_{}'.format(coin)])
-                print(coin,"curren:",globals()['current_price_{}'.format(coin)] , "predict:", globals()['close_price_{}'.format(coin)])
+                print(coin,"curren:",globals()['current_price_{}'.format(coin)] , "ma5", ma5 , "predict:", globals()['close_price_{}'.format(coin)])
                 if globals()['buy_price_{}'.format(coin)] > 0:
                     print("buy_price",coin, globals()['buy_price_{}'.format(coin)])
                 if globals()['sell_price_{}'.format(coin)] > 0:
@@ -206,7 +220,7 @@ while True:
                     continue               
                 # print(coin, target_price)
                 # if ((target_price <= current_price < target_price + globals()['offset_{}'.format(coin)]) and target_price * 1.01 < globals()['close_price_{}'.format(coin)])or current_price *1.05 < globals()['close_price_{}'.format(coin)]:
-                if  globals()['current_price_{}'.format(coin)]  * 1.05 < globals()['close_price_{}'.format(coin)]:
+                if  globals()['current_price_{}'.format(coin)]  * 1.05 < globals()['close_price_{}'.format(coin)] and globals()['current_price_{}'.format(coin)]  > ma5 :
                     krw = get_balance("KRW")
                     limit = globals()['limit_{}'.format(coin)]
                     coin_m = upbit.get_amount(coin)
