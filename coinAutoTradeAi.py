@@ -5,6 +5,7 @@ import numpy as np
 import math
 import schedule
 from fbprophet import Prophet
+import pandas as pd
 
 access = "NBfy02ssHZPdySYKdZIHHNRyv0Ke2Tk8qzvlxV0z"
 secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"
@@ -45,9 +46,10 @@ secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"
 coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW", "XTZ","LINK","THETA","ENJ","VET","TFUEL"]
 
 """------------------------------------------이하 공통 부분---------------------------------------------------------------"""
-"""v1.05"""
+"""v1.06"""
 # 1.04 매도1조건에 예측가가 매수가보다 낮을 경우에만 팔도록 조건 추가
 # 1.05 매수가 업비트에서 들고 오도록 수정
+# 1.06 RSI 지수 추가 ;; RSI지수가 30보다 작으면(과매도), 70보다 크면(과매수)
 """변수 생성"""
 for coin in coins:
     globals()['globalK_{}'.format(coin)] = 0.0
@@ -57,6 +59,7 @@ for coin in coins:
     globals()['bef_current_price_{}'.format(coin)] = 0
     globals()['buy_price_{}'.format(coin)] = 0
     globals()['sell_price_{}'.format(coin)] = 0
+    globals()['rsi_{}'.format(coin)] = 0
     globals()['limit_{}'.format(coin)] = 1000000
 
 def get_target_price(ticker, k):
@@ -165,7 +168,29 @@ def get_bestK_loop():
     for coin in coins:
         globals()['globalK_{}'.format(coin)] = get_bestK("KRW-"+coin)
         time.sleep(1)
-    
+
+def rsi(ohlc: pd.DataFrame, period: int = 14): 
+    delta = ohlc["close"].diff() 
+    ups, downs = delta.copy(), delta.copy() 
+    ups[ups < 0] = 0 
+    downs[downs > 0] = 0 
+    AU = ups.ewm(com = period-1, min_periods = period).mean() 
+    AD = downs.abs().ewm(com = period-1, min_periods = period).mean() 
+    RS = AU/AD 
+    return pd.Series(100 - (100/(1 + RS)), name = "RSI")
+
+
+""" RSI 지표 가져오기 """    
+def get_rsi(ticker):
+    data = pyupbit.get_ohlcv(ticker, interval="minute5")
+    now_rsi = rsi(data, 14).iloc[-1]
+    print(coin, "RSI:", now_rsi)
+    globals()['rsi_{}'.format(coin)] = now_rsi
+    time.sleep(1)
+
+def get_rsi_loop():
+    for coin in coins:
+        time.sleep(1)
 
 for coin in coins:
     globals()['globalK_{}'.format(coin)] = get_bestK("KRW-"+coin)
@@ -180,9 +205,13 @@ for coin in coins:
     print(coin,'close_price:', globals()['close_price_{}'.format(coin)] )
     print(coin, globals()['globalK_{}'.format(coin)])
     print(coin,"target_price:", get_target_price("KRW-"+coin, globals()['globalK_{}'.format(coin)]))
+    # get_rsi(coin) # RSI 지표 구하기
+    get_rsi("KRW-"+coin)
+    # print(coin,rsi)
     time.sleep(1) # 속도가 느리면 다음 코인 값을 못 갖고와 에러남. 그래서 sleep
 
 schedule.every(10).minutes.do(lambda: predict_price_loop())
+schedule.every(5).minutes.do(lambda: get_rsi_loop())
 schedule.every().day.at("09:02").do(lambda: get_bestK_loop())
 # schedule.every(60).minutes.do(lambda: get_bestK_loop())
 # schedule.every().day.at("09:03").do(lambda: predict_price_loop())
@@ -227,12 +256,12 @@ while True:
                     time.sleep(0.2)  
                     continue                
                 target_price = get_target_price("KRW-"+coin, globals()['globalK_{}'.format(coin)])
-                coinjan = get_balance(coin)
+                coinjan = get_balance("KRW"+coin)
                 if coinjan * globals()['current_price_{}'.format(coin)]  > 5000:                
                     globals()['buy_price_{}'.format(coin)] = get_buy_price(coin)
                 # time.sleep(0.1)
                 # print(coin, globals()['limit_{}'.format(coin)])
-                print(coin,"curren:",globals()['current_price_{}'.format(coin)] , "ma5", ma5 , "predict:", globals()['close_price_{}'.format(coin)])
+                print(coin,"curren:",globals()['current_price_{}'.format(coin)] , "ma5:", ma5 , "predict:", globals()['close_price_{}'.format(coin)], "RSI:",globals()['rsi_{}'.format(coin)])
                 if globals()['buy_price_{}'.format(coin)] > 0:
                     print("buy_price",coin, globals()['buy_price_{}'.format(coin)])
                 if globals()['sell_price_{}'.format(coin)] > 0:
@@ -260,7 +289,13 @@ while True:
                         print(coin, "bef_predict",globals()['bef_close_price_{}'.format(coin)] ,"predict:", globals()['close_price_{}'.format(coin)])
                         time.sleep(0.5)  
                         continue
-
+                   
+                    if 30 < globals()['rsi_{}'.format(coin)] < 50:
+                        time.sleep(0.5)
+                        continue
+                    if globals()['rsi_{}'.format(coin)] > 70:
+                        time.sleep(0.5)
+                        continue                    
                     if krw is None or krw < 5000:
                         time.sleep(0.5)  
                         continue
@@ -278,6 +313,10 @@ while True:
                         upbit.buy_market_order("KRW-" + coin, buyamt*0.9995) 
                         # globals()['buy_price_{}'.format(coin)] = globals()['current_price_{}'.format(coin)]
                         print("buy_price",coin, globals()['buy_price_{}'.format(coin)])
+                """매도0조건 RSI지수가 50보다 크면 패스"""        
+                if 50 < globals()['rsi_{}'.format(coin)] <70:
+                    time.sleep(0.5)
+                    continue                        
                 """매도1조건"""        
                 if (globals()['sell_price_{}'.format(coin)]  == 0 and globals()['current_price_{}'.format(coin)]  *0.99 > globals()['close_price_{}'.format(coin)] and
                     globals()['buy_price_{}'.format(coin)] < globals()['current_price_{}'.format(coin)]):
@@ -297,12 +336,21 @@ while True:
                         globals()['sell_price_{}'.format(coin)] =  globals()['current_price_{}'.format(coin)] 
                         print("-------sell2",coin, globals()['current_price_{}'.format(coin)] , "---------")
                         print("_______buy_price2",coin, globals()['buy_price_{}'.format(coin)])
+                """매도3조건 RSI지수가 70 이상이면 매도"""
+                if globals()['rsi_{}'.format(coin)] >70:  
+                    if coinjan * globals()['current_price_{}'.format(coin)]  > 5000:
+                        # print("-------sell2",coin, globals()['current_price_{}'.format(coin)] , "---------")
+                        upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
+                        globals()['sell_price_{}'.format(coin)] =  globals()['current_price_{}'.format(coin)] 
+                        print("-------sell2",coin, globals()['current_price_{}'.format(coin)] , "---------")
+                        print("_______buy_price2",coin, globals()['buy_price_{}'.format(coin)])
+
                 coin_m = upbit.get_amount(coin)  
                 if coin_m is None:
                     coin_m = 0                
                 limit = globals()['limit_{}'.format(coin)]
                 if coin_m > limit * 0.95:
-                    time.sleep(2)         
+                    time.sleep(1)         
                 time.sleep(0.5)  
             print("------------------------------------------------------")
         else:
