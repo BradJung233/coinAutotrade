@@ -335,7 +335,7 @@ while True:
                         print("-------sell2",coin, globals()['current_price_{}'.format(coin)] , "---------")
                         print("_______buy_price2",coin, globals()['buy_price_{}'.format(coin)])
                 """매도3조건 RSI지수가 70 이상이면 매도"""
-                if globals()['rsi_{}'.format(coin)] >72:  
+                if globals()['rsi_{}'.format(coin)] >75:  
                     if coinjan * globals()['current_price_{}'.format(coin)]  > 5000:
                         # print("-------sell2",coin, globals()['current_price_{}'.format(coin)] , "---------")
                         upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
