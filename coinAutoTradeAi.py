@@ -190,7 +190,7 @@ def get_rsi(ticker):
 
 def get_rsi_loop():
     for coin in coins:
-        get_rsi(coin)
+        get_rsi("KRW"+coin)
         time.sleep(1)
 
 def sell_price_loop():
