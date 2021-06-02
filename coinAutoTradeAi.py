@@ -256,7 +256,7 @@ while True:
                     time.sleep(0.2)  
                     continue                
                 target_price = get_target_price("KRW-"+coin, globals()['globalK_{}'.format(coin)])
-                coinjan = get_balance("KRW"+coin)
+                coinjan = get_balance(coin)
                 if coinjan * globals()['current_price_{}'.format(coin)]  > 5000:                
                     globals()['buy_price_{}'.format(coin)] = get_buy_price(coin)
                 # time.sleep(0.1)
