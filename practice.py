@@ -93,6 +93,16 @@ def get_balance(ticker):
             else:
                 return 0
     return 0            
+def get_buy_price(ticker):
+    """매수가 조회"""
+    balances = upbit.get_balances()
+    for b in balances:
+        if b['currency'] == ticker:
+            if b['avg_buy_price'] is not None:
+                return float(b['avg_buy_price'])
+            else:
+                return 0
+    return 0  
 
 def get_current_price(ticker):
     """현재가 조회"""
@@ -185,9 +195,9 @@ def get_bestK_loop():
 # 로그인
 upbit = pyupbit.Upbit(access, secret)
 # print("autotrade start")
-predict_price("KRW-ADA")
+# predict_price("KRW-ADA")
 
-
+print(get_buy_price("ENJ"))
 # time.sleep(3)
 
 # get_bestK_loop()
