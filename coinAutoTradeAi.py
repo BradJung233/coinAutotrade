@@ -190,7 +190,12 @@ def get_rsi(ticker):
 
 def get_rsi_loop():
     for coin in coins:
+        get_rsi(coin)
         time.sleep(1)
+
+def sell_price_loop():
+    for coin in coins:
+        globals()['sell_price_{}'.format(coin)] = 0
 
 for coin in coins:
     globals()['globalK_{}'.format(coin)] = get_bestK("KRW-"+coin)
@@ -213,6 +218,8 @@ for coin in coins:
 schedule.every(10).minutes.do(lambda: predict_price_loop())
 schedule.every(5).minutes.do(lambda: get_rsi_loop())
 schedule.every().day.at("09:02").do(lambda: get_bestK_loop())
+schedule.every(60).minutes.do(lambda: sell_price_loop()) # sell_price 1시간마다 초기화 안 쓸거면 주석
+
 # schedule.every(60).minutes.do(lambda: get_bestK_loop())
 # schedule.every().day.at("09:03").do(lambda: predict_price_loop())
 
@@ -278,17 +285,17 @@ while True:
                     limit = globals()['limit_{}'.format(coin)]
                     coin_m = upbit.get_amount(coin)
 
-                    """이전 현재가보다 현재가가 낮으면 패스"""
-                    if globals()['bef_current_price_{}'.format(coin)] > globals()['current_price_{}'.format(coin)] :
-                        print(coin, "bef_current_price", globals()['bef_current_price_{}'.format(coin)], "current_price",globals()['current_price_{}'.format(coin)] )
-                        time.sleep(0.5)  
-                        continue
+                    # """이전 현재가보다 현재가가 낮으면 패스"""
+                    # if globals()['bef_current_price_{}'.format(coin)] > globals()['current_price_{}'.format(coin)] :
+                    #     print(coin, "bef_current_price", globals()['bef_current_price_{}'.format(coin)], "current_price",globals()['current_price_{}'.format(coin)] )
+                    #     time.sleep(0.5)  
+                    #     continue
 
-                    """이전 예상가보다 현재 예상가가 낮으면 패스"""
-                    if globals()['bef_close_price_{}'.format(coin)] > globals()['close_price_{}'.format(coin)]:
-                        print(coin, "bef_predict",globals()['bef_close_price_{}'.format(coin)] ,"predict:", globals()['close_price_{}'.format(coin)])
-                        time.sleep(0.5)  
-                        continue
+                    # """이전 예상가보다 현재 예상가가 낮으면 패스"""
+                    # if globals()['bef_close_price_{}'.format(coin)] > globals()['close_price_{}'.format(coin)]:
+                    #     print(coin, "bef_predict",globals()['bef_close_price_{}'.format(coin)] ,"predict:", globals()['close_price_{}'.format(coin)])
+                    #     time.sleep(0.5)  
+                    #     continue
                    
                     if 30 < globals()['rsi_{}'.format(coin)] < 50:
                         time.sleep(0.5)
@@ -337,7 +344,7 @@ while True:
                         print("-------sell2",coin, globals()['current_price_{}'.format(coin)] , "---------")
                         print("_______buy_price2",coin, globals()['buy_price_{}'.format(coin)])
                 """매도3조건 RSI지수가 70 이상이면 매도"""
-                if globals()['rsi_{}'.format(coin)] >70:  
+                if globals()['rsi_{}'.format(coin)] >72:  
                     if coinjan * globals()['current_price_{}'.format(coin)]  > 5000:
                         # print("-------sell2",coin, globals()['current_price_{}'.format(coin)] , "---------")
                         upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
