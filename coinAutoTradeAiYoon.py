@@ -175,7 +175,7 @@ def rsi(ohlc: pd.DataFrame, period: int = 14):
 def get_rsi(ticker):
     data = pyupbit.get_ohlcv(ticker, interval="minute5")
     now_rsi = rsi(data, 14).iloc[-1]
-    print(coin, "RSI:", now_rsi)
+    print(ticker, "RSI:", now_rsi)
     globals()['rsi_{}'.format(coin)] = now_rsi
     time.sleep(1)
 
