@@ -46,7 +46,7 @@ secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"
 coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW", "XTZ","LINK","THETA","ENJ","VET","TFUEL"]
 
 """------------------------------------------이하 공통 부분---------------------------------------------------------------"""
-"""v1.06"""
+"""v1.061"""
 # 1.04 매도1조건에 예측가가 매수가보다 낮을 경우에만 팔도록 조건 추가
 # 1.05 매수가 업비트에서 들고 오도록 수정
 # 1.06 RSI 지수 추가 ;; RSI지수가 30보다 작으면(과매도), 70보다 크면(과매수)
@@ -265,8 +265,11 @@ while True:
                     continue                
                 target_price = get_target_price("KRW-"+coin, globals()['globalK_{}'.format(coin)])
                 coinjan = get_balance(coin)
+                # print(coin, "coinjan:",coinjan)
                 if coinjan * globals()['current_price_{}'.format(coin)]  > 5000:                
                     globals()['buy_price_{}'.format(coin)] = get_buy_price(coin)
+                else:
+                    globals()['buy_price_{}'.format(coin)] = 0     
                 # time.sleep(0.1)
                 # print(coin, globals()['limit_{}'.format(coin)])
                 print(coin,"curren:",globals()['current_price_{}'.format(coin)] , "ma5:", ma5 , "predict:", globals()['close_price_{}'.format(coin)], "RSI:",globals()['rsi_{}'.format(coin)])
@@ -364,10 +367,10 @@ while True:
         else:
             for coin in coins:
                 coinjan = get_balance(coin)
-                if coinjan > 0.00008:
+                if coinjan * globals()['current_price_{}'.format(coin)]  > 5000:                
                     upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
                     # globals()['globalK_{}'.format(coin)] = get_bestK("KRW-" + coin)
-            time.sleep(1)
+            time.sleep(0.5)
     except Exception as e:
         print(e)
         time.sleep(1)
