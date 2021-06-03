@@ -37,19 +37,23 @@ coins = ["BTC", "ETH", "EOS", "BCH", "LTC", "LINK", "ENJ", "NEO", "DOT", "XRP"]
 # coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
 
 """------------------------------------------이하 공통 부분---------------------------------------------------------------"""
-"""v1.061"""
+"""v1.07"""
 # 1.04 매도1조건에 예측가가 매수가보다 낮을 경우에만 팔도록 조건 추가
 # 1.05 매수가 업비트에서 들고 오도록 수정
 # 1.06 RSI 지수 추가 ;; RSI지수가 30보다 작으면(과매도), 70보다 크면(과매수)
+# 1.07 RSI 가 50밑이라도 2번 연속 지수 상승했다면 매수가능
 """변수 생성"""
 for coin in coins:
     globals()['globalK_{}'.format(coin)] = 0.0
     globals()['close_price_{}'.format(coin)] = 0
-    globals()['bef_close_price_{}'.format(coin)] = 0
+    # globals()['bef_close_price_{}'.format(coin)] = 0
     globals()['current_price_{}'.format(coin)] = 0
-    globals()['bef_current_price_{}'.format(coin)] = 0
+    # globals()['bef_current_price_{}'.format(coin)] = 0
     globals()['buy_price_{}'.format(coin)] = 0
     globals()['sell_price_{}'.format(coin)] = 0
+    globals()['rsi_b3_{}'.format(coin)] = 0
+    globals()['rsi_b2_{}'.format(coin)] = 0
+    globals()['rsi_b1_{}'.format(coin)] = 0
     globals()['rsi_{}'.format(coin)] = 0
     # globals()['limit_{}'.format(coin)] = 1000000
 
@@ -170,12 +174,19 @@ def rsi(ohlc: pd.DataFrame, period: int = 14):
     RS = AU/AD 
     return pd.Series(100 - (100/(1 + RS)), name = "RSI")
 
-
+rsi_continue_chk = False
 """ RSI 지표 가져오기 """    
 def get_rsi(ticker):
     data = pyupbit.get_ohlcv(ticker, interval="minute5")
     now_rsi = rsi(data, 14).iloc[-1]
     coin = ticker.replace("KRW-","")
+    globals()['rsi_b3_{}'.format(coin)] = globals()['rsi_b2_{}'.format(coin)]
+    globals()['rsi_b2_{}'.format(coin)] = globals()['rsi_b1_{}'.format(coin)]
+    globals()['rsi_b1_{}'.format(coin)] = globals()['rsi_{}'.format(coin)]
+    globals()['rsi_{}'.format(coin)] = now_rsi
+    print(coin, "B3_RSI:", globals()['rsi_b3_{}'.format(coin)])
+    print(coin, "B2_RSI:", globals()['rsi_b2_{}'.format(coin)])
+    print(coin, "B1_RSI:", globals()['rsi_b1_{}'.format(coin)])
     print(coin, "RSI:", now_rsi)
     globals()['rsi_{}'.format(coin)] = now_rsi
     time.sleep(1)
@@ -197,8 +208,8 @@ for coin in coins:
     predict_price("KRW-" + coin)
     time.sleep(1)
     globals()['close_price_{}'.format(coin)] = predicted_close_price
-    globals()['bef_close_price_{}'.format(coin)] = predicted_close_price
-    globals()['bef_current_price_{}'.format(coin)] = globals()['current_price_{}'.format(coin)] 
+    # globals()['bef_close_price_{}'.format(coin)] = predicted_close_price
+    # globals()['bef_current_price_{}'.format(coin)] = globals()['current_price_{}'.format(coin)] 
     print(coin,'close_price:', globals()['close_price_{}'.format(coin)] )
     print(coin, globals()['globalK_{}'.format(coin)])
     print(coin,"target_price:", get_target_price("KRW-"+coin, globals()['globalK_{}'.format(coin)]))
@@ -291,13 +302,27 @@ while True:
                     #     print(coin, "bef_predict",globals()['bef_close_price_{}'.format(coin)] ,"predict:", globals()['close_price_{}'.format(coin)])
                     #     time.sleep(0.5)  
                     #     continue
-                   
+                    
                     if 30 < globals()['rsi_{}'.format(coin)] < 50:
+                        rsi_continue_chk = False
+
+                    if (globals()['rsi_{}'.format(coin)] > 30 and globals()['rsi_b3_{}'.format(coin)] < 30 and  globals()['rsi_{}'.format(coin)] > globals()['rsi_b1_{}'.format(coin)] 
+                        > globals()['rsi_b2_{}'.format(coin)] > globals()['rsi_b3_{}'.format(coin)]):
+                        rsi_continue_chk = True      
+
+                    if globals()['rsi_b1_{}'.format(coin)] == 0 or globals()['rsi_b2_{}'.format(coin)] == 0 or globals()['rsi_b3_{}'.format(coin)] == 0:
+                        rsi_continue_chk = False
+
+                    if globals()['rsi_{}'.format(coin)] < globals()['rsi_b1_{}'.format(coin)] < globals()['rsi_b2_{}'.format(coin)] < globals()['rsi_b3_{}'.format(coin)]:
+                        rsi_continue_chk = False
+
+                    if globals()['rsi_{}'.format(coin)] > 70:
+                        rsi_continue_chk = False
+
+                    if rsi_continue_chk == False:
                         time.sleep(0.5)
                         continue
-                    if globals()['rsi_{}'.format(coin)] > 70:
-                        time.sleep(0.5)
-                        continue                    
+
                     if krw is None or krw < 5000:
                         time.sleep(0.5)  
                         continue
