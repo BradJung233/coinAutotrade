@@ -37,7 +37,7 @@ coins = ["BTC", "ETH", "EOS", "BCH", "LTC", "LINK", "ENJ", "NEO", "DOT", "XRP"]
 # coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
 
 """------------------------------------------이하 공통 부분---------------------------------------------------------------"""
-"""v1.073"""
+"""v1.074"""
 # 1.04 매도1조건에 예측가가 매수가보다 낮을 경우에만 팔도록 조건 추가
 # 1.05 매수가 업비트에서 들고 오도록 수정
 # 1.06 RSI 지수 추가 ;; RSI지수가 30보다 작으면(과매도), 70보다 크면(과매수)
@@ -45,6 +45,7 @@ coins = ["BTC", "ETH", "EOS", "BCH", "LTC", "LINK", "ENJ", "NEO", "DOT", "XRP"]
 # 1.071 예상가보다 현재가가 낮아도 목표가 돌파했다면 매수가능
 # 1.072 매수, 매도 조건 가감
 # 1.073 매도 조건 추가
+# 1.074 한번 판 코인은 두시간 이후에 매수 가능
 """변수 생성"""
 for coin in coins:
     globals()['globalK_{}'.format(coin)] = 0.0
@@ -58,6 +59,7 @@ for coin in coins:
     globals()['rsi_b2_{}'.format(coin)] = 0
     globals()['rsi_b1_{}'.format(coin)] = 0
     globals()['rsi_{}'.format(coin)] = 0
+    globals()['sell_time_{}'.format(coin)] = 0
     globals()['limit_{}'.format(coin)] = 1000000
 
 def get_target_price(ticker, k):
@@ -193,6 +195,7 @@ def get_rsi(ticker):
     print(coin, "B2_RSI:", globals()['rsi_b2_{}'.format(coin)])
     print(coin, "B1_RSI:", globals()['rsi_b1_{}'.format(coin)])
     print(coin, "RSI:", now_rsi)
+    print("--------")
     globals()['rsi_{}'.format(coin)] = now_rsi
     time.sleep(1)
 
@@ -203,7 +206,8 @@ def get_rsi_loop():
 
 def sell_price_loop():
     for coin in coins:
-        globals()['sell_price_{}'.format(coin)] = 0
+        if globals()['sell_time_{}'.format(coin)] + datetime.datetime(hour=2)  <  datetime.datetime.now():
+            globals()['sell_price_{}'.format(coin)] = 0
 
 for coin in coins:
     globals()['globalK_{}'.format(coin)] = get_bestK("KRW-"+coin)
@@ -220,6 +224,7 @@ for coin in coins:
     print(coin,"target_price:", get_target_price("KRW-"+coin, globals()['globalK_{}'.format(coin)]))
     # get_rsi(coin) # RSI 지표 구하기
     get_rsi("KRW-"+coin)
+    globals()['sell_time_{}'.format(coin)] = datetime.datetime.now()
     # print(coin,rsi)
     time.sleep(1) # 속도가 느리면 다음 코인 값을 못 갖고와 에러남. 그래서 sleep
 
@@ -279,6 +284,7 @@ while True:
                     globals()['buy_price_{}'.format(coin)] = 0     
                 # time.sleep(0.1)
                 # print(coin, globals()['limit_{}'.format(coin)])
+                # print("delta:",datetime.datetime.now() + datetime.timedelta(hours=2) )
                 print(coin,"curren:",round(globals()['current_price_{}'.format(coin)],3) , "ma5:", ma5 , "target:", target_price, "predict:", round(globals()['close_price_{}'.format(coin)],3), "RSI:",round(globals()['rsi_{}'.format(coin)],2))
                 if globals()['buy_price_{}'.format(coin)] > 0:
                     print("buy_price",coin, globals()['buy_price_{}'.format(coin)])
@@ -319,8 +325,8 @@ while True:
 
                     if (globals()['rsi_{}'.format(coin)] > 50 and  globals()['rsi_{}'.format(coin)] > globals()['rsi_b1_{}'.format(coin)] 
                         > globals()['rsi_b2_{}'.format(coin)] > globals()['rsi_b3_{}'.format(coin)]):
-                        rsi_continue_chk = True   
-                        
+                        rsi_continue_chk = True    
+
                     if globals()['rsi_b1_{}'.format(coin)] == 0 or globals()['rsi_b2_{}'.format(coin)] == 0 or globals()['rsi_b3_{}'.format(coin)] == 0:
                         rsi_continue_chk = False
 
@@ -359,6 +365,7 @@ while True:
                         # print("-------sell2",coin, globals()['current_price_{}'.format(coin)] , "---------")
                         upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
                         globals()['sell_price_{}'.format(coin)] =  globals()['current_price_{}'.format(coin)] 
+                        globals()['sell_time_{}'.format(coin)] =  datetime.datetime.now() 
                         print("-------sell2",coin, globals()['current_price_{}'.format(coin)] , "---------")
                         print("_______buy_price2",coin, globals()['buy_price_{}'.format(coin)])
 
@@ -408,6 +415,7 @@ while True:
                         # print("-------sell2",coin, globals()['current_price_{}'.format(coin)] , "---------")
                         upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
                         globals()['sell_price_{}'.format(coin)] =  globals()['current_price_{}'.format(coin)] 
+                        globals()['sell_time_{}'.format(coin)] =  datetime.datetime.now() 
                         print("-------sell2",coin, globals()['current_price_{}'.format(coin)] , "---------")
                         print("_______buy_price2",coin, globals()['buy_price_{}'.format(coin)])
 
