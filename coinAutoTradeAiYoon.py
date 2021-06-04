@@ -317,6 +317,10 @@ while True:
                         > globals()['rsi_b2_{}'.format(coin)] > globals()['rsi_b3_{}'.format(coin)]):
                         rsi_continue_chk = True      
 
+                    if (globals()['rsi_{}'.format(coin)] > 50 and  globals()['rsi_{}'.format(coin)] > globals()['rsi_b1_{}'.format(coin)] 
+                        > globals()['rsi_b2_{}'.format(coin)] > globals()['rsi_b3_{}'.format(coin)]):
+                        rsi_continue_chk = True   
+                        
                     if globals()['rsi_b1_{}'.format(coin)] == 0 or globals()['rsi_b2_{}'.format(coin)] == 0 or globals()['rsi_b3_{}'.format(coin)] == 0:
                         rsi_continue_chk = False
 
