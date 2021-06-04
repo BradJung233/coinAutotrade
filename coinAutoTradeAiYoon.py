@@ -37,11 +37,12 @@ coins = ["BTC", "ETH", "EOS", "BCH", "LTC", "LINK", "ENJ", "NEO", "DOT", "XRP"]
 # coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
 
 """------------------------------------------이하 공통 부분---------------------------------------------------------------"""
-"""v1.07"""
+"""v1.071"""
 # 1.04 매도1조건에 예측가가 매수가보다 낮을 경우에만 팔도록 조건 추가
 # 1.05 매수가 업비트에서 들고 오도록 수정
 # 1.06 RSI 지수 추가 ;; RSI지수가 30보다 작으면(과매도), 70보다 크면(과매수)
 # 1.07 RSI 가 50밑이라도 2번 연속 지수 상승했다면 매수가능
+# 1.071 예상가보다 현재가가 낮아도 목표가 돌파했다면 매수가능
 """변수 생성"""
 for coin in coins:
     globals()['globalK_{}'.format(coin)] = 0.0
@@ -131,7 +132,7 @@ def predict_price(ticker):
     """Prophet으로 당일 종가 가격 예측"""
     global predicted_close_price
     # df = pyupbit.get_ohlcv(ticker, interval="minute60")
-    df = pyupbit.get_ohlcv(ticker, interval="minute60",count=1000, period=1)
+    df = pyupbit.get_ohlcv(ticker, interval="minute60", count=1000, period=1)
     df = df.reset_index()
     df['ds'] = df['index']
     df['y'] = df['close']
@@ -175,6 +176,8 @@ def rsi(ohlc: pd.DataFrame, period: int = 14):
     return pd.Series(100 - (100/(1 + RS)), name = "RSI")
 
 rsi_continue_chk = False
+sell_continue_chk = False
+
 """ RSI 지표 가져오기 """    
 def get_rsi(ticker):
     data = pyupbit.get_ohlcv(ticker, interval="minute5")
@@ -286,7 +289,8 @@ while True:
                     continue                             
                 # print(coin, target_price)
                 # if ((target_price <= current_price < target_price + globals()['offset_{}'.format(coin)]) and target_price * 1.01 < globals()['close_price_{}'.format(coin)])or current_price *1.05 < globals()['close_price_{}'.format(coin)]:
-                if  globals()['current_price_{}'.format(coin)]  * 1.05 < globals()['close_price_{}'.format(coin)] and globals()['current_price_{}'.format(coin)]  > ma5 :
+                if  ((globals()['current_price_{}'.format(coin)]  * 1.05 < globals()['close_price_{}'.format(coin)] or target_price < globals()['current_price_{}'.format(coin)])
+                     and globals()['current_price_{}'.format(coin)]  > ma5):
                     krw = get_balance("KRW")
                     limit = globals()['limit_{}'.format(coin)]
                     coin_m = upbit.get_amount(coin)
@@ -342,18 +346,30 @@ while True:
                         print("buy_price",coin, globals()['buy_price_{}'.format(coin)])
                 """매도0조건 RSI지수가 50보다 크면 패스"""        
                 if 50 < globals()['rsi_{}'.format(coin)] <70:
+                    sell_continue_chk = False
+
+                """현재가가 목표가보다 크면 패스"""  
+                if target_price <  globals()['current_price_{}'.format(coin)]:
+                    sell_continue_chk = False               
+
+                """매도3조건 RSI지수가 70 이상이면 매도"""
+                if globals()['rsi_{}'.format(coin)] >75:  
+                    sell_continue_chk = True
+
+                if sell_continue_chk == False:
                     time.sleep(0.5)
-                    continue                        
+                    continue
+
                 """매도1조건"""        
-                if (globals()['sell_price_{}'.format(coin)]  == 0 and globals()['current_price_{}'.format(coin)]  *0.99 > globals()['close_price_{}'.format(coin)] and
-                    globals()['buy_price_{}'.format(coin)] < globals()['current_price_{}'.format(coin)]):
-                    # coinjan = get_balance(coin)
-                    if coinjan * globals()['current_price_{}'.format(coin)]  > 5000:
-                        print("-------sell",coin, globals()['current_price_{}'.format(coin)] , "---------")
-                        upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
-                        globals()['sell_price_{}'.format(coin)] =  globals()['current_price_{}'.format(coin)] 
-                        # print("-------sell",coin, globals()['current_price_{}'.format(coin)] , "---------")
-                        print("_____buy_price",coin, globals()['buy_price_{}'.format(coin)])
+                # if (globals()['sell_price_{}'.format(coin)]  == 0 and globals()['current_price_{}'.format(coin)]  *0.99 > globals()['close_price_{}'.format(coin)] and
+                #     globals()['buy_price_{}'.format(coin)] < globals()['current_price_{}'.format(coin)]):
+                #     # coinjan = get_balance(coin)
+                #     if coinjan * globals()['current_price_{}'.format(coin)]  > 5000:
+                #         print("-------sell",coin, globals()['current_price_{}'.format(coin)] , "---------")
+                #         upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
+                #         globals()['sell_price_{}'.format(coin)] =  globals()['current_price_{}'.format(coin)] 
+                #         # print("-------sell",coin, globals()['current_price_{}'.format(coin)] , "---------")
+                #         print("_____buy_price",coin, globals()['buy_price_{}'.format(coin)])
                 """매도2조건"""           
                 if globals()['sell_price_{}'.format(coin)]  == 0  and globals()['buy_price_{}'.format(coin)] > 0 and globals()['buy_price_{}'.format(coin)] * 0.95 > globals()['current_price_{}'.format(coin)] :
                     # coinjan = get_balance(coin)
@@ -363,14 +379,16 @@ while True:
                         globals()['sell_price_{}'.format(coin)] =  globals()['current_price_{}'.format(coin)] 
                         print("-------sell2",coin, globals()['current_price_{}'.format(coin)] , "---------")
                         print("_______buy_price2",coin, globals()['buy_price_{}'.format(coin)])
-                """매도3조건 RSI지수가 70 이상이면 매도"""
-                if globals()['rsi_{}'.format(coin)] >75:  
+
+                """매도3조건"""           
+                if sell_continue_chk == True:
                     if coinjan * globals()['current_price_{}'.format(coin)]  > 5000:
                         # print("-------sell2",coin, globals()['current_price_{}'.format(coin)] , "---------")
                         upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
                         globals()['sell_price_{}'.format(coin)] =  globals()['current_price_{}'.format(coin)] 
                         print("-------sell2",coin, globals()['current_price_{}'.format(coin)] , "---------")
                         print("_______buy_price2",coin, globals()['buy_price_{}'.format(coin)])
+
 
                 coin_m = upbit.get_amount(coin)  
                 if coin_m is None:

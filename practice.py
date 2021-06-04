@@ -151,7 +151,7 @@ def predict_price(ticker):
     global predicted_close_price
  
     # print(ticker, date_diff_hour)
-    df = pyupbit.get_ohlcv(ticker, interval="minute60",count=1000, period=1)
+    df = pyupbit.get_ohlcv(ticker, count=1000, period=1)
     # df = pyupbit.get_ohlcv(ticker, interval="minute60")
 
     df = df.reset_index()
@@ -195,9 +195,9 @@ def get_bestK_loop():
 # 로그인
 upbit = pyupbit.Upbit(access, secret)
 # print("autotrade start")
-# predict_price("KRW-ADA")
+predict_price("KRW-THETA")
 
-print(get_buy_price("ENJ"))
+# print(get_buy_price("ENJ"))
 # time.sleep(3)
 
 # get_bestK_loop()
