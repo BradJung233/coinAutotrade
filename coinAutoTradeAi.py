@@ -215,7 +215,7 @@ def get_rsi_loop():
 
 def sell_price_loop():
     for coin in coins:
-        if globals()['sell_time_{}'.format(coin)] + datetime.datetime(hour=2)  <  datetime.datetime.now():
+        if globals()['sell_time_{}'.format(coin)] + datetime.datetime(hours=2)  <  datetime.datetime.now():
             globals()['sell_price_{}'.format(coin)] = 0
 
 for coin in coins:
