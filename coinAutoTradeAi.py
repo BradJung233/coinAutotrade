@@ -286,7 +286,7 @@ while True:
                     globals()['buy_price_{}'.format(coin)] = 0     
                 # time.sleep(0.1)
                 # print(coin, globals()['limit_{}'.format(coin)])
-                print(coin,"curren:",globals()['current_price_{}'.format(coin)] , "ma5:", ma5 , "predict:", globals()['close_price_{}'.format(coin)], "RSI:",globals()['rsi_{}'.format(coin)])
+                print(coin,"curren:",round(globals()['current_price_{}'.format(coin)],3) , "ma5:", ma5 , "target:", target_price, "predict:", round(globals()['close_price_{}'.format(coin)],3), "RSI:",round(globals()['rsi_{}'.format(coin)],2))
                 if globals()['buy_price_{}'.format(coin)] > 0:
                     print("buy_price",coin, globals()['buy_price_{}'.format(coin)])
                 if globals()['sell_price_{}'.format(coin)] > 0:
