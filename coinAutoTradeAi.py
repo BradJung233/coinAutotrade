@@ -356,7 +356,7 @@ while True:
                         # globals()['buy_price_{}'.format(coin)] = globals()['current_price_{}'.format(coin)]
                         print("buy_price",coin, globals()['buy_price_{}'.format(coin)])
 
-                sell_continue_chk = True
+                sell_continue_chk = False
                 if globals()['rsi_b1_{}'.format(coin)] == 0 or globals()['rsi_b2_{}'.format(coin)] == 0 or globals()['rsi_b3_{}'.format(coin)] == 0:
                     sell_continue_chk = False
 
