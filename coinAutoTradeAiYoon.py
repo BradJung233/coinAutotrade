@@ -308,6 +308,7 @@ while True:
                     #     time.sleep(0.5)  
                     #     continue
                     
+                    rsi_continue_chk = True 
                     if 30 < globals()['rsi_{}'.format(coin)] < 50:
                         rsi_continue_chk = False
 
@@ -346,9 +347,10 @@ while True:
                         # globals()['buy_price_{}'.format(coin)] = globals()['current_price_{}'.format(coin)]
                         print("buy_price",coin, globals()['buy_price_{}'.format(coin)])
 
+                sell_continue_chk = True
                 if globals()['rsi_b1_{}'.format(coin)] == 0 or globals()['rsi_b2_{}'.format(coin)] == 0 or globals()['rsi_b3_{}'.format(coin)] == 0:
                     sell_continue_chk = False
-                                            
+
                 """매도0조건 RSI지수가 50보다 크면 패스"""        
                 if 50 < globals()['rsi_{}'.format(coin)] <70:
                     sell_continue_chk = False

@@ -151,8 +151,8 @@ def predict_price(ticker):
     global predicted_close_price
  
     # print(ticker, date_diff_hour)
-    df = pyupbit.get_ohlcv(ticker, count=1000, period=1)
-    # df = pyupbit.get_ohlcv(ticker, interval="minute60")
+    # df = pyupbit.get_ohlcv(ticker, count=1000, period=1)
+    df = pyupbit.get_ohlcv(ticker, interval="minute60", count=1000)
 
     df = df.reset_index()
     df['ds'] = df['index']
