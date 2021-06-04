@@ -53,6 +53,7 @@ coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW", "XTZ","LINK","THETA","ENJ
 # 1.07 RSI 가 50밑이라도 2번 연속 지수 상승했다면 매수가능
 # 1.071 예상가보다 현재가가 낮아도 목표가 돌파했다면 매수가능
 # 1.072 매수, 매도 조건 가감
+# 1.073 매도 조건 추가
 """변수 생성"""
 for coin in coins:
     globals()['globalK_{}'.format(coin)] = 0.0
@@ -383,7 +384,11 @@ while True:
                     sell_continue_chk = True
 
                 """매도4조건 RSI지수가 30 미만이면 매도"""
-                if (globals()['rsi_{}'.format(coin)] <30 and  globals()['rsi_{}'.format(coin)] < globals()['rsi_b1_{}'.format(coin)] 
+                if (globals()['rsi_{}'.format(coin)] <30:  
+                    sell_continue_chk = True
+
+                """매도5조건 RSI지수가 40 미만이면서 3번 연속 RSI 하락시 매도"""
+                if (globals()['rsi_{}'.format(coin)] <40 and  globals()['rsi_{}'.format(coin)] < globals()['rsi_b1_{}'.format(coin)] 
                         < globals()['rsi_b2_{}'.format(coin)] < globals()['rsi_b3_{}'.format(coin)]):  
                     sell_continue_chk = True
 
