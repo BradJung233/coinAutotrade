@@ -375,7 +375,7 @@ while True:
                     sell_continue_chk = True
 
                 """매도4조건 RSI지수가 30 미만이면 매도"""
-                if (globals()['rsi_{}'.format(coin)] <30:  
+                if globals()['rsi_{}'.format(coin)] <30:  
                     sell_continue_chk = True
 
                 """매도5조건 RSI지수가 40 미만이면서 3번 연속 RSI 하락시 매도"""
