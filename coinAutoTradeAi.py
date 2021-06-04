@@ -46,12 +46,13 @@ secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"
 coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW", "XTZ","LINK","THETA","ENJ","VET","TFUEL"]
 
 """------------------------------------------이하 공통 부분---------------------------------------------------------------"""
-"""v1.071"""
+"""v1.072"""
 # 1.04 매도1조건에 예측가가 매수가보다 낮을 경우에만 팔도록 조건 추가
 # 1.05 매수가 업비트에서 들고 오도록 수정
 # 1.06 RSI 지수 추가 ;; RSI지수가 30보다 작으면(과매도), 70보다 크면(과매수)
 # 1.07 RSI 가 50밑이라도 2번 연속 지수 상승했다면 매수가능
 # 1.071 예상가보다 현재가가 낮아도 목표가 돌파했다면 매수가능
+# 1.072 매수, 매도 조건 가감
 """변수 생성"""
 for coin in coins:
     globals()['globalK_{}'.format(coin)] = 0.0
@@ -293,7 +294,7 @@ while True:
                     print("sell_price",coin, globals()['sell_price_{}'.format(coin)])     
                     time.sleep(0.5)
                     continue   
-                if globals()['globalK_{}'.format(coin)] == 0 and globals()['current_price_{}'.format(coin)]  *1.05 > globals()['close_price_{}'.format(coin)]:
+                if globals()['globalK_{}'.format(coin)] == 0:
                     time.sleep(0.5)        
                     continue                             
                 # print(coin, target_price)
@@ -366,7 +367,8 @@ while True:
                     sell_continue_chk = True
 
                 """매도4조건 RSI지수가 30 미만이면 매도"""
-                if globals()['rsi_{}'.format(coin)] <30:  
+                if (globals()['rsi_{}'.format(coin)] <30 and  globals()['rsi_{}'.format(coin)] < globals()['rsi_b1_{}'.format(coin)] 
+                        < globals()['rsi_b2_{}'.format(coin)] < globals()['rsi_b3_{}'.format(coin)]):  
                     sell_continue_chk = True
 
                 if sell_continue_chk == False:
