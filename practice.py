@@ -152,7 +152,7 @@ def predict_price(ticker):
  
     # print(ticker, date_diff_hour)
     # df = pyupbit.get_ohlcv(ticker, count=1000, period=1)
-    df = pyupbit.get_ohlcv(ticker, interval="minute60", count=1000)
+    df = pyupbit.get_ohlcv(ticker, interval="minute60", count=400)
 
     df = df.reset_index()
     df['ds'] = df['index']
@@ -202,7 +202,7 @@ for coin in coins:
 # 로그인
 upbit = pyupbit.Upbit(access, secret)
 # print("autotrade start")
-# predict_price("KRW-THETA")
+predict_price("KRW-THETA")
 
 # print(get_buy_price("ENJ"))
 # time.sleep(3)
