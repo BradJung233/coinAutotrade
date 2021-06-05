@@ -325,7 +325,7 @@ while True:
                     #     time.sleep(0.5)  
                     #     continue
 
-                    rsi_continue_chk = True
+                    rsi_continue_chk = False
                     if 30 < globals()['rsi_{}'.format(coin)] < 50:
                         rsi_continue_chk = False
 
