@@ -70,7 +70,7 @@ for coin in coins:
     globals()['rsi_b1_{}'.format(coin)] = 0
     globals()['rsi_{}'.format(coin)] = 0
     globals()['sell_time_{}'.format(coin)]= None
-    globals()['limit_{}'.format(coin)] = 100000
+    globals()['limit_{}'.format(coin)] = 300000
 
 def get_target_price(ticker, k):
     """변동성 돌파 전략으로 매수 목표가 조회"""
@@ -388,7 +388,6 @@ while True:
                 if globals()['rsi_{}'.format(coin)] <30:  
                     print("sellcoin",coin)
                     sell_continue_chk = True
-                print(coin, "rsi",globals()['rsi_{}'.format(coin)] )
                 """매도5조건 RSI지수가 45 미만이면서 3번 연속 RSI 하락시 매도"""
                 if (globals()['rsi_{}'.format(coin)] <45 and  globals()['rsi_{}'.format(coin)] < globals()['rsi_b1_{}'.format(coin)] 
                         < globals()['rsi_b2_{}'.format(coin)] < globals()['rsi_b3_{}'.format(coin)]):  
