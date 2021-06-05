@@ -69,7 +69,7 @@ for coin in coins:
     globals()['rsi_b2_{}'.format(coin)] = 0
     globals()['rsi_b1_{}'.format(coin)] = 0
     globals()['rsi_{}'.format(coin)] = 0
-    globals()['sell_time_{}'.format(coin)] = 0
+    globals()['sell_time_{}'.format(coin)]= None
     globals()['limit_{}'.format(coin)] = 1000000
 
 def get_target_price(ticker, k):
@@ -218,8 +218,15 @@ def get_rsi_loop():
 
 def sell_price_loop():
     for coin in coins:
-        if globals()['sell_time_{}'.format(coin)] + datetime.timedelta(hours=2)  <  datetime.datetime.now():
+        coin_selltime = globals()['sell_time_{}'.format(coin)] 
+        if coin_selltime is None:
             globals()['sell_price_{}'.format(coin)] = 0
+            continue
+        now = datetime.datetime.now()
+        if coin_selltime + datetime.timedelta(hours=2) <  now:
+            globals()['sell_price_{}'.format(coin)] = 0
+            print(coin, "sell_price init")        
+    print("sell_price init")        
 
 for coin in coins:
     globals()['globalK_{}'.format(coin)] = get_bestK("KRW-"+coin)
@@ -401,9 +408,9 @@ while True:
                 if globals()['rsi_{}'.format(coin)] <30:  
                     sell_continue_chk = True
 
-                """매도5조건 RSI지수가 40 미만이면서 3번 연속 RSI 하락시 매도"""
-                if (globals()['rsi_{}'.format(coin)] <40 and  globals()['rsi_{}'.format(coin)] < globals()['rsi_b1_{}'.format(coin)] 
-                        < globals()['rsi_b2_{}'.format(coin)] < globals()['rsi_b3_{}'.format(coin)] ):  
+                """매도5조건 RSI지수가 45 미만이면서 4번 연속 RSI 하락시 매도"""
+                if (globals()['rsi_{}'.format(coin)] <45 and  globals()['rsi_{}'.format(coin)] < globals()['rsi_b1_{}'.format(coin)] 
+                        < globals()['rsi_b2_{}'.format(coin)] < globals()['rsi_b3_{}'.format(coin)] < globals()['rsi_b4_{}'.format(coin)] ):  
                     sell_continue_chk = True
 
                 if sell_continue_chk == False:
