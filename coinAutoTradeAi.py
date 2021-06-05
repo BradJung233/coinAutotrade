@@ -213,11 +213,17 @@ def get_rsi(ticker):
 
 def get_rsi_loop():
     for coin in coins:
+        if globals()['globalK_{}'.format(coin)] == 0:
+            time.sleep(0.1)
+            continue              
         get_rsi("KRW-"+coin)
         time.sleep(1)
 
 def sell_price_loop():
     for coin in coins:
+        if globals()['globalK_{}'.format(coin)] == 0:
+            time.sleep(0.1)
+            continue              
         coin_selltime = globals()['sell_time_{}'.format(coin)] 
         if coin_selltime is None:
             globals()['sell_price_{}'.format(coin)] = 0
@@ -280,7 +286,9 @@ while True:
         schedule.run_pending()
         if start_time + datetime.timedelta(seconds=60) < now < end_time:
             for coin in coins:
-                
+                if globals()['globalK_{}'.format(coin)] == 0:
+                    time.sleep(0.1)
+                    continue      
                 globals()['current_price_{}'.format(coin)]  = get_current_price("KRW-"+coin)
                 # print(coin, "k:",globals()['globalK_{}'.format(coin)])
                 # print(coin,"curren:",current_price, "target:", get_target_price("KRW-"+coin, globals()['globalK_{}'.format(coin)]), "predict:", globals()['close_price_{}'.format(coin)])
@@ -355,10 +363,6 @@ while True:
                     if globals()['rsi_{}'.format(coin)] > 70:
                         rsi_continue_chk = False
 
-                    if rsi_continue_chk == False:
-                        time.sleep(0.5)
-                        continue
-
                     if krw is None or krw < 5000:
                         time.sleep(0.5)  
                         continue
@@ -369,7 +373,7 @@ while True:
                     if coin_m is None:
                         coin_m = 0
                     buyamt = limit - coin_m    
-                    if buyamt > 5000 and buyamt <= limit:
+                    if buyamt > 5000 and buyamt <= limit and rsi_continue_chk == True:
                         if buyamt > krw:
                             buyamt = krw
                         print("-------buy",coin, krw, "---------")
