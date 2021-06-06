@@ -249,7 +249,7 @@ for coin in coins:
 schedule.every(10).minutes.do(lambda: predict_price_loop())
 schedule.every(5).minutes.do(lambda: get_rsi_loop())
 schedule.every().day.at("09:02").do(lambda: get_bestK_loop())
-schedule.every(60).minutes.do(lambda: sell_price_loop()) # sell_price 1시간마다 초기화 안 쓸거면 주석
+schedule.every(120).minutes.do(lambda: sell_price_loop()) # sell_price 1시간마다 초기화 안 쓸거면 주석
 
 # schedule.every(60).minutes.do(lambda: get_bestK_loop())
 # schedule.every().day.at("09:03").do(lambda: predict_price_loop())
@@ -402,17 +402,19 @@ while True:
                     sell_continue_chk = True
 
                 """매도4조건 RSI지수가 30 미만이면 매도"""
-                if globals()['rsi_{}'.format(coin)] <30:  
+                if globals()['rsi_{}'.format(coin)] <30 and globals()['rsi_b1_{}'.format(coin)] <30 and globals()['rsi_{}'.format(coin)] < globals()['rsi_b1_{}'.format(coin)]:  
                     sell_continue_chk = True
 
-                """매도5조건 RSI지수가 45 미만이면서 3번 연속 RSI 하락시 매도"""
-                if (globals()['rsi_{}'.format(coin)] <45 and  globals()['rsi_{}'.format(coin)] < globals()['rsi_b1_{}'.format(coin)] 
-                        < globals()['rsi_b2_{}'.format(coin)] < globals()['rsi_b3_{}'.format(coin)]  ):  
-                    sell_continue_chk = True
+                """2프로 하락시"""
+                if globals()['buy_price_{}'.format(coin)] * 0.98 > globals()['current_price_{}'.format(coin)]:
+                    """매도5조건 RSI지수가 45 미만이면서 3번 연속 RSI 하락시 매도"""
+                    if (globals()['rsi_{}'.format(coin)] <45 and  globals()['rsi_{}'.format(coin)] < globals()['rsi_b1_{}'.format(coin)] 
+                            < globals()['rsi_b2_{}'.format(coin)] < globals()['rsi_b3_{}'.format(coin)]  ):  
+                        sell_continue_chk = True
 
-               """매도6조건 RSI B5 지수가 70 미만이면서 RSI 현재 대비 30이상 하락시 매도"""
-                if 50 < globals()['rsi_b5_{}'.format(coin)] <70 and  globals()['rsi_{}'.format(coin)] < globals()['rsi_b5_{}'.format(coin)] -30:
-                    sell_continue_chk = True
+                    """매도6조건 RSI B5 지수가 70 미만이면서 RSI 현재 대비 30이상 하락시 매도"""
+                    if 50 < globals()['rsi_b5_{}'.format(coin)] <70 and  globals()['rsi_{}'.format(coin)] < globals()['rsi_b5_{}'.format(coin)] -30:
+                        sell_continue_chk = True
 
                 if sell_continue_chk == False:
                     time.sleep(0.5)
