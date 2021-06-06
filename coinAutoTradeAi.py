@@ -46,7 +46,7 @@ secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"
 coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW", "XTZ","LINK","THETA","ENJ","VET","TFUEL","ETC"]
 
 """------------------------------------------이하 공통 부분---------------------------------------------------------------"""
-"""v1.075"""
+"""v1.076"""
 # 1.04 매도1조건에 예측가가 매수가보다 낮을 경우에만 팔도록 조건 추가
 # 1.05 매수가 업비트에서 들고 오도록 수정
 # 1.06 RSI 지수 추가 ;; RSI지수가 30보다 작으면(과매도), 70보다 크면(과매수)
@@ -64,6 +64,7 @@ for coin in coins:
     # globals()['bef_current_price_{}'.format(coin)] = 0
     globals()['buy_price_{}'.format(coin)] = 0
     globals()['sell_price_{}'.format(coin)] = 0
+    globals()['rsi_b5_{}'.format(coin)] = 0
     globals()['rsi_b4_{}'.format(coin)] = 0
     globals()['rsi_b3_{}'.format(coin)] = 0
     globals()['rsi_b2_{}'.format(coin)] = 0
@@ -197,6 +198,7 @@ def get_rsi(ticker):
     data = pyupbit.get_ohlcv(ticker, interval="minute5")
     now_rsi = rsi(data, 14).iloc[-1]
     coin = ticker.replace("KRW-","")
+    globals()['rsi_b5_{}'.format(coin)] = globals()['rsi_b4_{}'.format(coin)]
     globals()['rsi_b4_{}'.format(coin)] = globals()['rsi_b3_{}'.format(coin)]
     globals()['rsi_b3_{}'.format(coin)] = globals()['rsi_b2_{}'.format(coin)]
     globals()['rsi_b2_{}'.format(coin)] = globals()['rsi_b1_{}'.format(coin)]
@@ -346,8 +348,8 @@ while True:
                     if 30 < globals()['rsi_{}'.format(coin)] < 50:
                         rsi_continue_chk = False
 
-                    if (globals()['rsi_{}'.format(coin)] > 30 and globals()['rsi_b4_{}'.format(coin)] < 30 and  globals()['rsi_{}'.format(coin)] > globals()['rsi_b1_{}'.format(coin)] 
-                        > globals()['rsi_b2_{}'.format(coin)] > globals()['rsi_b3_{}'.format(coin)] > globals()['rsi_b4_{}'.format(coin)]):
+                    if (globals()['rsi_{}'.format(coin)] > 30 and globals()['rsi_b5_{}'.format(coin)] >0 and globals()['rsi_b5_{}'.format(coin)] < 30 and  globals()['rsi_{}'.format(coin)] > globals()['rsi_b1_{}'.format(coin)] 
+                        > globals()['rsi_b2_{}'.format(coin)] > globals()['rsi_b3_{}'.format(coin)] > globals()['rsi_b4_{}'.format(coin)] > globals()['rsi_b5_{}'.format(coin)]):
                         rsi_continue_chk = True      
 
                     if (globals()['rsi_{}'.format(coin)] > 50 and  globals()['rsi_{}'.format(coin)] > globals()['rsi_b1_{}'.format(coin)] 
