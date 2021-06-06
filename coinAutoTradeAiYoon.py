@@ -397,17 +397,21 @@ while True:
                 if target_price <  globals()['current_price_{}'.format(coin)]:
                     sell_continue_chk = False               
 
-                """매도3조건 RSI지수가 70 이상이면 매도"""
-                if globals()['rsi_{}'.format(coin)] >75:  
+                """매도3조건 RSI지수가 85 이상이면 매도"""
+                if globals()['rsi_{}'.format(coin)] >85:  
                     sell_continue_chk = True
 
                 """매도4조건 RSI지수가 30 미만이면 매도"""
                 if globals()['rsi_{}'.format(coin)] <30:  
                     sell_continue_chk = True
 
-                """매도5조건 RSI지수가 45 미만이면서 4번 연속 RSI 하락시 매도"""
+                """매도5조건 RSI지수가 45 미만이면서 3번 연속 RSI 하락시 매도"""
                 if (globals()['rsi_{}'.format(coin)] <45 and  globals()['rsi_{}'.format(coin)] < globals()['rsi_b1_{}'.format(coin)] 
-                        < globals()['rsi_b2_{}'.format(coin)] < globals()['rsi_b3_{}'.format(coin)] < globals()['rsi_b4_{}'.format(coin)] ):  
+                        < globals()['rsi_b2_{}'.format(coin)] < globals()['rsi_b3_{}'.format(coin)]  ):  
+                    sell_continue_chk = True
+
+               """매도6조건 RSI B5 지수가 70 미만이면서 RSI 현재 대비 30이상 하락시 매도"""
+                if 50 < globals()['rsi_b5_{}'.format(coin)] <70 and  globals()['rsi_{}'.format(coin)] < globals()['rsi_b5_{}'.format(coin)] -30:
                     sell_continue_chk = True
 
                 if sell_continue_chk == False:
