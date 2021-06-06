@@ -354,7 +354,7 @@ while True:
                         print("_______buy_price2",coin, globals()['buy_price_{}'.format(coin)])
 
                 sell_continue_chk = False
-                if globals()['rsi_b1_{}'.format(coin)] == 0 or globals()['rsi_b2_{}'.format(coin)] == 0 or globals()['rsi_b3_{}'.format(coin)] == 0 or globals()['rsi_b4_{}'.format(coin)]:
+                if globals()['rsi_b1_{}'.format(coin)] == 0 or globals()['rsi_b2_{}'.format(coin)] == 0 or globals()['rsi_b3_{}'.format(coin)] == 0 or globals()['rsi_b4_{}'.format(coin)] == 0:
                     sell_continue_chk = False
 
                 """매도0조건 RSI지수가 50보다 크면 패스"""        
@@ -365,7 +365,7 @@ while True:
                 if target_price <  globals()['current_price_{}'.format(coin)]:
                     sell_continue_chk = False               
 
-                """매도3조건 RSI지수가 70 이상이면 매도"""
+                """매도3조건 RSI지수가 75 이상이면 매도"""
                 if globals()['rsi_{}'.format(coin)] >75:  
                     sell_continue_chk = True
 
