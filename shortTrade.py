@@ -187,6 +187,7 @@ def get_rsi(ticker):
     globals()['rsi_b2_{}'.format(coin)] = globals()['rsi_b1_{}'.format(coin)]
     globals()['rsi_b1_{}'.format(coin)] = globals()['rsi_{}'.format(coin)]
     globals()['rsi_{}'.format(coin)] = now_rsi
+    print(coin, "B5_RSI:", globals()['rsi_b5_{}'.format(coin)])
     print(coin, "B4_RSI:", globals()['rsi_b4_{}'.format(coin)])
     print(coin, "B3_RSI:", globals()['rsi_b3_{}'.format(coin)])
     print(coin, "B2_RSI:", globals()['rsi_b2_{}'.format(coin)])
@@ -316,6 +317,9 @@ while True:
                         > globals()['rsi_b2_{}'.format(coin)] > globals()['rsi_b3_{}'.format(coin)] > globals()['rsi_b4_{}'.format(coin)]):
                         rsi_continue_chk = True    
 
+                    if globals()['rsi_{}'.format(coin)] > 50 and  globals()['rsi_b5_{}'.format(coin)] > 0 and globals()['rsi_{}'.format(coin)] > globals()['rsi_b5_{}'.format(coin)] + 30:
+                        rsi_continue_chk = True    
+
                     if globals()['rsi_b1_{}'.format(coin)] == 0 or globals()['rsi_b2_{}'.format(coin)] == 0 or globals()['rsi_b3_{}'.format(coin)] == 0 or globals()['rsi_b4_{}'.format(coin)] == 0:
                         rsi_continue_chk = False
 
@@ -376,6 +380,10 @@ while True:
                 """매도5조건 RSI지수가 45 미만이면서 3번 연속 RSI 하락시 매도"""
                 if (globals()['rsi_{}'.format(coin)] <45 and  globals()['rsi_{}'.format(coin)] < globals()['rsi_b1_{}'.format(coin)] 
                         < globals()['rsi_b2_{}'.format(coin)] < globals()['rsi_b3_{}'.format(coin)]):  
+                    sell_continue_chk = True
+
+                """매도6조건 RSI B5 지수가 70 미만이면서 RSI 현재 대비 30이상 하락시 매도"""
+                if 50 < globals()['rsi_b5_{}'.format(coin)] <70 and  globals()['rsi_{}'.format(coin)] < globals()['rsi_b5_{}'.format(coin)] -30:
                     sell_continue_chk = True
                     
                 if sell_continue_chk == False:
