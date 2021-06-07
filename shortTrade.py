@@ -121,37 +121,7 @@ def get_ma5(ticker):
     ma5 = df['close'].rolling(5).mean().iloc[-1]
     return ma5
 
-predicted_close_price = 0
-def predict_price(ticker):
-    """Prophet으로 당일 종가 가격 예측"""
-    global predicted_close_price
-    # df = pyupbit.get_ohlcv(ticker, interval="minute60")
-    df = pyupbit.get_ohlcv(ticker, interval="minute60", count=600, period=1)
-    df = df.reset_index()
-    df['ds'] = df['index']
-    df['y'] = df['close']
-    data = df[['ds','y']]
-    model = Prophet()
-    model.fit(data)
-    future = model.make_future_dataframe(periods=24, freq='H')
-    forecast = model.predict(future)
-    closeDf = forecast[forecast['ds'] == forecast.iloc[-1]['ds'].replace(hour=9)]
-    if len(closeDf) == 0:
-        closeDf = forecast[forecast['ds'] == data.iloc[-1]['ds'].replace(hour=9)]
-    closeValue = closeDf['yhat'].values[0]
-    predicted_close_price = closeValue
-
-def predict_price_loop():
-    global predicted_close_price
-    for coin in coins:
-        if globals()['globalK_{}'.format(coin)] == 0:
-            continue        
-        predict_price("KRW-" + coin)
-        time.sleep(1.5)    
-        globals()['close_price_{}'.format(coin)] = predicted_close_price
-        print("predict:",coin, predicted_close_price)
-    print("----------------------")
-    time.sleep(2)        
+     
 
 def get_bestK_loop():
     for coin in coins:

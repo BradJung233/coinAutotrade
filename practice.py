@@ -151,8 +151,8 @@ def predict_price(ticker):
     global predicted_close_price
  
     # print(ticker, date_diff_hour)
-    # df = pyupbit.get_ohlcv(ticker, count=1000, period=1)
-    df = pyupbit.get_ohlcv(ticker, interval="minute60", count=400)
+    df = pyupbit.get_ohlcv(ticker, interval="minute60",count=1000, period=1)
+    # df = pyupbit.get_ohlcv(ticker, interval="minute60")
 
     df = df.reset_index()
     df['ds'] = df['index']
@@ -181,7 +181,6 @@ def predict_price_loop():
         time.sleep(1.5)    
         globals()['close_price_{}'.format(coin)] = predicted_close_price
         print("predict:",coin, predicted_close_price)
-        
     print("----------------------")
     time.sleep(2)        
 
@@ -191,20 +190,14 @@ def get_bestK_loop():
         time.sleep(1)
         print("loop",coin, globals()['globalK{}'.format(coin)])
 
-for coin in coins:
-    globals()['sell_time_{}'.format(coin)] = datetime.datetime.now()
-    a = globals()['sell_time_{}'.format(coin)] + datetime.timedelta(hours=2) 
-    print(a)
-    # print(coin,rsi)
-    time.sleep(0.1) # 속도가 느리면 다음 코인 값을 못 갖고와 에러남. 그래서 sleep
 # schedule.every(20).seconds.do(lambda: predict_price_loop())
 
 # 로그인
 upbit = pyupbit.Upbit(access, secret)
 # print("autotrade start")
-predict_price("KRW-THETA")
+# predict_price("KRW-ADA")
 
-# print(get_buy_price("ENJ"))
+print(get_buy_price("ENJ"))
 # time.sleep(3)
 
 # get_bestK_loop()
