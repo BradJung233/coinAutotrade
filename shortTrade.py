@@ -24,10 +24,10 @@ secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"
 # limit_LINK = 1000000
 
 # coins = ["BTC", "ETH", "ADA", "XLM", "EOS", "XRP", "DOT" ,"WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
-coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW", "XTZ","LINK","THETA","ENJ","VET","TFUEL","ETC"]
+coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW","LINK","THETA","ENJ","VET","TFUEL","ETC"]
 
 """------------------------------------------이하 공통 부분---------------------------------------------------------------"""
-"""v1.082"""
+"""v1.083"""
 # 1.81 매도8조건에 매수가가 10프로 상승하면 팔도록 조건 추가
 
 """변수 생성"""
@@ -50,7 +50,7 @@ for coin in coins:
     globals()['rsi_b1_{}'.format(coin)] = 0
     globals()['rsi_{}'.format(coin)] = 0
     globals()['sell_time_{}'.format(coin)]= None
-    globals()['limit_{}'.format(coin)] = 300000
+    globals()['limit_{}'.format(coin)] = 500000
 
 def get_target_price(ticker, k):
     """변동성 돌파 전략으로 매수 목표가 조회"""
@@ -180,7 +180,7 @@ def sell_price_loop():
             globals()['sell_price_{}'.format(coin)] = 0
             continue
         now = datetime.datetime.now()
-        if coin_selltime + datetime.timedelta(hours=2) <  now:
+        if coin_selltime + datetime.timedelta(hours=12) <  now:
             globals()['sell_price_{}'.format(coin)] = 0
             print(coin, "sell_price init")        
     print("sell_price init")        
@@ -445,4 +445,5 @@ while True:
 # 백그라운드 실행: nohup python3 -u shortTrade.py&
 # 실행되고 있는지 확인: ps ax | grep .py
 # 프로세스 종료(PID는 ps ax | grep .py를 했을때 확인 가능): kill -9 PID     
-# 코인종류 조회 :print(pyupbit.get_tickers())     
+# 코인종류 조회 : print(pyupbit.get_tickers())     
+# 로그확인 : tail -f nohup.out

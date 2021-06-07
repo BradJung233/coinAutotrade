@@ -36,7 +36,7 @@ coins = ["BTC", "ETH", "EOS", "BCH", "LTC", "LINK", "ENJ", "NEO", "DOT", "XRP"]
 # coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
 
 """------------------------------------------이하 공통 부분---------------------------------------------------------------"""
-"""v1.082"""
+"""v1.083"""
 # 1.81 매도8조건에 매수가가 10프로 상승하면 팔도록 조건 추가
 
 """변수 생성"""
@@ -188,7 +188,7 @@ def sell_price_loop():
             globals()['sell_price_{}'.format(coin)] = 0
             continue
         now = datetime.datetime.now()
-        if coin_selltime + datetime.timedelta(hours=2) <  now:
+        if coin_selltime + datetime.timedelta(hours=12) <  now:
             globals()['sell_price_{}'.format(coin)] = 0
             print(coin, "sell_price init")        
     print("sell_price init")        
