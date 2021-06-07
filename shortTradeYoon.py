@@ -36,7 +36,7 @@ coins = ["BTC", "ETH", "EOS", "BCH", "LTC", "LINK", "ENJ", "NEO", "DOT", "XRP"]
 # coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
 
 """------------------------------------------이하 공통 부분---------------------------------------------------------------"""
-"""v1.081"""
+"""v1.082"""
 # 1.81 매도8조건에 매수가가 10프로 상승하면 팔도록 조건 추가
 
 """변수 생성"""
@@ -158,7 +158,6 @@ def predict_price_loop():
         predict_price("KRW-" + coin)
         time.sleep(1.5)    
         globals()['close_price_{}'.format(coin)] = predicted_close_price
-        globals()['bef_current_price_{}'.format(coin)] = globals()['current_price_{}'.format(coin)] 
         print("predict:",coin, predicted_close_price)
     print("----------------------")
     time.sleep(2)        
@@ -234,7 +233,7 @@ def past_price_loop():
         globals()['past_b30_price_{}'.format(coin)] = globals()['past_b20_price_{}'.format(coin)] 
         globals()['past_b20_price_{}'.format(coin)] = globals()['past_b10_price_{}'.format(coin)] 
         globals()['past_b10_price_{}'.format(coin)] =globals()['past_price_{}'.format(coin)] 
-        globals()['past_price_{}'.format(coin)] = now
+        globals()['past_price_{}'.format(coin)] =  globals()['current_price_{}'.format(coin)]
         print(coin, "past_b30_price:", globals()['past_b30_price_{}'.format(coin)])
         print(coin, "past_b20_price:", globals()['past_b20_price_{}'.format(coin)])
         print(coin, "past_b10_price:", globals()['past_b10_price_{}'.format(coin)])
