@@ -441,6 +441,14 @@ while True:
                     print(coin,"sellby_8") 
                     sell_continue_chk = True
 
+                """매도9조건 매수가 대비 3프로 상승이고 RSI지수가 3번 연속 RSI 50 아래면 매도"""
+                if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['buy_price_{}'.format(coin)]*1.03 < globals()['current_price_{}'.format(coin)] and 
+                    globals()['rsi_{}'.format(coin)] <50 and globals()['rsi_b1_{}'.format(coin)] < 50 and globals()['rsi_b2_{}'.format(coin)] < 50):  
+                    print(coin,"sellby_9") 
+                    sell_continue_chk = True
+                    if globals()['rsi_b2_{}'.format(coin)] == 0:
+                        sell_continue_chk = False
+
                 if sell_continue_chk == False:
                     time.sleep(0.5)
                     continue
