@@ -27,15 +27,9 @@ secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"
 coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW", "XTZ","LINK","THETA","ENJ","VET","TFUEL","ETC"]
 
 """------------------------------------------이하 공통 부분---------------------------------------------------------------"""
-"""v1.08"""
-# 1.04 매도1조건에 예측가가 매수가보다 낮을 경우에만 팔도록 조건 추가
-# 1.05 매수가 업비트에서 들고 오도록 수정
-# 1.06 RSI 지수 추가 ;; RSI지수가 30보다 작으면(과매도), 70보다 크면(과매수)
-# 1.07 RSI 가 50밑이라도 2번 연속 지수 상승했다면 매수가능
-# 1.071 예상가보다 현재가가 낮아도 목표가 돌파했다면 매수가능
-# 1.072 매수, 매도 조건 가감
-# 1.073 매도 조건 추가
-# 1.074 한번 판 코인은 두시간 이후에 매수 가능
+"""v1.081"""
+# 1.81 매도8조건에 매수가가 10프로 상승하면 팔도록 조건 추가
+
 """변수 생성"""
 for coin in coins:
     globals()['globalK_{}'.format(coin)] = 0.0
@@ -432,6 +426,11 @@ while True:
                     sell_continue_chk = True
                     if globals()['rsi_b1_{}'.format(coin)] == 0:
                         sell_continue_chk = False
+
+                """매도8조건 매수가 대비 10프로 상승하면 매도"""
+                if coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['buy_price_{}'.format(coin)]*1.1 < globals()['current_price_{}'.format(coin)]:  
+                    print(coin,"sellby_8") 
+                    sell_continue_chk = True
 
                 if sell_continue_chk == False:
                     time.sleep(0.5)
