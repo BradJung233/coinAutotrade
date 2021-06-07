@@ -374,8 +374,8 @@ while True:
                     sell_continue_chk = True
 
                 """매도4조건 20분 현재가보다 2프로 하락이고, RSI지수가 30 미만이면 매도"""
-                if (globals()['rsi_{}'.format(coin)] <30 and globals()['current_price_{}'.format(coin)] * 0.98 < globals()['past_b20_{}'.format(coin)] 
-                    and globals()['past_b20_{}'.format(coin)] >0):  
+                if (globals()['rsi_{}'.format(coin)] <30 and globals()['current_price_{}'.format(coin)] * 0.98 < globals()['past_b20_price_{}'.format(coin)] 
+                    and globals()['past_b20_price_{}'.format(coin)] >0):  
                     print(coin,"sellby_4") 
                     sell_continue_chk = True
 
@@ -450,7 +450,7 @@ while True:
         print(e)
         time.sleep(1)
 
-# 백그라운드 실행: nohup python3 coinAutoTradeAi.py > output.log &
+# 백그라운드 실행: nohup python3 -u shortTradeYoon.py&
 # 실행되고 있는지 확인: ps ax | grep .py
 # 프로세스 종료(PID는 ps ax | grep .py를 했을때 확인 가능): kill -9 PID     
 # 코인종류 조회 :print(pyupbit.get_tickers())     
