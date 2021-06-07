@@ -2,29 +2,38 @@ import time
 import pyupbit
 import datetime
 import numpy as np
+import math
 import schedule
 import pandas as pd
 
-access = "NBfy02ssHZPdySYKdZIHHNRyv0Ke2Tk8qzvlxV0z"
-secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"
+access = "oXNV9A36Dglx1IPXFsc38829tSV51WkKM17ghsV6"
+secret = "KaUQe2rrVexFP85U34Ro9xUGzdCxJSH2DmHXS1g4"
 
 
-# limit_BTC = 1000000
-# limit_ETH = 1000000
-# limit_ADA = 1000000
-# limit_XRP = 1000000
-# limit_XLM = 1000000
-# limit_DOT = 1000000
-# limit_EOS = 1000000
-# limit_WAVES = 1000000
-# limit_BCH = 1000000
-# limit_LTC = 1000000
-# limit_FLOW = 1000000
-# limit_XTZ = 1000000
-# limit_LINK = 1000000
+limit_BTC = 400000
+limit_ETH = 400000
+limit_ADA = 400000
+limit_XRP = 300000
+limit_XLM = 400000
+limit_DOT = 300000
+limit_EOS = 400000
+limit_WAVES = 400000
+limit_BCH = 400000
+limit_LTC = 400000
+limit_FLOW = 400000
+limit_XTZ = 400000
+limit_LINK = 400000
+limit_ENJ = 300000
+limit_NEO = 300000
 
-# coins = ["BTC", "ETH", "ADA", "XLM", "EOS", "XRP", "DOT" ,"WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
-coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW", "XTZ","LINK","THETA","ENJ","VET","TFUEL","ETC"]
+
+
+
+
+
+# coins = ["BTC", "ETH", "ADA", "XLM", "EOS", "XRP", "DOT" ,"WAVES","BCH","LTC","FLOW", "XTZ","LINK","ENJ","NEO"]
+coins = ["BTC", "ETH", "EOS", "BCH", "LTC", "LINK", "ENJ", "NEO", "DOT", "XRP"]
+# coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
 
 """------------------------------------------이하 공통 부분---------------------------------------------------------------"""
 """v1.08"""
