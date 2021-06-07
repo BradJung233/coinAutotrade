@@ -424,33 +424,29 @@ while True:
                             < globals()['rsi_b2_{}'.format(coin)] < globals()['rsi_b3_{}'.format(coin)]  ):  
                         print(coin,"sellby_5") 
                         sell_continue_chk = True
+                        if globals()['rsi_b3_{}'.format(coin)] == 0:
+                            sell_continue_chk = False
 
                     """매도6조건 RSI B5 지수가 70 미만이면서 RSI 현재 대비 30이상 하락시 매도"""
                     if 50 < globals()['rsi_b5_{}'.format(coin)] <70 and  globals()['rsi_{}'.format(coin)] < globals()['rsi_b5_{}'.format(coin)] -30:
                         print(coin,"sellby_6")                        
                         sell_continue_chk = True
+                        if globals()['rsi_b5_{}'.format(coin)] == 0:
+                            sell_continue_chk = False
 
                 """매도7조건 매수가 대비 5프로 상승이고 RSI지수가 2번 연속 RSI 60 아래면 매도"""
                 if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['buy_price_{}'.format(coin)]*1.05 < globals()['current_price_{}'.format(coin)] and 
                     globals()['rsi_{}'.format(coin)] <60 and globals()['rsi_b1_{}'.format(coin)] < 60):  
                     print(coin,"sellby_7") 
                     sell_continue_chk = True
+                    if globals()['rsi_b1_{}'.format(coin)] == 0:
+                        sell_continue_chk = False
 
                 if sell_continue_chk == False:
                     time.sleep(0.5)
                     continue
 
-                """매도1조건"""        
-                # if (globals()['sell_price_{}'.format(coin)]  == 0 and globals()['current_price_{}'.format(coin)]  *0.99 > globals()['close_price_{}'.format(coin)] and
-                #     globals()['buy_price_{}'.format(coin)] < globals()['current_price_{}'.format(coin)]):
-                #     # coinjan = get_balance(coin)
-                #     if coinjan * globals()['current_price_{}'.format(coin)]  > 5000:
-                #         print("-------sell",coin, globals()['current_price_{}'.format(coin)] , "---------")
-                #         upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
-                #         globals()['sell_price_{}'.format(coin)] =  globals()['current_price_{}'.format(coin)] 
-                #         # print("-------sell",coin, globals()['current_price_{}'.format(coin)] , "---------")
-                #         print("_____buy_price",coin, globals()['buy_price_{}'.format(coin)])
-                """매도3조건"""           
+                """매도"""           
                 if sell_continue_chk == True:
                     if coinjan * globals()['current_price_{}'.format(coin)]  > 5000:
                         # print("-------sell2",coin, globals()['current_price_{}'.format(coin)] , "---------")
