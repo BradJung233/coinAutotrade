@@ -409,6 +409,9 @@ while True:
                     if globals()['rsi_b2_{}'.format(coin)] == 0:
                         sell_continue_chk = False
 
+                if globals()['rsi_{}'.format(coin)] == 0:
+                    sell_continue_chk = False
+
                 if sell_continue_chk == False:
                     time.sleep(0.5)
                     continue
