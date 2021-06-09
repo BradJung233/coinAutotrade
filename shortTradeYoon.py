@@ -308,12 +308,12 @@ while True:
                         print(coin,"buyby_1")                         
                         rsi_continue_chk = True      
 
-                    if (globals()['rsi_{}'.format(coin)] > 50 and  globals()['rsi_b4_{}'.format(coin)] >0 and globals()['rsi_{}'.format(coin)] > globals()['rsi_b1_{}'.format(coin)] 
+                    if (globals()['rsi_{}'.format(coin)] > 55 and  globals()['rsi_b4_{}'.format(coin)] >0 and globals()['rsi_{}'.format(coin)] > globals()['rsi_b1_{}'.format(coin)] 
                         > globals()['rsi_b2_{}'.format(coin)] > globals()['rsi_b3_{}'.format(coin)] > globals()['rsi_b4_{}'.format(coin)]):
                         print(coin,"buyby_2")                         
                         rsi_continue_chk = True    
 
-                    if globals()['rsi_{}'.format(coin)] > 50 and  globals()['rsi_b5_{}'.format(coin)] > 0 and globals()['rsi_{}'.format(coin)] > globals()['rsi_b5_{}'.format(coin)] + 30:
+                    if globals()['rsi_{}'.format(coin)] > 55 and  globals()['rsi_b5_{}'.format(coin)] > 0 and globals()['rsi_{}'.format(coin)] > globals()['rsi_b5_{}'.format(coin)] + 30:
                         print(coin,"buyby_3")                         
                         rsi_continue_chk = True    
 
