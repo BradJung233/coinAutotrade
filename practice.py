@@ -68,7 +68,8 @@ close_price_LINK = 0
 
 
 # coins = ["BTC", "ETH", "ADA", "XLM", "EOS", "XRP", "DOT" ,"WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
-coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
+# coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW", "XTZ","LINK","TFUEL"]
+coins = ["TFUEL"]
 
 
 def get_target_price(ticker, k):
@@ -151,8 +152,8 @@ def predict_price(ticker):
     global predicted_close_price
  
     # print(ticker, date_diff_hour)
-    df = pyupbit.get_ohlcv(ticker, interval="minute60",count=1000, period=1)
-    # df = pyupbit.get_ohlcv(ticker, interval="minute60")
+    # df = pyupbit.get_ohlcv(ticker, interval="minute60",count=1000, period=1)
+    df = pyupbit.get_ohlcv(ticker, interval="minute60")
 
     df = df.reset_index()
     df['ds'] = df['index']
@@ -161,13 +162,13 @@ def predict_price(ticker):
     model = Prophet()
     model.fit(data)
     print("date_diff_hour",date_diff_hour)
-    future = model.make_future_dataframe(periods=24, freq='H')
+    future = model.make_future_dataframe(periods=2, freq='H')
     # future = model.make_future_dataframe(periods=24, freq='H')
     forecast = model.predict(future)
     print(forecast)
-    closeDf = forecast[forecast['ds'] == forecast.iloc[-1]['ds'].replace(hour=9)]
+    closeDf = forecast[forecast['ds'] == forecast.iloc[-1]['ds'].replace(hour=18)]
     if len(closeDf) == 0:
-        closeDf = forecast[forecast['ds'] == data.iloc[-1]['ds'].replace(hour=9)]
+        closeDf = forecast[forecast['ds'] == data.iloc[-1]['ds'].replace(hour=18)]
     closeValue = closeDf['yhat'].values[0]
     # print("closedf:",closeDf)
     predicted_close_price = closeValue
@@ -195,9 +196,11 @@ def get_bestK_loop():
 # 로그인
 upbit = pyupbit.Upbit(access, secret)
 # print("autotrade start")
-# predict_price("KRW-ADA")
+# predict_price("KRW-TFUEL")
+predict_price_loop();
+print(close_price_TFUEL);
 
-print(get_buy_price("ENJ"))
+# print(get_buy_price("ENJ"))
 # time.sleep(3)
 
 # get_bestK_loop()
