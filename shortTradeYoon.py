@@ -36,8 +36,9 @@ coins = ["BTC", "ETH", "EOS", "BCH", "LTC", "LINK", "ENJ", "NEO", "DOT", "XRP"]
 # coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
 
 """------------------------------------------이하 공통 부분---------------------------------------------------------------"""
-"""v1.083"""
+"""v1.084"""
 # 1.81 매도8조건에 매수가가 10프로 상승하면 팔도록 조건 추가
+# 1.84 매도7조건 2번연속 -> 3번연속으로 수정
 
 """변수 생성"""
 for coin in coins:
@@ -59,7 +60,7 @@ for coin in coins:
     globals()['rsi_b1_{}'.format(coin)] = 0
     globals()['rsi_{}'.format(coin)] = 0
     globals()['sell_time_{}'.format(coin)]= None
-    globals()['limit_{}'.format(coin)] = 300000
+    # globals()['limit_{}'.format(coin)] = 500000
 
 def get_target_price(ticker, k):
     """변동성 돌파 전략으로 매수 목표가 조회"""
@@ -130,6 +131,7 @@ def get_ma5(ticker):
     ma5 = df['close'].rolling(5).mean().iloc[-1]
     return ma5
 
+     
 
 def get_bestK_loop():
     for coin in coins:
@@ -396,9 +398,9 @@ while True:
                         if globals()['rsi_b5_{}'.format(coin)] == 0:
                             sell_continue_chk = False
 
-                """매도7조건 매수가 대비 5프로 상승이고 RSI지수가 2번 연속 RSI 60 아래면 매도"""
+                """매도7조건 매수가 대비 5프로 상승이고 RSI지수가 3번 연속 RSI 60 아래면 매도"""
                 if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['buy_price_{}'.format(coin)]*1.05 < globals()['current_price_{}'.format(coin)] and 
-                    globals()['rsi_{}'.format(coin)] <60 and globals()['rsi_b1_{}'.format(coin)] < 60):  
+                    globals()['rsi_{}'.format(coin)] <60 and globals()['rsi_b1_{}'.format(coin)] < 60 and globals()['rsi_b2_{}'.format(coin)] < 60):  
                     print(coin,"sellby_7") 
                     sell_continue_chk = True
                     if globals()['rsi_b1_{}'.format(coin)] == 0:
@@ -419,7 +421,7 @@ while True:
 
                 if globals()['rsi_{}'.format(coin)] == 0:
                     sell_continue_chk = False
-                    
+
                 if sell_continue_chk == False:
                     time.sleep(0.5)
                     continue
@@ -453,7 +455,8 @@ while True:
         print(e)
         time.sleep(1)
 
-# 백그라운드 실행: nohup python3 -u shortTradeYoon.py&
+# 백그라운드 실행: nohup python3 -u shortTrade.py&
 # 실행되고 있는지 확인: ps ax | grep .py
 # 프로세스 종료(PID는 ps ax | grep .py를 했을때 확인 가능): kill -9 PID     
-# 코인종류 조회 :print(pyupbit.get_tickers())     
+# 코인종류 조회 : print(pyupbit.get_tickers())     
+# 로그확인 : tail -f nohup.out

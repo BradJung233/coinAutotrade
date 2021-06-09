@@ -27,8 +27,9 @@ secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"
 coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW","LINK","THETA","ENJ","VET","TFUEL","ETC","XTZ","ONG"]
 
 """------------------------------------------이하 공통 부분---------------------------------------------------------------"""
-"""v1.083"""
+"""v1.084"""
 # 1.81 매도8조건에 매수가가 10프로 상승하면 팔도록 조건 추가
+# 1.84 매도7조건 2번연속 -> 3번연속으로 수정
 
 """변수 생성"""
 for coin in coins:
@@ -388,9 +389,9 @@ while True:
                         if globals()['rsi_b5_{}'.format(coin)] == 0:
                             sell_continue_chk = False
 
-                """매도7조건 매수가 대비 5프로 상승이고 RSI지수가 2번 연속 RSI 60 아래면 매도"""
+                """매도7조건 매수가 대비 5프로 상승이고 RSI지수가 3번 연속 RSI 60 아래면 매도"""
                 if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['buy_price_{}'.format(coin)]*1.05 < globals()['current_price_{}'.format(coin)] and 
-                    globals()['rsi_{}'.format(coin)] <60 and globals()['rsi_b1_{}'.format(coin)] < 60):  
+                    globals()['rsi_{}'.format(coin)] <60 and globals()['rsi_b1_{}'.format(coin)] < 60 and globals()['rsi_b2_{}'.format(coin)] < 60):  
                     print(coin,"sellby_7") 
                     sell_continue_chk = True
                     if globals()['rsi_b1_{}'.format(coin)] == 0:
