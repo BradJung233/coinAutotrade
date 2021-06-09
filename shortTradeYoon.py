@@ -422,7 +422,7 @@ while True:
 
                 """매도10조건 매수가 대비 수익률이 1프로 이하이고 RSI지수가 3번 연속 RSI 50 아래면 매도"""
                 if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and (globals()['buy_price_{}'.format(coin)]/ globals()['current_price_{}'.format(coin)]) <1.01 and 
-                    globals()['rsi_{}'.format(coin)] <50 and globals()['rsi_b1_{}'.format(coin)] < 50 and globals()['rsi_b2_{}'.format(coin)] < 50:  
+                    globals()['rsi_{}'.format(coin)] <50 and globals()['rsi_b1_{}'.format(coin)] < 50 and globals()['rsi_b2_{}'.format(coin)] < 50):  
                     sell_continue_chk = True
                     if globals()['rsi_b2_{}'.format(coin)] == 0:
                         sell_continue_chk = False
