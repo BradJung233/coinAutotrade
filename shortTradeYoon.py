@@ -408,7 +408,7 @@ while True:
                     print(coin,"sellby_7") 
 
                 """매도8조건 매수가 대비 10프로 상승하면 매도"""
-                if coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['buy_price_{}'.format(coin)]*1.1 < globals()['current_price_{}'.format(coin)]:  
+                if globals()['rsi_{}'.format(coin)] <70 and coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['buy_price_{}'.format(coin)]*1.1 < globals()['current_price_{}'.format(coin)]:  
                     print(coin,"sellby_8") 
                     sell_continue_chk = True
 
