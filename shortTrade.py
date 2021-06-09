@@ -24,7 +24,7 @@ secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"
 # limit_LINK = 1000000
 
 # coins = ["BTC", "ETH", "ADA", "XLM", "EOS", "XRP", "DOT" ,"WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
-coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW","LINK","THETA","ENJ","VET","TFUEL","ETC","XTZ","ONG"]
+coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW","LINK","THETA","ENJ","VET","TFUEL","ETC","XTZ","ONG","BTG"]
 
 """------------------------------------------이하 공통 부분---------------------------------------------------------------"""
 """v1.085"""
@@ -299,7 +299,7 @@ while True:
                         print(coin,"buyby_1")                         
                         rsi_continue_chk = True      
 
-                    if (globals()['rsi_{}'.format(coin)] > 50 and  globals()['rsi_{}'.format(coin)] > globals()['rsi_b1_{}'.format(coin)] 
+                    if (globals()['rsi_{}'.format(coin)] > 50 and  globals()['rsi_b4_{}'.format(coin)] >0 and globals()['rsi_{}'.format(coin)] > globals()['rsi_b1_{}'.format(coin)] 
                         > globals()['rsi_b2_{}'.format(coin)] > globals()['rsi_b3_{}'.format(coin)] > globals()['rsi_b4_{}'.format(coin)]):
                         print(coin,"buyby_2")                         
                         rsi_continue_chk = True    
