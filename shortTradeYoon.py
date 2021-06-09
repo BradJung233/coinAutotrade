@@ -371,13 +371,13 @@ while True:
                     print(coin,"sellby_2") 
                     sell_continue_chk = True
 
-                """매도3조건 RSI지수가 25 미만이면 매도"""
-                if globals()['rsi_{}'.format(coin)] <25:
+                """매도3조건 RSI지수가 30 미만이면 매도"""
+                if globals()['rsi_{}'.format(coin)] <30:
                     print(coin,"sellby_3") 
                     sell_continue_chk = True
 
-                """매도4조건 20분 현재가보다 2프로 하락이고, RSI지수가 30 미만이면 매도"""
-                if (globals()['rsi_{}'.format(coin)] <30 and globals()['current_price_{}'.format(coin)] * 0.98 < globals()['past_b20_price_{}'.format(coin)] 
+                """매도4조건 20분 현재가보다 2프로 하락이고, RSI지수가 40 미만이면 매도"""
+                if (globals()['rsi_{}'.format(coin)] <40 and globals()['current_price_{}'.format(coin)] * 0.98 < globals()['past_b20_price_{}'.format(coin)] 
                     and globals()['past_b20_price_{}'.format(coin)] >0):  
                     print(coin,"sellby_4") 
                     sell_continue_chk = True
