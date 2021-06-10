@@ -32,11 +32,11 @@ limit_NEO = 300000
 
 
 # coins = ["BTC", "ETH", "ADA", "XLM", "EOS", "XRP", "DOT" ,"WAVES","BCH","LTC","FLOW", "XTZ","LINK","ENJ","NEO"]
-coins = ["BTC", "ETH", "EOS", "BCH", "LTC", "LINK", "ENJ", "NEO", "DOT", "XRP"]
-# coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
+# coins = ["BTC", "ETH", "EOS", "BCH", "LTC", "LINK", "ENJ", "NEO", "DOT", "XRP"]
+coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW","LINK","THETA","ENJ","VET","TFUEL","ETC","XTZ","ONG","BTG","BCHA","BSV","DOGE"]
 
 """------------------------------------------이하 공통 부분---------------------------------------------------------------"""
-"""v1.085"""
+"""v1.086"""
 # 1.81 매도8조건에 매수가가 10프로 상승하면 팔도록 조건 추가
 # 1.84 매도7조건 2번연속 -> 3번연속으로 수정
 # 1.85 매도10조건 추가
@@ -61,7 +61,7 @@ for coin in coins:
     globals()['rsi_b1_{}'.format(coin)] = 0
     globals()['rsi_{}'.format(coin)] = 0
     globals()['sell_time_{}'.format(coin)]= None
-    # globals()['limit_{}'.format(coin)] = 500000
+    globals()['limit_{}'.format(coin)] = 300000
 
 def get_target_price(ticker, k):
     """변동성 돌파 전략으로 매수 목표가 조회"""
@@ -341,6 +341,7 @@ while True:
                         upbit.buy_market_order("KRW-" + coin, buyamt*0.9995) 
                         # globals()['buy_price_{}'.format(coin)] = globals()['current_price_{}'.format(coin)]
                         print("buy_price",coin, globals()['buy_price_{}'.format(coin)])
+                        continue
 
                 """매도1조건"""           
                 if globals()['sell_price_{}'.format(coin)]  == 0  and globals()['buy_price_{}'.format(coin)] > 0 and globals()['buy_price_{}'.format(coin)] * 0.95 > globals()['current_price_{}'.format(coin)] :
