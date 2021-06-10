@@ -303,17 +303,22 @@ while True:
                     if 30 < globals()['rsi_{}'.format(coin)] < 50:
                         rsi_continue_chk = False
 
+                    """매수1조건: rsi가 30 이상이고 5번연속 상승에 30분 전보다 2프로이상 상승"""
                     if (globals()['rsi_{}'.format(coin)] > 30 and  globals()['rsi_b5_{}'.format(coin)] >0 and globals()['rsi_b5_{}'.format(coin)] < 30 and  globals()['rsi_{}'.format(coin)] > globals()['rsi_b1_{}'.format(coin)] 
-                        > globals()['rsi_b2_{}'.format(coin)] > globals()['rsi_b3_{}'.format(coin)] > globals()['rsi_b4_{}'.format(coin)] > globals()['rsi_b5_{}'.format(coin)]):
+                        > globals()['rsi_b2_{}'.format(coin)] > globals()['rsi_b3_{}'.format(coin)] > globals()['rsi_b4_{}'.format(coin)] > globals()['rsi_b5_{}'.format(coin)]
+                        and globals()['current_price_{}'.format(coin)] > globals()['past_b30_price_{}'.format(coin)] * 1.02 and globals()['past_b30_price_{}'.format(coin)] > 0):
                         print(coin,"buyby_1")                         
-                        rsi_continue_chk = True      
+                        rsi_continue_chk = True    
 
+                    """매수2조건: rsi가 55 이상이고 4번연속 상승에 20분 전보다 1프로이상 상승"""
                     if (globals()['rsi_{}'.format(coin)] > 55 and  globals()['rsi_b4_{}'.format(coin)] >0 and globals()['rsi_{}'.format(coin)] > globals()['rsi_b1_{}'.format(coin)] 
-                        > globals()['rsi_b2_{}'.format(coin)] > globals()['rsi_b3_{}'.format(coin)] > globals()['rsi_b4_{}'.format(coin)]):
+                        > globals()['rsi_b2_{}'.format(coin)] > globals()['rsi_b3_{}'.format(coin)] > globals()['rsi_b4_{}'.format(coin)]
+                        and globals()['current_price_{}'.format(coin)] > globals()['past_b20_price_{}'.format(coin)] * 1.01 and globals()['past_b20_price_{}'.format(coin)] > 0):
                         print(coin,"buyby_2")                         
                         rsi_continue_chk = True    
 
-                    if globals()['rsi_{}'.format(coin)] > 55 and  globals()['rsi_b5_{}'.format(coin)] > 0 and globals()['rsi_{}'.format(coin)] > globals()['rsi_b5_{}'.format(coin)] + 30:
+                    if (globals()['rsi_{}'.format(coin)] > 55 and  globals()['rsi_b5_{}'.format(coin)] > 0 and globals()['rsi_{}'.format(coin)] > globals()['rsi_b5_{}'.format(coin)] + 30
+                        and globals()['current_price_{}'.format(coin)] > globals()['past_b30_price_{}'.format(coin)] * 1.02 and globals()['past_b30_price_{}'.format(coin)] > 0):
                         print(coin,"buyby_3")                         
                         rsi_continue_chk = True    
 
