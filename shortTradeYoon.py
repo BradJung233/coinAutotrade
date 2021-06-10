@@ -36,10 +36,11 @@ limit_NEO = 300000
 coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW","LINK","THETA","ENJ","VET","TFUEL","ETC","XTZ","ONG","BTG","BCHA","BSV","DOGE"]
 
 """------------------------------------------이하 공통 부분---------------------------------------------------------------"""
-"""v1.086"""
+"""v1.087"""
 # 1.81 매도8조건에 매수가가 10프로 상승하면 팔도록 조건 추가
 # 1.84 매도7조건 2번연속 -> 3번연속으로 수정
 # 1.85 매도10조건 추가
+# 1.87 매수조건 수정, 매도조건 11,12 추가
 
 """변수 생성"""
 for coin in coins:
@@ -310,14 +311,15 @@ while True:
                         print(coin,"buyby_1")                         
                         rsi_continue_chk = True    
 
-                    """매수2조건: rsi가 55 이상이고 4번연속 상승에 20분 전보다 1프로이상 상승"""
-                    if (globals()['rsi_{}'.format(coin)] > 55 and  globals()['rsi_b4_{}'.format(coin)] >0 and globals()['rsi_{}'.format(coin)] > globals()['rsi_b1_{}'.format(coin)] 
-                        > globals()['rsi_b2_{}'.format(coin)] > globals()['rsi_b3_{}'.format(coin)] > globals()['rsi_b4_{}'.format(coin)]
+                    """매수2조건: rsi가 60 이상이고 4번연속 상승에 20분 전보다 1프로이상 상승"""
+                    if (globals()['rsi_{}'.format(coin)] > 60 and  globals()['rsi_b1_{}'.format(coin)] > 60 and globals()['rsi_b2_{}'.format(coin)] > 55 and globals()['rsi_b4_{}'.format(coin)] >0 
+                        and globals()['rsi_{}'.format(coin)] > globals()['rsi_b1_{}'.format(coin)] > globals()['rsi_b2_{}'.format(coin)] > globals()['rsi_b3_{}'.format(coin)] > globals()['rsi_b4_{}'.format(coin)]
                         and globals()['current_price_{}'.format(coin)] > globals()['past_b20_price_{}'.format(coin)] * 1.01 and globals()['past_b20_price_{}'.format(coin)] > 0):
                         print(coin,"buyby_2")                         
                         rsi_continue_chk = True    
 
-                    if (globals()['rsi_{}'.format(coin)] > 55 and  globals()['rsi_b5_{}'.format(coin)] > 0 and globals()['rsi_{}'.format(coin)] > globals()['rsi_b5_{}'.format(coin)] + 30
+                    if (globals()['rsi_{}'.format(coin)] > 60 and globals()['rsi_b1_{}'.format(coin)] > 60 and globals()['rsi_b2_{}'.format(coin)] > 55 and  globals()['rsi_b5_{}'.format(coin)] > 0 
+                        and globals()['rsi_{}'.format(coin)] > globals()['rsi_b5_{}'.format(coin)] + 30
                         and globals()['current_price_{}'.format(coin)] > globals()['past_b30_price_{}'.format(coin)] * 1.02 and globals()['past_b30_price_{}'.format(coin)] > 0):
                         print(coin,"buyby_3")                         
                         rsi_continue_chk = True    
@@ -418,7 +420,7 @@ while True:
                     print(coin,"sellby_8") 
                     sell_continue_chk = True
 
-                """매도9조건 매수가 대비 3프로 상승이고 RSI지수가 4번 연속 RSI 50 아래면 매도"""
+                """매도9조건 매수가 대비 3프로 상승이고 RSI지수가 3번 연속 RSI 50 아래면 매도"""
                 if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['buy_price_{}'.format(coin)]*1.03 < globals()['current_price_{}'.format(coin)] and 
                     globals()['rsi_{}'.format(coin)] <50 and globals()['rsi_b1_{}'.format(coin)] < 50 and globals()['rsi_b2_{}'.format(coin)] < 50):  
                     sell_continue_chk = True
@@ -433,6 +435,23 @@ while True:
                     if globals()['rsi_b3_{}'.format(coin)] == 0:
                         sell_continue_chk = False
                     print(coin,"sellby_10") 
+
+                """매도11조건 RSI지수가 4번 연속  55 아래면 매도"""
+                if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['rsi_{}'.format(coin)] <55 
+                    and globals()['rsi_b1_{}'.format(coin)] < 55 and globals()['rsi_b2_{}'.format(coin)] < 55 and globals()['rsi_b3_{}'.format(coin)] < 55):  
+                    sell_continue_chk = True
+                    if globals()['rsi_b3_{}'.format(coin)] == 0:
+                        sell_continue_chk = False
+                    print(coin,"sellby_11") 
+
+                """매도12조건 RSI지수가 5번 연속  60 아래면 매도"""
+                if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['rsi_{}'.format(coin)] <60
+                    and globals()['rsi_b1_{}'.format(coin)] < 60 and globals()['rsi_b2_{}'.format(coin)] < 60 and globals()['rsi_b3_{}'.format(coin)] < 60
+                    and globals()['rsi_b4_{}'.format(coin)] < 60 and globals()['rsi_b5_{}'.format(coin)] < 60):  
+                    sell_continue_chk = True
+                    if globals()['rsi_b5_{}'.format(coin)] == 0:
+                        sell_continue_chk = False
+                    print(coin,"sellby_12") 
 
                 if globals()['rsi_{}'.format(coin)] == 0:
                     sell_continue_chk = False
