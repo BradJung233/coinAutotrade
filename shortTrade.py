@@ -428,38 +428,42 @@ while True:
                     trade_message = "sellby_8"                         
                     sell_continue_chk = True
 
-                """매도9조건 매수가 대비 3프로 상승이고 RSI지수가 3번 연속 RSI 50 아래면 매도"""
-                if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['buy_price_{}'.format(coin)]*1.03 < globals()['current_price_{}'.format(coin)] and 
-                    globals()['rsi_{}'.format(coin)] <50 and globals()['rsi_b1_{}'.format(coin)] < 50 and globals()['rsi_b2_{}'.format(coin)] < 50):  
-                    sell_continue_chk = True
-                    if globals()['rsi_b2_{}'.format(coin)] == 0:
-                        sell_continue_chk = False
-                    trade_message = "sellby_9"                         
+                """매수가 대비 2프로 상승"""
+                if coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['buy_price_{}'.format(coin)]*1.02 < globals()['current_price_{}'.format(coin)]:
+                    """매도9조건 RSI지수가 3번 연속 RSI 50 아래면 매도"""
+                    if globals()['rsi_{}'.format(coin)] <50 and globals()['rsi_b1_{}'.format(coin)] < 50 and globals()['rsi_b2_{}'.format(coin)] < 50:  
+                        sell_continue_chk = True
+                        if globals()['rsi_b2_{}'.format(coin)] == 0:
+                            sell_continue_chk = False
+                        trade_message = "sellby_9"                         
 
-                """매도10조건 매수가 대비 수익률이 1프로 이하이고 RSI지수가 4번 연속 RSI 50 아래면 매도"""
+                    """매도11조건 RSI지수가 4번 연속  55 아래면 매도"""
+                    if  globals()['rsi_{}'.format(coin)] <55 and globals()['rsi_b1_{}'.format(coin)] < 55 and globals()['rsi_b2_{}'.format(coin)] < 55 and globals()['rsi_b3_{}'.format(coin)] < 55:  
+                        sell_continue_chk = True
+                        if globals()['rsi_b3_{}'.format(coin)] == 0:
+                            sell_continue_chk = False
+                        trade_message = "sellby_11"   
+
+                    """매도12조건 RSI지수가 5번 연속  60 아래면 매도"""
+                    if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['rsi_{}'.format(coin)] <60
+                        and globals()['rsi_b1_{}'.format(coin)] < 60 and globals()['rsi_b2_{}'.format(coin)] < 60 and globals()['rsi_b3_{}'.format(coin)] < 60
+                        and globals()['rsi_b4_{}'.format(coin)] < 60 and globals()['rsi_b5_{}'.format(coin)] < 60):  
+                        sell_continue_chk = True
+                        if globals()['rsi_b5_{}'.format(coin)] == 0:
+                            sell_continue_chk = False
+                        trade_message = "sellby_12"    
+
+                """매도10조건 매수가 대비 수익률이 1프로 이하이고 RSI지수가 5번 연속 RSI 50 아래면 매도"""
                 if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and (globals()['buy_price_{}'.format(coin)]/ globals()['current_price_{}'.format(coin)]) <1.01 and 
-                    globals()['rsi_{}'.format(coin)] <50 and globals()['rsi_b1_{}'.format(coin)] < 50 and globals()['rsi_b2_{}'.format(coin)] < 50 and globals()['rsi_b3_{}'.format(coin)] < 50):  
+                    globals()['rsi_{}'.format(coin)] <50 and globals()['rsi_b1_{}'.format(coin)] < 50 and globals()['rsi_b2_{}'.format(coin)] < 50 and globals()['rsi_b3_{}'.format(coin)] 
+                    < 50 and globals()['rsi_b4_{}'.format(coin)] < 50):  
                     sell_continue_chk = True
-                    if globals()['rsi_b3_{}'.format(coin)] == 0:
+                    if globals()['rsi_b4_{}'.format(coin)] == 0:
                         sell_continue_chk = False
                     trade_message = "sellby_10"                         
 
-                """매도11조건 RSI지수가 4번 연속  55 아래면 매도"""
-                if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['rsi_{}'.format(coin)] <55 
-                    and globals()['rsi_b1_{}'.format(coin)] < 55 and globals()['rsi_b2_{}'.format(coin)] < 55 and globals()['rsi_b3_{}'.format(coin)] < 55):  
-                    sell_continue_chk = True
-                    if globals()['rsi_b3_{}'.format(coin)] == 0:
-                        sell_continue_chk = False
-                    trade_message = "sellby_11"                         
+                      
 
-                """매도12조건 RSI지수가 5번 연속  60 아래면 매도"""
-                if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['rsi_{}'.format(coin)] <60
-                    and globals()['rsi_b1_{}'.format(coin)] < 60 and globals()['rsi_b2_{}'.format(coin)] < 60 and globals()['rsi_b3_{}'.format(coin)] < 60
-                    and globals()['rsi_b4_{}'.format(coin)] < 60 and globals()['rsi_b5_{}'.format(coin)] < 60):  
-                    sell_continue_chk = True
-                    if globals()['rsi_b5_{}'.format(coin)] == 0:
-                        sell_continue_chk = False
-                    trade_message = "sellby_12"                         
 
                 if globals()['rsi_{}'.format(coin)] == 0:
                     sell_continue_chk = False
