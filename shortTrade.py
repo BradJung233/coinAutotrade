@@ -32,6 +32,7 @@ coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW","LINK","THETA","ENJ","VET"
 # 1.84 매도7조건 2번연속 -> 3번연속으로 수정
 # 1.85 매도10조건 추가
 # 1.87 매수조건 수정, 매도조건 11,12 추가
+# 1.88 K값 무시
 
 """변수 생성"""
 for coin in coins:
@@ -168,17 +169,17 @@ def get_rsi(ticker):
 
 def get_rsi_loop():
     for coin in coins:
-        if globals()['globalK_{}'.format(coin)] == 0:
-            time.sleep(0.1)
-            continue        
+        # if globals()['globalK_{}'.format(coin)] == 0:
+        #     time.sleep(0.1)
+        #     continue        
         get_rsi("KRW-"+coin)
         time.sleep(1)
 
 def sell_price_loop():
     for coin in coins:
-        if globals()['globalK_{}'.format(coin)] == 0:
-            time.sleep(0.1)
-            continue              
+        # if globals()['globalK_{}'.format(coin)] == 0:
+        #     time.sleep(0.1)
+        #     continue              
         coin_selltime = globals()['sell_time_{}'.format(coin)] 
         if coin_selltime is None:
             globals()['sell_price_{}'.format(coin)] = 0
@@ -191,9 +192,9 @@ def sell_price_loop():
 
 def past_price_loop():
     for coin in coins:
-        if globals()['globalK_{}'.format(coin)] == 0:
-            time.sleep(0.1)
-            continue              
+        # if globals()['globalK_{}'.format(coin)] == 0:
+        #     time.sleep(0.1)
+        #     continue              
         now = datetime.datetime.now()
         globals()['past_b30_price_{}'.format(coin)] = globals()['past_b20_price_{}'.format(coin)] 
         globals()['past_b20_price_{}'.format(coin)] = globals()['past_b10_price_{}'.format(coin)] 
@@ -209,8 +210,8 @@ def past_price_loop():
 for coin in coins:
     globals()['globalK_{}'.format(coin)] = get_bestK("KRW-"+coin)
     time.sleep(1)
-    if globals()['globalK_{}'.format(coin)] == 0:
-        continue
+    # if globals()['globalK_{}'.format(coin)] == 0:
+    #     continue
     print(coin, globals()['globalK_{}'.format(coin)])
     print(coin,"target_price:", get_target_price("KRW-"+coin, globals()['globalK_{}'.format(coin)]))
     # get_rsi(coin) # RSI 지표 구하기
@@ -253,9 +254,9 @@ while True:
         schedule.run_pending()
         if start_time + datetime.timedelta(seconds=60) < now < end_time:
             for coin in coins:
-                if globals()['globalK_{}'.format(coin)] == 0:
-                    time.sleep(0.1)
-                    continue                     
+                # if globals()['globalK_{}'.format(coin)] == 0:
+                #     time.sleep(0.1)
+                #     continue                     
                 globals()['current_price_{}'.format(coin)]  = get_current_price("KRW-"+coin)
                 # print(coin, "k:",globals()['globalK_{}'.format(coin)])
                 # print(coin,"curren:",current_price, "target:", get_target_price("KRW-"+coin, globals()['globalK_{}'.format(coin)]), "predict:", globals()['close_price_{}'.format(coin)])
@@ -282,9 +283,9 @@ while True:
                     print("sell_price",coin, globals()['sell_price_{}'.format(coin)])     
                     time.sleep(0.5)
                     continue   
-                if globals()['globalK_{}'.format(coin)] == 0:
-                    time.sleep(0.5)        
-                    continue                             
+                # if globals()['globalK_{}'.format(coin)] == 0:
+                #     time.sleep(0.5)        
+                #     continue                             
                 # print(coin, target_price)
                 # if ((target_price <= current_price < target_price + globals()['offset_{}'.format(coin)]) and target_price * 1.01 < globals()['close_price_{}'.format(coin)])or current_price *1.05 < globals()['close_price_{}'.format(coin)]:
                 if  globals()['current_price_{}'.format(coin)]  > ma5:
