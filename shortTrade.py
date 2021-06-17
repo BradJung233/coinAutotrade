@@ -223,7 +223,7 @@ for coin in coins:
 # schedule.every(10).minutes.do(lambda: predict_price_loop())
 schedule.every(5).minutes.do(lambda: get_rsi_loop())
 schedule.every().day.at("09:02").do(lambda: get_bestK_loop())
-schedule.every(60).minutes.do(lambda: sell_price_loop()) # sell_price 1시간마다 초기화 안 쓸거면 주석
+# schedule.every(60).minutes.do(lambda: sell_price_loop()) # sell_price 1시간마다 초기화 안 쓸거면 주석
 schedule.every(10).minutes.do(lambda: past_price_loop()) # 10분전 현재가 조회
 
 # schedule.every(60).minutes.do(lambda: get_bestK_loop())
@@ -506,6 +506,7 @@ while True:
                 if coinjan * globals()['current_price_{}'.format(coin)]  > 5000:                
                     upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
                     # globals()['globalK_{}'.format(coin)] = get_bestK("KRW-" + coin)
+                globals()['sell_price_{}'.format(coin)] = 0
             time.sleep(0.5)
     except Exception as e:
         print(e)
