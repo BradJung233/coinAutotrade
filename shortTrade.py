@@ -384,10 +384,10 @@ while True:
                 if target_price <  globals()['current_price_{}'.format(coin)]:
                     sell_continue_chk = False               
 
-                """매도2조건 RSI지수가 85 이상이면 매도"""
-                if globals()['rsi_{}'.format(coin)] >85: 
-                    trade_message = "sellby_2"                         
-                    sell_continue_chk = True
+                # """매도2조건 RSI지수가 85 이상이면 매도"""
+                # if globals()['rsi_{}'.format(coin)] >85: 
+                #     trade_message = "sellby_2"                         
+                #     sell_continue_chk = True
 
                 """매도3조건 RSI지수가 30 미만이면 매도"""
                 if globals()['rsi_{}'.format(coin)] <30:
