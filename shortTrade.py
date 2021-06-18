@@ -418,10 +418,11 @@ while True:
                         trade_message = "sellby_6"                         
 
                 """매도7조건 매수가 대비 5프로 상승이고 RSI지수가 4번 연속 RSI 60 아래면 매도"""
-                if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['buy_price_{}'.format(coin)]*1.05 < globals()['current_price_{}'.format(coin)] and 
-                    globals()['rsi_{}'.format(coin)] <60 and globals()['rsi_b1_{}'.format(coin)] < 60 and globals()['rsi_b2_{}'.format(coin)] < 60 and globals()['rsi_b3_{}'.format(coin)] < 60):  
+                if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['buy_price_{}'.format(coin)]*1.05 < globals()['current_price_{}'.format(coin)]
+                    and globals()['current_price_{}'.format(coin)] < globals()['past_b10_price_{}'.format(coin)] 
+                    and globals()['current_price_{}'.format(coin)] < globals()['past_price_{}'.format(coin)] and globals()['rsi_{}'.format(coin)] <60 ):
                     sell_continue_chk = True
-                    if globals()['rsi_b3_{}'.format(coin)] == 0:
+                    if globals()['past_b10_price_{}'.format(coin)] == 0:
                         sell_continue_chk = False
                     trade_message = "sellby_7"                         
 
