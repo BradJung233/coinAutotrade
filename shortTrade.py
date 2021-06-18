@@ -466,10 +466,10 @@ while True:
 
                 """매도13조건 매수가 대비 수익률이 1~3프로 이하이고  매도"""
                 if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and 1.01 < (globals()['buy_price_{}'.format(coin)]/ globals()['current_price_{}'.format(coin)]) <1.03
-                    and globals()['current_price_{}'.format(coin)] < globals()['past_b20_price_{}'.format(coin)] and globals()['current_price_{}'.format(coin)] < globals()['past_b10_price_{}'.format(coin)] 
+                    and globals()['current_price_{}'.format(coin)] < globals()['past_b10_price_{}'.format(coin)] 
                     and globals()['current_price_{}'.format(coin)] < globals()['past_price_{}'.format(coin)] and globals()['rsi_{}'.format(coin)] <60 ):
                     sell_continue_chk = True
-                    if globals()['past_b20_price_{}'.format(coin)] == 0:
+                    if globals()['past_b10_price_{}'.format(coin)] == 0:
                         sell_continue_chk = False
                     trade_message = "sellby_13"                          
 
