@@ -54,7 +54,7 @@ for coin in coins:
     globals()['rsi_b1_{}'.format(coin)] = 0
     globals()['rsi_{}'.format(coin)] = 0
     globals()['sell_time_{}'.format(coin)]= None
-    globals()['limit_{}'.format(coin)] = 1000000
+    globals()['limit_{}'.format(coin)] = 500000
 
 def get_target_price(ticker, k):
     """변동성 돌파 전략으로 매수 목표가 조회"""
@@ -334,6 +334,16 @@ while True:
                             rsi_continue_chk = False 
                         if globals()['rsi_b1_{}'.format(coin)] == 0:
                             rsi_continue_chk = False 
+
+                    """매수5조건: rsi가 65이상이고 20분전 보다 2프로이상 상승"""
+                    if (globals()['rsi_{}'.format(coin)] > 65 and globals()['rsi_b1_{}'.format(coin)] > 65
+                        and (globals()['current_price_{}'.format(coin)] > globals()['past_b20_price_{}'.format(coin)] * 1.02 ):
+                        trade_message = "buyby_5"                         
+                        rsi_continue_chk = True  
+                        if globals()['past_b20_price_{}'.format(coin)] == 0:
+                            rsi_continue_chk = False 
+                        if globals()['rsi_b1_{}'.format(coin)] == 0:
+                            rsi_continue_chk = False                             
                     # if globals()['rsi_b1_{}'.format(coin)] == 0 or globals()['rsi_b2_{}'.format(coin)] == 0 or globals()['rsi_b3_{}'.format(coin)] == 0 or globals()['rsi_b4_{}'.format(coin)] == 0:
                     #     rsi_continue_chk = False
 
