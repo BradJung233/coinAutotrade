@@ -337,7 +337,7 @@ while True:
 
                     """매수5조건: rsi가 65이상이고 20분전 보다 2프로이상 상승"""
                     if (globals()['rsi_{}'.format(coin)] > 65 and globals()['rsi_b1_{}'.format(coin)] > 65
-                        and (globals()['current_price_{}'.format(coin)] > globals()['past_b20_price_{}'.format(coin)] * 1.02 ):
+                        and globals()['current_price_{}'.format(coin)] > globals()['past_b20_price_{}'.format(coin)] * 1.02 ):
                         trade_message = "buyby_5"                         
                         rsi_continue_chk = True  
                         if globals()['past_b20_price_{}'.format(coin)] == 0:
