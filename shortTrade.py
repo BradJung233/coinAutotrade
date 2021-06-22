@@ -42,6 +42,10 @@ for coin in coins:
     globals()['past_b30_price_{}'.format(coin)] = 0
     globals()['past_b20_price_{}'.format(coin)] = 0
     globals()['past_b10_price_{}'.format(coin)] = 0
+    globals()['past_b3_price_{}'.format(coin)] = 0
+    globals()['past_b2_price_{}'.format(coin)] = 0
+    globals()['past_b1_price_{}'.format(coin)] = 0
+    globals()['past_b0_price_{}'.format(coin)] = 0
     globals()['past_price_{}'.format(coin)] = 0
     globals()['current_price_{}'.format(coin)] = 0
     # globals()['bef_current_price_{}'.format(coin)] = 0
@@ -207,6 +211,23 @@ def past_price_loop():
 
     print("past_price setting")    
 
+def past_price_loop2():
+    for coin in coins:
+        # if globals()['globalK_{}'.format(coin)] == 0:
+        #     time.sleep(0.1)
+        #     continue              
+        # now = datetime.datetime.now()
+        globals()['past_b3_price_{}'.format(coin)] = globals()['past_b2_price_{}'.format(coin)] 
+        globals()['past_b2_price_{}'.format(coin)] = globals()['past_b1_price_{}'.format(coin)] 
+        globals()['past_b1_price_{}'.format(coin)] =globals()['past_b0_price_{}'.format(coin)] 
+        globals()['past_b0_price_{}'.format(coin)] =  globals()['current_price_{}'.format(coin)]
+        print(coin, "past_b3_price:", globals()['past_b3_price_{}'.format(coin)])
+        print(coin, "past_b2_price:", globals()['past_b2_price_{}'.format(coin)])
+        print(coin, "past_b1_price:", globals()['past_b1_price_{}'.format(coin)])
+        print(coin, "past_b0_price:", globals()['past_b0_price_{}'.format(coin)])
+
+    print("past_price setting") 
+
 for coin in coins:
     globals()['globalK_{}'.format(coin)] = get_bestK("KRW-"+coin)
     time.sleep(1)
@@ -225,6 +246,7 @@ schedule.every(5).minutes.do(lambda: get_rsi_loop())
 schedule.every().day.at("09:02").do(lambda: get_bestK_loop())
 # schedule.every(60).minutes.do(lambda: sell_price_loop()) # sell_price 1시간마다 초기화 안 쓸거면 주석
 schedule.every(10).minutes.do(lambda: past_price_loop()) # 10분전 현재가 조회
+schedule.every(1).minutes.do(lambda: past_price_loop2()) # 1분전 현재가 조회
 
 # schedule.every(60).minutes.do(lambda: get_bestK_loop())
 # schedule.every().day.at("09:03").do(lambda: predict_price_loop())
@@ -325,7 +347,8 @@ while True:
                     #         rsi_continue_chk = False  
 
                     """매수4조건: rsi가 65이상이고 10분전 보다 1.5프로이상 상승"""
-                    if (globals()['rsi_{}'.format(coin)] > 65 and globals()['rsi_b1_{}'.format(coin)] > 65
+                    if (globals()['rsi_{}'.format(coin)] > 65 
+                        and globals()['current_price_{}'.format(coin)] > globals()['past_b1_price_{}'.format(coin)] > globals()['past_b2_price_{}'.format(coin)] 
                         and (globals()['current_price_{}'.format(coin)] > globals()['past_b10_price_{}'.format(coin)] * 1.015 and globals()['past_b10_price_{}'.format(coin)] > 0
                         # or globals()['current_price_{}'.format(coin)] > globals()['past_price_{}'.format(coin)] * 1.01 and globals()['past_price_{}'.format(coin)] > 0)
                     )):
@@ -333,18 +356,17 @@ while True:
                         rsi_continue_chk = True  
                         if globals()['past_b10_price_{}'.format(coin)] == 0:
                             rsi_continue_chk = False 
-                        if globals()['rsi_b1_{}'.format(coin)] == 0:
-                            rsi_continue_chk = False 
 
                     """매수5조건: rsi가 65이상이고 20분전 보다 2프로이상 상승"""
-                    if (globals()['rsi_{}'.format(coin)] > 65 and globals()['rsi_b1_{}'.format(coin)] > 65
+                    if (globals()['rsi_{}'.format(coin)] > 65 
+                        and globals()['current_price_{}'.format(coin)] > globals()['past_b1_price_{}'.format(coin)] > globals()['past_b2_price_{}'.format(coin)] 
                         and globals()['current_price_{}'.format(coin)] > globals()['past_b20_price_{}'.format(coin)] * 1.02 ):
                         trade_message = "buyby_5"                         
                         rsi_continue_chk = True  
                         if globals()['past_b20_price_{}'.format(coin)] == 0:
                             rsi_continue_chk = False 
-                        if globals()['rsi_b1_{}'.format(coin)] == 0:
-                            rsi_continue_chk = False                             
+                        # if globals()['rsi_b1_{}'.format(coin)] == 0:
+                        #     rsi_continue_chk = False                             
                     # if globals()['rsi_b1_{}'.format(coin)] == 0 or globals()['rsi_b2_{}'.format(coin)] == 0 or globals()['rsi_b3_{}'.format(coin)] == 0 or globals()['rsi_b4_{}'.format(coin)] == 0:
                     #     rsi_continue_chk = False
 
