@@ -310,7 +310,7 @@ while True:
                 #     continue                             
                 # print(coin, target_price)
                 # if ((target_price <= current_price < target_price + globals()['offset_{}'.format(coin)]) and target_price * 1.01 < globals()['close_price_{}'.format(coin)])or current_price *1.05 < globals()['close_price_{}'.format(coin)]:
-                if  globals()['current_price_{}'.format(coin)]  > ma5*0.7:
+                if  globals()['current_price_{}'.format(coin)]  > ma5:
                     krw = get_balance("KRW")
                     limit = globals()['limit_{}'.format(coin)]
                     coin_m = upbit.get_amount(coin)
