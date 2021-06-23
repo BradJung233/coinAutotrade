@@ -234,7 +234,7 @@ for coin in coins:
     globals()['sell_time_{}'.format(coin)] = datetime.datetime.now()
     # print(coin,rsi)
     time.sleep(0.2) # 속도가 느리면 다음 코인 값을 못 갖고와 에러남. 그래서 sleep
-
+get_opening_loop()
 # schedule.every(10).minutes.do(lambda: predict_price_loop())
 schedule.every(1).minutes.do(lambda: get_rsi_loop())
 schedule.every().day.at("09:00").do(lambda: get_opening_loop())
@@ -333,8 +333,6 @@ while True:
                         print("_______buy_price2",coin, globals()['buy_price_{}'.format(coin)])
 
                 sell_continue_chk = False
-                if globals()['rsi_b1_{}'.format(coin)] == 0 or globals()['rsi_b2_{}'.format(coin)] == 0 or globals()['rsi_b3_{}'.format(coin)] == 0 or globals()['rsi_b4_{}'.format(coin)] == 0:
-                    sell_continue_chk = False
 
                 """매도8조건 매수가 대비 10프로 상승하면 매도"""
                 if coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['buy_price_{}'.format(coin)]*1.1 < globals()['current_price_{}'.format(coin)]:  
@@ -342,7 +340,7 @@ while True:
                     sell_continue_chk = True
 
                 """매도9조건 매수가 대비 3프로 이하이고 RSI 60 아래면 매도"""
-                if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['buy_price_{}'.format(coin)]*1.03 < globals()['current_price_{}'.format(coin)]
+                if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['buy_price_{}'.format(coin)]*1.03 > globals()['current_price_{}'.format(coin)]
                     and globals()['rsi_{}'.format(coin)] <60):
                     sell_continue_chk = True
                     trade_message = "sellby_9"       
@@ -352,6 +350,12 @@ while True:
                     < globals()['buy_price_{}'.format(coin)]*1.05 and globals()['rsi_{}'.format(coin)] <70):
                     sell_continue_chk = True
                     trade_message = "sellby_10"  
+
+                """매도11조건 매수가 대비 5~10 프로이고 RSI 75 아래면 매도"""
+                if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['buy_price_{}'.format(coin)]*1.05 < globals()['current_price_{}'.format(coin)]
+                    < globals()['buy_price_{}'.format(coin)]*1.1 and globals()['rsi_{}'.format(coin)] <75):
+                    sell_continue_chk = True
+                    trade_message = "sellby_11"  
 
                 if globals()['rsi_{}'.format(coin)] == 0:
                     sell_continue_chk = False
@@ -383,7 +387,7 @@ while True:
         print(e)
         time.sleep(1)
 
-# 백그라운드 실행: nohup python3 -u shortTrade.py&
+# 백그라운드 실행: nohup python3 -u shortTrade1.py > output.log &
 # 실행되고 있는지 확인: ps ax | grep .py
 # 프로세스 종료(PID는 ps ax | grep .py를 했을때 확인 가능): kill -9 PID     
 # 코인종류 조회 : print(pyupbit.get_tickers())     
