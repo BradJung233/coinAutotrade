@@ -334,10 +334,7 @@ while True:
 
                 sell_continue_chk = False
 
-                """매도8조건 매수가 대비 10프로 상승하면 매도"""
-                if coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['buy_price_{}'.format(coin)]*1.1 < globals()['current_price_{}'.format(coin)]:  
-                    trade_message = "sellby_8"                         
-                    sell_continue_chk = True
+
 
                 """매도9조건 매수가 대비 3프로 이하이고 RSI 60 아래면 매도"""
                 if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['buy_price_{}'.format(coin)]*1.03 > globals()['current_price_{}'.format(coin)]
@@ -345,6 +342,14 @@ while True:
                     sell_continue_chk = True
                     trade_message = "sellby_9"       
 
+                if now < start_time + datetime.timedelta(hours=1):
+                    sell_continue_chk = False
+
+                """매도8조건 매수가 대비 10프로 상승하면 매도"""
+                if coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['buy_price_{}'.format(coin)]*1.1 < globals()['current_price_{}'.format(coin)]:  
+                    trade_message = "sellby_8"                         
+                    sell_continue_chk = True
+                    
                 """매도10조건 매수가 대비 3~5프로이고 RSI 70 아래면 매도"""
                 if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['buy_price_{}'.format(coin)]*1.03 < globals()['current_price_{}'.format(coin)]
                     < globals()['buy_price_{}'.format(coin)]*1.05 and globals()['rsi_{}'.format(coin)] <70):
