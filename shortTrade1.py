@@ -266,7 +266,7 @@ while True:
         now = datetime.datetime.now()
         end_time = start_time + datetime.timedelta(hours=3)
         schedule.run_pending()
-        if start_time  < now < end_time:
+        if start_time + datetime.timedelta(seconds=10) < now < end_time:
             for coin in coins:
                  
                 globals()['current_price_{}'.format(coin)]  = get_current_price("KRW-"+coin)
