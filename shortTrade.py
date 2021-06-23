@@ -265,13 +265,13 @@ print("autotrade start")
 # sell_price_ENJ = 36980
 # ------------------------------------------------
 time.sleep(3)
+start_time = get_start_time("KRW-BTC")
 
 # 자동매매 시작
 while True:
     try:
 
         now = datetime.datetime.now()
-        start_time = get_start_time("KRW-BTC")
         end_time = start_time + datetime.timedelta(days=1)
         schedule.run_pending()
         if start_time + datetime.timedelta(seconds=60) < now < end_time:

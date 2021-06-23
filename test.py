@@ -21,7 +21,7 @@ def get_balance(ticker):
     return 0  
 
 # print(upbit.get_balances("KRW-BTC"))     # KRW-BTC 조회
-print(get_balance("KRW"))         # 보유 현금 조회
+# print(get_balance("KRW"))         # 보유 현금 조회
 # print(upbit.get_amount("ETH"))     # 코인 매수 금액 조회
 # print(upbit.get_amount("BTC"))     # 코인 매수 금액 조회
 
@@ -73,3 +73,18 @@ print(get_balance("KRW"))         # 보유 현금 조회
 
 # print(get_start_time("KRW-BTC"))
 # get_start_time("KRW-ETH")
+
+def get_opening_price(ticker):
+    """시작가 조회"""
+    balances = upbit.get_balances()
+    for b in balances:
+        if b['currency'] == ticker:
+            if b['opening_price'] is not None:
+                return float(b['opening_price'])
+            else:
+                return 0
+        print(b)
+    return 0  
+
+print(get_opening_price("KRW-BTC"))    
+pyupbit.get
