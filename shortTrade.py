@@ -574,12 +574,12 @@ while True:
                 time.sleep(0.5)  
             print("------------------------------------------------------")
         else:
-            for coin in coins:
-                coinjan = get_balance(coin)
-                if coinjan * globals()['current_price_{}'.format(coin)]  > 5000:                
-                    upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
-                    # globals()['globalK_{}'.format(coin)] = get_bestK("KRW-" + coin)
-                globals()['sell_price_{}'.format(coin)] = 0
+            # for coin in coins:
+            #     coinjan = get_balance(coin)
+            #     if coinjan * globals()['current_price_{}'.format(coin)]  > 5000:                
+            #         upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
+            #         # globals()['globalK_{}'.format(coin)] = get_bestK("KRW-" + coin)
+            #     globals()['sell_price_{}'.format(coin)] = 0
             time.sleep(0.5)
     except Exception as e:
         print(e)
