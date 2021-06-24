@@ -361,14 +361,14 @@ while True:
                     #     if globals()['past_b10_price_{}'.format(coin)] == 0:
                     #         rsi_continue_chk = False 
 
-                    """매수5조건: rsi가 65이상이고 20분전 보다 2프로이상 상승"""
-                    if (globals()['rsi_{}'.format(coin)] > 65 
-                        and globals()['current_price_{}'.format(coin)] > globals()['past_b1_price_{}'.format(coin)] > globals()['past_b2_price_{}'.format(coin)] > globals()['past_b3_price_{}'.format(coin)] 
-                        and globals()['current_price_{}'.format(coin)] > globals()['past_b20_price_{}'.format(coin)] * 1.02 ):
-                        trade_message = "buyby_5"                         
-                        rsi_continue_chk = True  
-                        if globals()['past_b20_price_{}'.format(coin)] == 0:
-                            rsi_continue_chk = False 
+                    # """매수5조건: rsi가 65이상이고 20분전 보다 2프로이상 상승"""
+                    # if (globals()['rsi_{}'.format(coin)] > 65 
+                    #     and globals()['current_price_{}'.format(coin)] > globals()['past_b1_price_{}'.format(coin)] > globals()['past_b2_price_{}'.format(coin)] > globals()['past_b3_price_{}'.format(coin)] 
+                    #     and globals()['current_price_{}'.format(coin)] > globals()['past_b20_price_{}'.format(coin)] * 1.02 ):
+                    #     trade_message = "buyby_5"                         
+                    #     rsi_continue_chk = True  
+                    #     if globals()['past_b20_price_{}'.format(coin)] == 0:
+                    #         rsi_continue_chk = False 
                         # if globals()['rsi_b1_{}'.format(coin)] == 0:
                         #     rsi_continue_chk = False                             
                     # if globals()['rsi_b1_{}'.format(coin)] == 0 or globals()['rsi_b2_{}'.format(coin)] == 0 or globals()['rsi_b3_{}'.format(coin)] == 0 or globals()['rsi_b4_{}'.format(coin)] == 0:
