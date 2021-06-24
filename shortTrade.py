@@ -242,7 +242,7 @@ for coin in coins:
     time.sleep(0.2) # 속도가 느리면 다음 코인 값을 못 갖고와 에러남. 그래서 sleep
 
 # schedule.every(10).minutes.do(lambda: predict_price_loop())
-schedule.every(5).minutes.do(lambda: get_rsi_loop())
+schedule.every(3).minutes.do(lambda: get_rsi_loop())
 schedule.every().day.at("09:02").do(lambda: get_bestK_loop())
 # schedule.every(60).minutes.do(lambda: sell_price_loop()) # sell_price 1시간마다 초기화 안 쓸거면 주석
 schedule.every(10).minutes.do(lambda: past_price_loop()) # 10분전 현재가 조회
@@ -278,8 +278,8 @@ while True:
             
 
             for coin in coins:
-                if start_time < now < start_time + datetime.timedelta(hours=3):
-                    continue
+                # if start_time < now < start_time + datetime.timedelta(hours=3):
+                #     continue
                 # if globals()['globalK_{}'.format(coin)] == 0:
                 #     time.sleep(0.1)
                 #     continue                     
@@ -350,16 +350,16 @@ while True:
                     #     if globals()['rsi_b5_{}'.format(coin)] == 0:
                     #         rsi_continue_chk = False  
 
-                    """매수4조건: rsi가 65이상이고 10분전 보다 1.5프로이상 상승"""
-                    if (globals()['rsi_{}'.format(coin)] > 65 
-                        and globals()['current_price_{}'.format(coin)] > globals()['past_b1_price_{}'.format(coin)] > globals()['past_b2_price_{}'.format(coin)] > globals()['past_b3_price_{}'.format(coin)] 
-                        and (globals()['current_price_{}'.format(coin)] > globals()['past_b10_price_{}'.format(coin)] * 1.015 and globals()['past_b10_price_{}'.format(coin)] > 0
-                        # or globals()['current_price_{}'.format(coin)] > globals()['past_price_{}'.format(coin)] * 1.01 and globals()['past_price_{}'.format(coin)] > 0)
-                    )):
-                        trade_message = "buyby_4"                         
-                        rsi_continue_chk = True  
-                        if globals()['past_b10_price_{}'.format(coin)] == 0:
-                            rsi_continue_chk = False 
+                    # """매수4조건: rsi가 65이상이고 10분전 보다 1.5프로이상 상승"""
+                    # if (globals()['rsi_{}'.format(coin)] > 65 
+                    #     and globals()['current_price_{}'.format(coin)] > globals()['past_b1_price_{}'.format(coin)] > globals()['past_b2_price_{}'.format(coin)] > globals()['past_b3_price_{}'.format(coin)] 
+                    #     and (globals()['current_price_{}'.format(coin)] > globals()['past_b10_price_{}'.format(coin)] * 1.015 and globals()['past_b10_price_{}'.format(coin)] > 0
+                    #     # or globals()['current_price_{}'.format(coin)] > globals()['past_price_{}'.format(coin)] * 1.01 and globals()['past_price_{}'.format(coin)] > 0)
+                    # )):
+                    #     trade_message = "buyby_4"                         
+                    #     rsi_continue_chk = True  
+                    #     if globals()['past_b10_price_{}'.format(coin)] == 0:
+                    #         rsi_continue_chk = False 
 
                     """매수5조건: rsi가 65이상이고 20분전 보다 2프로이상 상승"""
                     if (globals()['rsi_{}'.format(coin)] > 65 
@@ -388,11 +388,12 @@ while True:
                     if krw is None or krw < 5000:
                         rsi_continue_chk = False
 
-                    """임시 shortTrade1 와 매수시간 겹치지 않게"""
-                    if start_time < now < start_time + datetime.timedelta(hours=3):
-                        rsi_continue_chk = False
+                    # """임시 shortTrade1 와 매수시간 겹치지 않게"""
+                    # if start_time < now < start_time + datetime.timedelta(hours=3):
+                    #     rsi_continue_chk = False
+                    #     continue
+                    if globals()['sell_price_{}'.format(coin)] > 0:
                         continue
-
                     if limit is None:
                         rsi_continue_chk = False                      
                     if coin_m is None:
