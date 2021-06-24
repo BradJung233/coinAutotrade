@@ -74,17 +74,11 @@ def get_balance(ticker):
 # print(get_start_time("KRW-BTC"))
 # get_start_time("KRW-ETH")
 
-def get_opening_price(ticker):
-    """시작가 조회"""
-    balances = upbit.get_balances()
-    for b in balances:
-        if b['currency'] == ticker:
-            if b['opening_price'] is not None:
-                return float(b['opening_price'])
-            else:
-                return 0
-        print(b)
-    return 0  
 
+
+def get_opening_price(ticker):
+    """시가 조회"""
+    df = pyupbit.get_ohlcv(ticker, interval="day", count=1)
+    opening_price = df['open'][-1]
+    return opening_price
 print(get_opening_price("KRW-BTC"))    
-pyupbit.get

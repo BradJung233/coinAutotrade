@@ -382,6 +382,7 @@ while True:
                     """임시 shortTrade1 와 매수시간 겹치지 않게"""
                     if start_time < now < start_time + datetime.timedelta(hours=3):
                         rsi_continue_chk = False
+                        continue
 
                     if limit is None:
                         rsi_continue_chk = False                      

@@ -134,7 +134,7 @@ def get_ma5(ticker):
 
 def get_opening_loop():
     for coin in coins:
-        globals()['opening_price_{}'.format(coin)] = globals()['current_price_{}'.format(coin)]
+        globals()['opening_price_{}'.format(coin)] = get_opening_price("KRW-"+coin)
         time.sleep(0.1)
 
 def rsi(ohlc: pd.DataFrame, period: int = 14): 
@@ -179,6 +179,12 @@ def get_rsi_loop():
         #     continue        
         get_rsi("KRW-"+coin)
         time.sleep(1)
+
+def get_opening_price(ticker):
+    """시가 조회"""
+    df = pyupbit.get_ohlcv(ticker, interval="day", count=1)
+    opening_price = df['open'][-1]
+    return opening_price
 
 def sell_price_loop():
     for coin in coins:
@@ -236,7 +242,7 @@ for coin in coins:
     time.sleep(0.2) # 속도가 느리면 다음 코인 값을 못 갖고와 에러남. 그래서 sleep
 get_opening_loop()
 # schedule.every(10).minutes.do(lambda: predict_price_loop())
-schedule.every(1).minutes.do(lambda: get_rsi_loop())
+schedule.every(2).minutes.do(lambda: get_rsi_loop())
 schedule.every().day.at("09:00").do(lambda: get_opening_loop())
 
 # schedule.every(60).minutes.do(lambda: get_bestK_loop())
@@ -277,7 +283,7 @@ while True:
                 else:
                     globals()['buy_price_{}'.format(coin)] = 0     
 
-                print(coin,"curren:",round(globals()['current_price_{}'.format(coin)],3) ,"RSI:",round(globals()['rsi_{}'.format(coin)],2))
+                print(coin,"curren:",round(globals()['current_price_{}'.format(coin)],3) ,"open:",round(globals()['opening_price_{}'.format(coin)],3),"RSI:",round(globals()['rsi_{}'.format(coin)],2))
                 if globals()['buy_price_{}'.format(coin)] > 0:
                     print("buy_price",coin, globals()['buy_price_{}'.format(coin)])
                 if globals()['sell_price_{}'.format(coin)] > 0:
@@ -294,7 +300,7 @@ while True:
 
                 """매수1조건: rsi가 65이상이고 시작가 보다 2프로이상 상승"""
                 if (globals()['rsi_{}'.format(coin)] > 65 
-                    and globals()['current_price_{}'.format(coin)] > globals()['opening_price_{}'.format(coin)] * 1.02 ):
+                    and globals()['opening_price_{}'.format(coin)] * 1.04 >globals()['current_price_{}'.format(coin)] > globals()['opening_price_{}'.format(coin)] * 1.02 ):
                     trade_message = "buyby_1"                         
                     rsi_continue_chk = True  
                     if globals()['opening_price_{}'.format(coin)] == 0:
@@ -349,7 +355,7 @@ while True:
                 if coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['buy_price_{}'.format(coin)]*1.1 < globals()['current_price_{}'.format(coin)]:  
                     trade_message = "sellby_8"                         
                     sell_continue_chk = True
-                    
+
                 """매도10조건 매수가 대비 3~5프로이고 RSI 70 아래면 매도"""
                 if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['buy_price_{}'.format(coin)]*1.03 < globals()['current_price_{}'.format(coin)]
                     < globals()['buy_price_{}'.format(coin)]*1.05 and globals()['rsi_{}'.format(coin)] <70):
