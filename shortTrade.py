@@ -472,12 +472,22 @@ while True:
                 #     sell_continue_chk = True
                 #     if globals()['past_b10_price_{}'.format(coin)] == 0:
                 #         sell_continue_chk = False
-                #     trade_message = "sellby_7"                         
+                #     trade_message = "sellby_7"                          
 
                 """매도8조건 매수가 대비 10프로 상승하면 매도"""
-                if globals()['rsi_{}'.format(coin)] <70 and coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['buy_price_{}'.format(coin)]*1.1 < globals()['current_price_{}'.format(coin)]:  
+                if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 
+                    and globals()['buy_price_{}'.format(coin)]*1.01 < globals()['current_price_{}'.format(coin)] and globals()['current_price_{}'.format(coin)] < globals()['past_b3_price_{}'.format(coin)] * 0.99):  
                     trade_message = "sellby_8"                         
                     sell_continue_chk = True
+                    if globals()['past_b3_price_{}'.format(coin)] == 0:
+                        sell_continue_chk = False 
+                """매도8-1조건 매수가 대비 10프로 상승하면 매도"""
+                if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 
+                    and globals()['buy_price_{}'.format(coin)]*1.01 < globals()['current_price_{}'.format(coin)] and globals()['current_price_{}'.format(coin)] < globals()['past_b10_price_{}'.format(coin)] * 0.99):  
+                    trade_message = "sellby_8-1"                         
+                    sell_continue_chk = True
+                    if globals()['past_b10_price_{}'.format(coin)] == 0:
+                        sell_continue_chk = False                     
 
                 # """매수가 대비 2프로 상승"""
                 # if coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['buy_price_{}'.format(coin)]*1.02 < globals()['current_price_{}'.format(coin)]:
@@ -513,26 +523,26 @@ while True:
                 #         sell_continue_chk = False
                 #     trade_message = "sellby_10"                         
 
-                """매도13조건 매수가 대비 수익률이 1~3프로 이하이고  매도"""
-                if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and 1.01 < (globals()['current_price_{}'.format(coin)]/ globals()['buy_price_{}'.format(coin)]) <1.03
-                    # and globals()['current_price_{}'.format(coin)]*1.005 < globals()['past_b10_price_{}'.format(coin)] 
-                    # and globals()['current_price_{}'.format(coin)]*1.005 < globals()['past_price_{}'.format(coin)] 
-                    and globals()['rsi_{}'.format(coin)] <60 ):
-                    sell_continue_chk = True
-                    if globals()['past_b10_price_{}'.format(coin)] == 0:
-                        sell_continue_chk = False
-                    trade_message = "sellby_13"                          
+                # """매도13조건 매수가 대비 수익률이 1~3프로 이하이고  매도"""
+                # if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and 1.01 < (globals()['current_price_{}'.format(coin)]/ globals()['buy_price_{}'.format(coin)]) <1.03
+                #     # and globals()['current_price_{}'.format(coin)]*1.005 < globals()['past_b10_price_{}'.format(coin)] 
+                #     # and globals()['current_price_{}'.format(coin)]*1.005 < globals()['past_price_{}'.format(coin)] 
+                #     and globals()['rsi_{}'.format(coin)] <65 ):
+                #     sell_continue_chk = True
+                #     if globals()['past_b10_price_{}'.format(coin)] == 0:
+                #         sell_continue_chk = False
+                #     trade_message = "sellby_13"                          
 
-                """매도14조건 매수가 대비 수익률이 3~10프로 이하이고  매도"""
-                if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and 1.03 < (globals()['current_price_{}'.format(coin)]/ globals()['buy_price_{}'.format(coin)]) <1.1
-                    # and globals()['current_price_{}'.format(coin)]*1.005 < globals()['past_b10_price_{}'.format(coin)] 
-                    # and globals()['current_price_{}'.format(coin)]*1.005 < globals()['past_b20_price_{}'.format(coin)] 
-                    # and globals()['current_price_{}'.format(coin)]*1.005 < globals()['past_price_{}'.format(coin)] 
-                    and globals()['rsi_{}'.format(coin)] <65 ):
-                    sell_continue_chk = True
-                    if globals()['past_b20_price_{}'.format(coin)] == 0:
-                        sell_continue_chk = False
-                    trade_message = "sellby_14"   
+                # """매도14조건 매수가 대비 수익률이 3~10프로 이하이고  매도"""
+                # if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and 1.03 < (globals()['current_price_{}'.format(coin)]/ globals()['buy_price_{}'.format(coin)]) <1.1
+                #     # and globals()['current_price_{}'.format(coin)]*1.005 < globals()['past_b10_price_{}'.format(coin)] 
+                #     # and globals()['current_price_{}'.format(coin)]*1.005 < globals()['past_b20_price_{}'.format(coin)] 
+                #     # and globals()['current_price_{}'.format(coin)]*1.005 < globals()['past_price_{}'.format(coin)] 
+                #     and globals()['rsi_{}'.format(coin)] <70 ):
+                #     sell_continue_chk = True
+                #     if globals()['past_b20_price_{}'.format(coin)] == 0:
+                #         sell_continue_chk = False
+                #     trade_message = "sellby_14"   
 
                 if globals()['rsi_{}'.format(coin)] == 0:
                     sell_continue_chk = False
