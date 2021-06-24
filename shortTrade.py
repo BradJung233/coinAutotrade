@@ -275,7 +275,11 @@ while True:
         end_time = start_time + datetime.timedelta(days=1)
         schedule.run_pending()
         if start_time + datetime.timedelta(seconds=60) < now < end_time:
+            
+
             for coin in coins:
+                if start_time < now < start_time + datetime.timedelta(hours=3):
+                    continue
                 # if globals()['globalK_{}'.format(coin)] == 0:
                 #     time.sleep(0.1)
                 #     continue                     
