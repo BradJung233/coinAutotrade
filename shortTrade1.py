@@ -343,7 +343,7 @@ while True:
 
 
                 """매도9조건 매수가 대비 3프로 이하이고 RSI 60 아래면 매도"""
-                if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['buy_price_{}'.format(coin)]*1.03 > globals()['current_price_{}'.format(coin)]
+                if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and globals()['buy_price_{}'.format(coin)]*1.03 > globals()['current_price_{}'.format(coin)]globals()['buy_price_{}'.format(coin)]*1.01
                     and globals()['rsi_{}'.format(coin)] <60):
                     sell_continue_chk = True
                     trade_message = "sellby_9"       
