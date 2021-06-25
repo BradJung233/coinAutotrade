@@ -273,7 +273,7 @@ while True:
         # end_time = start_time + datetime.timedelta(days=1)
         end_time = start_time + datetime.timedelta(days=1)
         schedule.run_pending()
-        if start_time - datetime.timedelta(seconds=600) < now < end_time:
+        if start_time - datetime.timedelta(minutes=10) < now < end_time:
             
 
             for coin in coins:
@@ -388,10 +388,7 @@ while True:
                     if krw is None or krw < 5000:
                         rsi_continue_chk = False
 
-                    # """임시 shortTrade1 와 매수시간 겹치지 않게"""
-                    if start_time < now < start_time + datetime.timedelta(hours=3):
-                        rsi_continue_chk = False
-                        # continue
+    
                     if globals()['sell_price_{}'.format(coin)] > 0:
                         continue
                     if limit is None:
@@ -399,7 +396,7 @@ while True:
                     if coin_m is None:
                         coin_m = 0
                     buyamt = limit - coin_m    
-                    if buyamt > 5000 and buyamt <= limit and rsi_continue_chk == True:
+                    if buyamt > 5000 and buyamt <= limit and rsi_continue_chk == True and start_time < now < start_time + datetime.timedelta(hours=3):
                         if buyamt > krw:
                             buyamt = krw
                         print("-------buy",coin, krw, "---------")
