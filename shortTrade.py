@@ -273,7 +273,8 @@ while True:
         # end_time = start_time + datetime.timedelta(days=1)
         end_time = start_time + datetime.timedelta(days=1)
         schedule.run_pending()
-        if start_time - datetime.timedelta(minutes=10) < now < end_time:
+        start_time = start_time - datetime.timedelta(minutes=10) 
+        if start_time < now < end_time:
             
 
             for coin in coins:
