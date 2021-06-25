@@ -208,7 +208,6 @@ def past_price_loop():
         print(coin, "past_b20_price:", globals()['past_b20_price_{}'.format(coin)])
         print(coin, "past_b10_price:", globals()['past_b10_price_{}'.format(coin)])
         print(coin, "past_price:", globals()['past_price_{}'.format(coin)])
-
     print("past_price setting")    
 
 def past_price_loop2():
@@ -225,7 +224,6 @@ def past_price_loop2():
         print(coin, "past_b2_price:", globals()['past_b2_price_{}'.format(coin)])
         print(coin, "past_b1_price:", globals()['past_b1_price_{}'.format(coin)])
         print(coin, "past_b0_price:", globals()['past_b0_price_{}'.format(coin)])
-
     print("past_price setting") 
 
 for coin in coins:
@@ -424,13 +422,13 @@ while True:
                 if globals()['rsi_b1_{}'.format(coin)] == 0 or globals()['rsi_b2_{}'.format(coin)] == 0 or globals()['rsi_b3_{}'.format(coin)] == 0 or globals()['rsi_b4_{}'.format(coin)] == 0:
                     sell_continue_chk = False
 
-                """RSI지수가 50보다 크면 패스"""        
-                if 50 < globals()['rsi_{}'.format(coin)] <70:
-                    sell_continue_chk = False
+                # """RSI지수가 50보다 크면 패스"""        
+                # if 50 < globals()['rsi_{}'.format(coin)] <70:
+                #     sell_continue_chk = False
 
-                """현재가가 목표가보다 크면 패스"""  
-                if target_price <  globals()['current_price_{}'.format(coin)]:
-                    sell_continue_chk = False               
+                # """현재가가 목표가보다 크면 패스"""  
+                # if target_price <  globals()['current_price_{}'.format(coin)]:
+                #     sell_continue_chk = False               
 
                 # """매도2조건 RSI지수가 85 이상이면 매도"""
                 # if globals()['rsi_{}'.format(coin)] >85: 
