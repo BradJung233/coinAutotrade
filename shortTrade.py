@@ -203,11 +203,12 @@ def past_price_loop():
         globals()['past_b30_price_{}'.format(coin)] = globals()['past_b20_price_{}'.format(coin)] 
         globals()['past_b20_price_{}'.format(coin)] = globals()['past_b10_price_{}'.format(coin)] 
         globals()['past_b10_price_{}'.format(coin)] =globals()['past_price_{}'.format(coin)] 
-        globals()['past_price_{}'.format(coin)] =  globals()['current_price_{}'.format(coin)]
+        globals()['past_price_{}'.format(coin)] =  get_current_price("KRW-"+coin)
         print(coin, "past_b30_price:", globals()['past_b30_price_{}'.format(coin)])
         print(coin, "past_b20_price:", globals()['past_b20_price_{}'.format(coin)])
         print(coin, "past_b10_price:", globals()['past_b10_price_{}'.format(coin)])
         print(coin, "past_price:", globals()['past_price_{}'.format(coin)])
+        time.sleep(0.1)
     print("past_price setting")    
 
 def past_price_loop2():
@@ -219,11 +220,12 @@ def past_price_loop2():
         globals()['past_b3_price_{}'.format(coin)] = globals()['past_b2_price_{}'.format(coin)] 
         globals()['past_b2_price_{}'.format(coin)] = globals()['past_b1_price_{}'.format(coin)] 
         globals()['past_b1_price_{}'.format(coin)] =globals()['past_b0_price_{}'.format(coin)] 
-        globals()['past_b0_price_{}'.format(coin)] =  globals()['current_price_{}'.format(coin)]
+        globals()['past_b0_price_{}'.format(coin)] =  get_current_price("KRW-"+coin)
         print(coin, "past_b3_price:", globals()['past_b3_price_{}'.format(coin)])
         print(coin, "past_b2_price:", globals()['past_b2_price_{}'.format(coin)])
         print(coin, "past_b1_price:", globals()['past_b1_price_{}'.format(coin)])
         print(coin, "past_b0_price:", globals()['past_b0_price_{}'.format(coin)])
+        time.sleep(0.1)
     print("past_price setting") 
 
 for coin in coins:
