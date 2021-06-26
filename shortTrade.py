@@ -226,7 +226,7 @@ def past_price_loop2():
         print(coin, "past_b1_price:", globals()['past_b1_price_{}'.format(coin)])
         print(coin, "past_b0_price:", globals()['past_b0_price_{}'.format(coin)])
         time.sleep(0.2)
-    print("past_price setting") 
+    print("past_price setting2") 
 
 for coin in coins:
     # globals()['globalK_{}'.format(coin)] = get_bestK("KRW-"+coin)
@@ -236,13 +236,13 @@ for coin in coins:
     # print(coin, globals()['globalK_{}'.format(coin)])
     # print(coin,"target_price:", get_target_price("KRW-"+coin, globals()['globalK_{}'.format(coin)]))
     # get_rsi(coin) # RSI 지표 구하기
-    get_rsi("KRW-"+coin)
+    # get_rsi("KRW-"+coin)
     globals()['sell_time_{}'.format(coin)] = datetime.datetime.now()
     # print(coin,rsi)
     time.sleep(0.2) # 속도가 느리면 다음 코인 값을 못 갖고와 에러남. 그래서 sleep
 
 # schedule.every(10).minutes.do(lambda: predict_price_loop())
-schedule.every(3).minutes.do(lambda: get_rsi_loop())
+# schedule.every(3).minutes.do(lambda: get_rsi_loop())
 # schedule.every().day.at("09:02").do(lambda: get_bestK_loop())
 # schedule.every(60).minutes.do(lambda: sell_price_loop()) # sell_price 1시간마다 초기화 안 쓸거면 주석
 schedule.every(10).minutes.do(lambda: past_price_loop()) # 10분전 현재가 조회
@@ -304,7 +304,7 @@ while True:
                 # time.sleep(0.1)
                 # print(coin, globals()['limit_{}'.format(coin)])
                 # print("delta:",datetime.datetime.now() + datetime.timedelta(hours=2) )
-                print(coin,"curren:",round(globals()['current_price_{}'.format(coin)],3) , "ma5:", ma5 , "RSI:",round(globals()['rsi_{}'.format(coin)],2))
+                # print(coin,"curren:",round(globals()['current_price_{}'.format(coin)],3) , "ma5:", ma5 )
                 if globals()['buy_price_{}'.format(coin)] > 0:
                     print("buy_price",coin, globals()['buy_price_{}'.format(coin)])
                 if globals()['sell_price_{}'.format(coin)] > 0:
@@ -320,10 +320,11 @@ while True:
                     krw = get_balance("KRW")
                     limit = globals()['limit_{}'.format(coin)]
                     coin_m = upbit.get_amount(coin)
+                    print(coin,"curren:",round(globals()['current_price_{}'.format(coin)],3) , "ma5:", ma5 )
 
                     rsi_continue_chk = False
-                    if 30 < globals()['rsi_{}'.format(coin)] < 50:
-                        rsi_continue_chk = False
+                    # if 30 < globals()['rsi_{}'.format(coin)] < 50:
+                    #     rsi_continue_chk = False
 
                     # """매수1조건: rsi가 30 이상이고 5번연속 상승에 30분 전보다 2프로이상 상승"""
                     # if (globals()['rsi_{}'.format(coin)] > 30 and  globals()['rsi_b5_{}'.format(coin)] >0 and globals()['rsi_b5_{}'.format(coin)] < 30 and  globals()['rsi_{}'.format(coin)] > globals()['rsi_b1_{}'.format(coin)] 
