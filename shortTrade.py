@@ -208,7 +208,7 @@ def past_price_loop():
         print(coin, "past_b20_price:", globals()['past_b20_price_{}'.format(coin)])
         print(coin, "past_b10_price:", globals()['past_b10_price_{}'.format(coin)])
         print(coin, "past_price:", globals()['past_price_{}'.format(coin)])
-        time.sleep(0.1)
+        time.sleep(0.2)
     print("past_price setting")    
 
 def past_price_loop2():
@@ -225,16 +225,16 @@ def past_price_loop2():
         print(coin, "past_b2_price:", globals()['past_b2_price_{}'.format(coin)])
         print(coin, "past_b1_price:", globals()['past_b1_price_{}'.format(coin)])
         print(coin, "past_b0_price:", globals()['past_b0_price_{}'.format(coin)])
-        time.sleep(0.1)
+        time.sleep(0.2)
     print("past_price setting") 
 
 for coin in coins:
-    globals()['globalK_{}'.format(coin)] = get_bestK("KRW-"+coin)
+    # globals()['globalK_{}'.format(coin)] = get_bestK("KRW-"+coin)
     time.sleep(1)
     # if globals()['globalK_{}'.format(coin)] == 0:
     #     continue
-    print(coin, globals()['globalK_{}'.format(coin)])
-    print(coin,"target_price:", get_target_price("KRW-"+coin, globals()['globalK_{}'.format(coin)]))
+    # print(coin, globals()['globalK_{}'.format(coin)])
+    # print(coin,"target_price:", get_target_price("KRW-"+coin, globals()['globalK_{}'.format(coin)]))
     # get_rsi(coin) # RSI 지표 구하기
     get_rsi("KRW-"+coin)
     globals()['sell_time_{}'.format(coin)] = datetime.datetime.now()
@@ -243,7 +243,7 @@ for coin in coins:
 
 # schedule.every(10).minutes.do(lambda: predict_price_loop())
 schedule.every(3).minutes.do(lambda: get_rsi_loop())
-schedule.every().day.at("09:02").do(lambda: get_bestK_loop())
+# schedule.every().day.at("09:02").do(lambda: get_bestK_loop())
 # schedule.every(60).minutes.do(lambda: sell_price_loop()) # sell_price 1시간마다 초기화 안 쓸거면 주석
 schedule.every(10).minutes.do(lambda: past_price_loop()) # 10분전 현재가 조회
 schedule.every(1).minutes.do(lambda: past_price_loop2()) # 1분전 현재가 조회
@@ -294,7 +294,7 @@ while True:
                     print(coin, "ma5 None")
                     time.sleep(0.2)  
                     continue                
-                target_price = get_target_price("KRW-"+coin, globals()['globalK_{}'.format(coin)])
+                # target_price = get_target_price("KRW-"+coin, globals()['globalK_{}'.format(coin)])
                 coinjan = get_balance(coin)
                 # print(coin, "coinjan:",coinjan)
                 if coinjan * globals()['current_price_{}'.format(coin)]  > 5000:                
