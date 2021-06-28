@@ -270,7 +270,7 @@ start_time = get_start_time("KRW-BTC")
 # 자동매매 시작
 while True:
     try:
-
+        start_time = get_start_time("KRW-BTC")
         now = datetime.datetime.now()
         # end_time = start_time + datetime.timedelta(days=1)
         end_time = start_time + datetime.timedelta(days=1)
