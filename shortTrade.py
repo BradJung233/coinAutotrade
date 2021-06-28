@@ -245,8 +245,8 @@ for coin in coins:
 # schedule.every(3).minutes.do(lambda: get_rsi_loop())
 # schedule.every().day.at("09:02").do(lambda: get_bestK_loop())
 # schedule.every(60).minutes.do(lambda: sell_price_loop()) # sell_price 1시간마다 초기화 안 쓸거면 주석
-schedule.every(10).minutes.do(lambda: past_price_loop()) # 10분전 현재가 조회
-schedule.every(1).minutes.do(lambda: past_price_loop2()) # 1분전 현재가 조회
+schedule.every(10).minutes.do(past_price_loop) # 10분전 현재가 조회
+schedule.every(1).minutes.do(past_price_loop2) # 1분전 현재가 조회
 
 # schedule.every(60).minutes.do(lambda: get_bestK_loop())
 # schedule.every().day.at("09:03").do(lambda: predict_price_loop())
