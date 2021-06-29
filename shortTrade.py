@@ -265,7 +265,6 @@ print("autotrade start")
 # sell_price_ENJ = 36980
 # ------------------------------------------------
 time.sleep(3)
-start_time = get_start_time("KRW-BTC")
 
 # 자동매매 시작
 while True:
@@ -320,7 +319,7 @@ while True:
                     krw = get_balance("KRW")
                     limit = globals()['limit_{}'.format(coin)]
                     coin_m = upbit.get_amount(coin)
-                    print(coin,"curren:",round(globals()['current_price_{}'.format(coin)],3) , "ma5:", ma5 )
+                    print(coin,"curren:",round(globals()['current_price_{}'.format(coin)],3) , "ma5:", ma5 , "rsi:", globals()['rsi_{}'.format(coin)] )
 
                     rsi_continue_chk = False
                     # if 30 < globals()['rsi_{}'.format(coin)] < 50:
