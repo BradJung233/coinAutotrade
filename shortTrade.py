@@ -236,7 +236,7 @@ for coin in coins:
     # print(coin, globals()['globalK_{}'.format(coin)])
     # print(coin,"target_price:", get_target_price("KRW-"+coin, globals()['globalK_{}'.format(coin)]))
     # get_rsi(coin) # RSI 지표 구하기
-    # get_rsi("KRW-"+coin)
+    get_rsi("KRW-"+coin)
     globals()['sell_time_{}'.format(coin)] = datetime.datetime.now()
     # print(coin,rsi)
     time.sleep(0.2) # 속도가 느리면 다음 코인 값을 못 갖고와 에러남. 그래서 sleep
@@ -521,14 +521,14 @@ while True:
                 #             sell_continue_chk = False
                 #         trade_message = "sellby_12"    
 
-                # """매도10조건 매수가 대비 수익률이 1프로 이하이고 RSI지수가 5번 연속 RSI 50 아래면 매도"""
-                # if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and (globals()['current_price_{}'.format(coin)]/ globals()['buy_price_{}'.format(coin)]) <1.01 and 
-                #     globals()['rsi_{}'.format(coin)] <50 and globals()['rsi_b1_{}'.format(coin)] < 50 and globals()['rsi_b2_{}'.format(coin)] < 50 and globals()['rsi_b3_{}'.format(coin)] 
-                #     < 50 and globals()['rsi_b4_{}'.format(coin)] < 50):  
-                #     sell_continue_chk = True
-                #     if globals()['rsi_b4_{}'.format(coin)] == 0:
-                #         sell_continue_chk = False
-                #     trade_message = "sellby_10"                         
+                """매도10조건 매수가 대비 수익률이 1프로 이하이고 RSI지수가 5번 연속 RSI 50 아래면 매도"""
+                if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and (globals()['current_price_{}'.format(coin)]/ globals()['buy_price_{}'.format(coin)]) <1.01 and 
+                    globals()['rsi_{}'.format(coin)] <50 and globals()['rsi_b1_{}'.format(coin)] < 50 and globals()['rsi_b2_{}'.format(coin)] < 50 and globals()['rsi_b3_{}'.format(coin)] 
+                    < 50 and globals()['rsi_b4_{}'.format(coin)] < 50):  
+                    sell_continue_chk = True
+                    if globals()['rsi_b4_{}'.format(coin)] == 0:
+                        sell_continue_chk = False
+                    trade_message = "sellby_10"                         
 
                 # """매도13조건 매수가 대비 수익률이 1~3프로 이하이고  매도"""
                 # if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 and 1.01 < (globals()['current_price_{}'.format(coin)]/ globals()['buy_price_{}'.format(coin)]) <1.03
