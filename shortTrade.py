@@ -50,6 +50,7 @@ for coin in coins:
     globals()['current_price_{}'.format(coin)] = 0
     # globals()['bef_current_price_{}'.format(coin)] = 0
     globals()['buy_price_{}'.format(coin)] = 0
+    globals()['buy_time_{}'.format(coin)]= None
     globals()['sell_price_{}'.format(coin)] = 0
     globals()['rsi_b5_{}'.format(coin)] = 0
     globals()['rsi_b4_{}'.format(coin)] = 0
@@ -238,13 +239,14 @@ for coin in coins:
     # get_rsi(coin) # RSI 지표 구하기
     get_rsi("KRW-"+coin)
     globals()['sell_time_{}'.format(coin)] = datetime.datetime.now()
+    globals()['buy_time_{}'.format(coin)] = datetime.datetime.now()
     # print(coin,rsi)
     time.sleep(0.2) # 속도가 느리면 다음 코인 값을 못 갖고와 에러남. 그래서 sleep
 
 # schedule.every(10).minutes.do(lambda: predict_price_loop())
 schedule.every(3).minutes.do(lambda: get_rsi_loop())
 # schedule.every().day.at("09:02").do(lambda: get_bestK_loop())
-# schedule.every(60).minutes.do(lambda: sell_price_loop()) # sell_price 1시간마다 초기화 안 쓸거면 주석
+schedule.every(600).minutes.do(lambda: sell_price_loop()) # sell_price 1시간마다 초기화 안 쓸거면 주석
 schedule.every(1).minutes.do(past_price_loop2) # 1분전 현재가 조회
 schedule.every(10).minutes.do(past_price_loop) # 10분전 현재가 조회
 
@@ -406,6 +408,7 @@ while True:
                         upbit.buy_market_order("KRW-" + coin, buyamt*0.9995) 
                         # globals()['buy_price_{}'.format(coin)] = globals()['current_price_{}'.format(coin)]
                         print("buy_price",coin, globals()['buy_price_{}'.format(coin)])
+                        globals()['buy_time_{}'.format(coin)] =  datetime.datetime.now() 
                         print(coin, trade_message)
                         continue
 
@@ -557,9 +560,13 @@ while True:
                 if globals()['buy_price_{}'.format(coin)] == 0:
                     sell_continue_chk = False
 
+                if now < globals()['buy_time_{}'.format(coin)] + datetime.timedelta(minutes=10): 
+                    sell_continue_chk = False
+
                 if sell_continue_chk == False:
                     time.sleep(0.5)
                     continue
+
 
                 """매도"""           
                 if sell_continue_chk == True:
