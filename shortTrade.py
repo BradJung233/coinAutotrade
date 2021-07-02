@@ -379,7 +379,7 @@ while True:
                     #     rsi_continue_chk = False
                     """매수6조건: 3분전 보다 2프로이상 상승"""
                     if (globals()['current_price_{}'.format(coin)] > globals()['past_b3_price_{}'.format(coin)] * 1.02
-                        and globals()['current_price_{}'.format(coin)] > globals()['past_b1_price_{}'.format(coin)]):
+                        and globals()['current_price_{}'.format(coin)] > globals()['past_b1_price_{}'.format(coin)] > globals()['past_b2_price_{}'.format(coin)]):
                         trade_message = "buyby_6"                         
                         rsi_continue_chk = True  
                         if globals()['past_b3_price_{}'.format(coin)] == 0:
