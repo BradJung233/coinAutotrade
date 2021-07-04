@@ -485,9 +485,10 @@ while True:
                     if globals()['past_b3_price_{}'.format(coin)] == 0:
                         sell_continue_chk = False 
 
-                """매도8-1조건 매수가 대비 10프로 상승하면 매도"""
+                """매도8-1조건 이전 10분전보다 1프로 이상 하락시 매도"""
                 if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 
-                    and globals()['buy_price_{}'.format(coin)]*1.01 < globals()['current_price_{}'.format(coin)] and globals()['current_price_{}'.format(coin)] < globals()['past_b10_price_{}'.format(coin)] * 0.99):  
+                    # and globals()['buy_price_{}'.format(coin)]*1.01 < globals()['current_price_{}'.format(coin)] 
+                    and globals()['current_price_{}'.format(coin)] < globals()['past_b10_price_{}'.format(coin)] * 0.99):  
                     trade_message = "sellby_8-1"                         
                     sell_continue_chk = True
                     if globals()['past_b10_price_{}'.format(coin)] == 0:
