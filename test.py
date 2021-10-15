@@ -81,4 +81,6 @@ def get_opening_price(ticker):
     df = pyupbit.get_ohlcv(ticker, interval="day", count=1)
     opening_price = df['open'][-1]
     return opening_price
-print(get_opening_price("KRW-BTC"))    
+# print(get_opening_price()"KRW-BTG"))    
+# print(get_balance("ETH"))    
+print(upbit.get_balances())
