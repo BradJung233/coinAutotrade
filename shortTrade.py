@@ -400,7 +400,7 @@ while True:
                     if coin_m is None:
                         coin_m = 0
                     buyamt = limit - coin_m    
-                    if buyamt > 5000 and buyamt <= limit and rsi_continue_chk == True and start_time < now < start_time + datetime.timedelta(hours=3):
+                    if buyamt > 5000 and buyamt <= limit and rsi_continue_chk == True: #and start_time < now < start_time + datetime.timedelta(hours=3):
                         if buyamt > krw:
                             buyamt = krw
                         print("-------buy",coin, krw, "---------")
