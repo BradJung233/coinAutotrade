@@ -24,7 +24,7 @@ secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"
 # limit_LINK = 1000000
 
 # coins = ["BTC", "ETH", "ADA", "XLM", "EOS", "XRP", "DOT" ,"WAVES","BCH","LTC","FLOW", "XTZ","LINK"]
-coins = ["BTC","ADA","EOS","WAVES","BCH","LTC","FLOW","LINK","THETA","ENJ","VET","TFUEL","ETC","XTZ","ONG","BTG","BSV","DOGE"]
+coins = ["BTC","ETH","ADA","EOS","BCH","THETA","ENJ","TFUEL","ETC","ONG","BTG","BSV","DOGE"]
 
 """------------------------------------------이하 공통 부분---------------------------------------------------------------"""
 """v1.088"""
