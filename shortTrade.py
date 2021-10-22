@@ -554,8 +554,8 @@ while True:
                 #         sell_continue_chk = False
                 #     trade_message = "sellby_14"   
 
-                """매도 15조건 매수한지 30분 지났는데 수익이 안나면 + rsi 50미만 매도 """
-                if (now > globals()['buy_time_{}'.format(coin)] + datetime.timedelta(minutes=30) and globals()['rsi_{}'.format(coin)] <50 
+                """매도 15조건 매수한지 60분 지났는데 수익이 안나면 + rsi 50미만 매도 """
+                if (now > globals()['buy_time_{}'.format(coin)] + datetime.timedelta(minutes=60) and globals()['rsi_{}'.format(coin)] <50 
                     and globals()['current_price_{}'.format(coin)]  <=  globals()['buy_price_{}'.format(coin)]):
                     sell_continue_chk = True
                     trade_message = "sellby_15" 
