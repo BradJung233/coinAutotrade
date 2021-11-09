@@ -59,7 +59,7 @@ for coin in coins:
     globals()['rsi_b1_{}'.format(coin)] = 0
     globals()['rsi_{}'.format(coin)] = 0
     globals()['sell_time_{}'.format(coin)]= None
-    globals()['limit_{}'.format(coin)] = 100000
+    globals()['limit_{}'.format(coin)] = 500000
 
 def get_target_price(ticker, k):
     """변동성 돌파 전략으로 매수 목표가 조회"""
@@ -277,8 +277,8 @@ while True:
         end_time = start_time + datetime.timedelta(days=1)
         schedule.run_pending()
         start_time = start_time + datetime.timedelta(minutes=10) 
-        # if start_time < now < end_time:
-        if 1 == 1:   
+        if start_time < now < end_time:
+        # if 1 == 1:   
 
             for coin in coins:
                 # if start_time < now < start_time + datetime.timedelta(hours=3):
@@ -494,7 +494,7 @@ while True:
 
                 """매도8조건 매수가 대비 10프로 상승하면 매도"""
                 if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 
-                    and globals()['buy_price_{}'.format(coin)]*1.1 < globals()['current_price_{}'.format(coin)] and globals()['current_price_{}'.format(coin)] < globals()['past_b3_price_{}'.format(coin)] * 0.99):  
+                    and globals()['buy_price_{}'.format(coin)]*1.1 < globals()['current_price_{}'.format(coin)] and globals()['current_price_{}'.format(coin)] < globals()['past_b10_price_{}'.format(coin)] * 0.99):  
                     trade_message = "sellby_8"                         
                     sell_continue_chk = True
                     if globals()['past_b3_price_{}'.format(coin)] == 0:
