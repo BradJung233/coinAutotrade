@@ -455,8 +455,8 @@ while True:
                 #     trade_message = "sellby_2"                         
                 #     sell_continue_chk = True
 
-                """매도3조건 RSI지수가 30 미만이면 매도"""
-                if globals()['rsi_{}'.format(coin)] <30:
+                """매도3조건 RSI지수가 35 미만이면 매도"""
+                if globals()['rsi_{}'.format(coin)] <35:
                     trade_message = "sellby_3"                         
                     sell_continue_chk = True
 
