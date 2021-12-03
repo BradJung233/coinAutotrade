@@ -248,7 +248,7 @@ schedule.every(3).minutes.do(lambda: get_rsi_loop())
 # schedule.every().day.at("09:02").do(lambda: get_bestK_loop())
 schedule.every(600).minutes.do(lambda: sell_price_loop()) # sell_price 1시간마다 초기화 안 쓸거면 주석
 schedule.every(1).minutes.do(past_price_loop2) # 1분전 현재가 조회
-schedule.every(20).minutes.do(past_price_loop) # 20분전 현재가 조회
+schedule.every(30).minutes.do(past_price_loop) # 30분전 현재가 조회
 
 # schedule.every(60).minutes.do(lambda: get_bestK_loop())
 # schedule.every().day.at("09:03").do(lambda: predict_price_loop())
@@ -394,8 +394,8 @@ while True:
                     #     rsi_continue_chk = False
 
 
-                    """매수6조건: rsi가 65이상이고 80분전 보다 1.5프로이상 상승"""
-                    if (globals()['rsi_{}'.format(coin)] > 65 and globals()['rsi_b3_{}'.format(coin)] > 65
+                    """매수6조건: rsi가 69이상이고 120분전 보다 1.5프로이상 상승"""
+                    if (globals()['rsi_{}'.format(coin)] > 69 and globals()['rsi_b3_{}'.format(coin)] > 69
                         and globals()['current_price_{}'.format(coin)] > globals()['past_b1_price_{}'.format(coin)] > globals()['past_b2_price_{}'.format(coin)] > globals()['past_b3_price_{}'.format(coin)] 
                         and globals()['current_price_{}'.format(coin)] > globals()['past_b30_price_{}'.format(coin)] * 1.015 ):
                         trade_message = "buyby_6"                         
