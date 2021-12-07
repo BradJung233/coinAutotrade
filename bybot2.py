@@ -12,16 +12,20 @@ import traceback
 from decimal import Decimal
 access = "NBfy02ssHZPdySYKdZIHHNRyv0Ke2Tk8qzvlxV0z"
 secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"
-
+coins = []
 # 공통 모듈 Import
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import base as basepy
-except_items = 'fff' # ex 'ETH,BTC'
-coins = basepy.get_items('KRW', except_items)
-print(coins)
+except_items = 'BTC,XLM,XRP' # ex 'ETH,BTC'
+target_items = basepy.get_items('KRW', except_items)
+for target_item in target_items:
+    item = target_item['market']
+    coin = item.replace("KRW-","")
+    coins.append(coin)    
+# print(coins)
 """변수 생성"""
 for coin in coins:
-    globals()['globalK_{}'.format(coin)] = 0.0
+    # globals()['globalK_{}'.format(coin)] = 0.0
     globals()['close_price_{}'.format(coin)] = 0
     # globals()['bef_close_price_{}'.format(coin)] = 0
     globals()['past_b30_price_{}'.format(coin)] = 0
@@ -45,7 +49,9 @@ for coin in coins:
     globals()['rsi_{}'.format(coin)] = 0
     globals()['sell_time_{}'.format(coin)]= None
     globals()['limit_{}'.format(coin)] = 500000
+    # print("coin:" + coin)
 
+    
 def get_target_price(ticker, k):
     """변동성 돌파 전략으로 매수 목표가 조회"""
     df = pyupbit.get_ohlcv(ticker, interval="day", count=2)
@@ -154,11 +160,15 @@ def get_rsi(ticker):
 
 def get_rsi_loop():
     for coin in coins:
-        # if globals()['globalK_{}'.format(coin)] == 0:
-        #     time.sleep(0.1)
-        #     continue        
-        get_rsi(coin)
-        time.sleep(1)
+        ma5 = get_ma5("KRW-"+coin)
+        if ma5 is None:
+            print(coin, "ma5 None")
+            time.sleep(0.2)  
+            continue  
+        globals()['current_price_{}'.format(coin)]  = get_current_price("KRW-"+coin)
+        if globals()['current_price_{}'.format(coin)]  > ma5:             
+            get_rsi("KRW-"+coin)
+            time.sleep(1)
 
 def sell_price_loop():
     for coin in coins:
@@ -185,10 +195,10 @@ def past_price_loop():
         globals()['past_b20_price_{}'.format(coin)] = globals()['past_b10_price_{}'.format(coin)] 
         globals()['past_b10_price_{}'.format(coin)] =globals()['past_price_{}'.format(coin)] 
         globals()['past_price_{}'.format(coin)] =  get_current_price("KRW-"+coin)
-        print(coin, "past_b30_price:", globals()['past_b30_price_{}'.format(coin)])
-        print(coin, "past_b20_price:", globals()['past_b20_price_{}'.format(coin)])
-        print(coin, "past_b10_price:", globals()['past_b10_price_{}'.format(coin)])
-        print(coin, "past_price:", globals()['past_price_{}'.format(coin)])
+        # print(coin, "past_b30_price:", globals()['past_b30_price_{}'.format(coin)])
+        # print(coin, "past_b20_price:", globals()['past_b20_price_{}'.format(coin)])
+        # print(coin, "past_b10_price:", globals()['past_b10_price_{}'.format(coin)])
+        # print(coin, "past_price:", globals()['past_price_{}'.format(coin)])
         time.sleep(0.2)
     print("past_price setting")    
 
@@ -198,30 +208,36 @@ def past_price_loop2():
         #     time.sleep(0.1)
         #     continue              
         # now = datetime.datetime.now()
+
         globals()['past_b3_price_{}'.format(coin)] = globals()['past_b2_price_{}'.format(coin)] 
         globals()['past_b2_price_{}'.format(coin)] = globals()['past_b1_price_{}'.format(coin)] 
         globals()['past_b1_price_{}'.format(coin)] =globals()['past_b0_price_{}'.format(coin)] 
         globals()['past_b0_price_{}'.format(coin)] =  get_current_price("KRW-"+coin)
-        print(coin, "past_b3_price:", globals()['past_b3_price_{}'.format(coin)])
-        print(coin, "past_b2_price:", globals()['past_b2_price_{}'.format(coin)])
-        print(coin, "past_b1_price:", globals()['past_b1_price_{}'.format(coin)])
-        print(coin, "past_b0_price:", globals()['past_b0_price_{}'.format(coin)])
+        # print(coin, "past_b3_price:", globals()['past_b3_price_{}'.format(coin)])
+        # print(coin, "past_b2_price:", globals()['past_b2_price_{}'.format(coin)])
+        # print(coin, "past_b1_price:", globals()['past_b1_price_{}'.format(coin)])
+        # print(coin, "past_b0_price:", globals()['past_b0_price_{}'.format(coin)])
         time.sleep(0.2)
     print("past_price setting2") 
 
 for coin in coins:
     # globals()['globalK_{}'.format(coin)] = get_bestK("KRW-"+coin)
-    time.sleep(1)
-    # if globals()['globalK_{}'.format(coin)] == 0:
-    #     continue
-    # print(coin, globals()['globalK_{}'.format(coin)])
-    # print(coin,"target_price:", get_target_price("KRW-"+coin, globals()['globalK_{}'.format(coin)]))
-    # get_rsi(coin) # RSI 지표 구하기
-    get_rsi(coin)
-    globals()['sell_time_{}'.format(coin)] = datetime.datetime.now()
-    globals()['buy_time_{}'.format(coin)] = datetime.datetime.now()
-    # print(coin,rsi)
-    time.sleep(0.2) # 속도가 느리면 다음 코인 값을 못 갖고와 에러남. 그래서 sleep
+    # time.sleep(1)
+    ma5 = get_ma5("KRW-"+coin)
+
+    if ma5 is None:
+        print(coin, "ma5 None")
+        time.sleep(0.2)  
+        continue  
+    globals()['current_price_{}'.format(coin)]  = get_current_price("KRW-"+coin)
+
+    # print(coin, 'current:', globals()['current_price_{}'.format(coin)], 'ma5:',ma5)
+    if globals()['current_price_{}'.format(coin)]  > ma5:
+        # print(coin, ma5)
+        get_rsi("KRW-"+coin)
+        globals()['sell_time_{}'.format(coin)] = datetime.datetime.now()
+        globals()['buy_time_{}'.format(coin)] = datetime.datetime.now()
+        time.sleep(1) # 속도가 느리면 다음 코인 값을 못 갖고와 에러남. 그래서 sleep
 
 # schedule.every(10).minutes.do(lambda: predict_price_loop())
 schedule.every(3).minutes.do(lambda: get_rsi_loop())
@@ -392,10 +408,10 @@ while True:
     
                 sell_continue_chk = False
 
-                """매도3조건 RSI지수가 35 미만이면 매도"""
-                if globals()['rsi_{}'.format(coin)] <35:
-                    trade_message = "sellby_3"                         
-                    sell_continue_chk = True
+                # """매도3조건 RSI지수가 35 미만이면 매도"""
+                # if globals()['rsi_{}'.format(coin)] <35:
+                #     trade_message = "sellby_3"                         
+                #     sell_continue_chk = True
 
 
                 """매수가 대비 5프로 하락시"""
@@ -461,9 +477,9 @@ while True:
         else:
             for coin in coins:
                 coinjan = get_balance(coin)
-                if coinjan * globals()['current_price_{}'.format(coin)]  > 5000:                
+                # if coinjan * globals()['current_price_{}'.format(coin)]  > 5000:                
                     # upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
-                    globals()['globalK_{}'.format(coin)] = get_bestK("KRW-" + coin)
+                    # globals()['globalK_{}'.format(coin)] = get_bestK("KRW-" + coin)
                 globals()['sell_price_{}'.format(coin)] = 0
             time.sleep(0.43)
     except Exception as e:
