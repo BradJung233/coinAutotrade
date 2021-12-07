@@ -411,10 +411,10 @@ while True:
     
                 sell_continue_chk = False
 
-                """매도3조건 RSI지수가 35 미만이면 매도"""
-                if globals()['rsi_{}'.format(coin)] <35:
-                    trade_message = "sellby_3"                         
-                    sell_continue_chk = True
+                # """매도3조건 RSI지수가 35 미만이면 매도"""
+                # if globals()['rsi_{}'.format(coin)] <35:
+                #     trade_message = "sellby_3"                         
+                #     sell_continue_chk = True
 
 
                 """매수가 대비 5프로 하락시"""
@@ -431,7 +431,8 @@ while True:
 
                 """매도8조건 매수가 대비 10프로 상승하면 매도"""
                 if (coinjan * globals()['current_price_{}'.format(coin)]  > 5000 
-                    and globals()['buy_price_{}'.format(coin)]*1.1 < globals()['current_price_{}'.format(coin)] and globals()['current_price_{}'.format(coin)] < globals()['past_b10_price_{}'.format(coin)] * 0.99):  
+                    and globals()['buy_price_{}'.format(coin)]*1.1 < globals()['current_price_{}'.format(coin)] and globals()['current_price_{}'.format(coin)] < globals()['past_b30_price_{}'.format(coin)] * 0.99 
+                    and globals()['current_price_{}'.format(coin)] < globals()['past_b10_price_{}'.format(coin)] < globals()['past_b20_price_{}'.format(coin)]):  
                     trade_message = "sellby_8"                         
                     sell_continue_chk = True
                     if globals()['past_b3_price_{}'.format(coin)] == 0:
