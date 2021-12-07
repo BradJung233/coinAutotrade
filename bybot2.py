@@ -160,7 +160,7 @@ def get_rsi(ticker):
     print(coin, "RSI:", now_rsi)
     print("--------")
     globals()['rsi_{}'.format(coin)] = now_rsi
-    time.sleep(1)
+    time.sleep(0.1)
 
 def get_rsi_loop():
     for coin in coins:
@@ -240,9 +240,9 @@ for coin in coins:
     if globals()['current_price_{}'.format(coin)]  > ma5:
         # print(coin, ma5)
         get_rsi("KRW-"+coin)
-        globals()['sell_time_{}'.format(coin)] = datetime.datetime.now()
-        globals()['buy_time_{}'.format(coin)] = datetime.datetime.now()
         time.sleep(1) # 속도가 느리면 다음 코인 값을 못 갖고와 에러남. 그래서 sleep
+    globals()['sell_time_{}'.format(coin)] = datetime.datetime.now()
+    globals()['buy_time_{}'.format(coin)] = datetime.datetime.now()
     time.sleep(0.2)
 
 # schedule.every(10).minutes.do(lambda: predict_price_loop())
@@ -329,13 +329,12 @@ while True:
                     # 종목별 보조지표를 조회
                     # 1. 조회 기준 : 일캔들, 최근 5개 지표 조회
                     #--------------------------------------------------------------
-                    indicators_data = basepy.get_indicators(coin['market'], 'D', 200, 5)
-    
+                    indicators_data = basepy.get_indicators("KRW-"+coin, 'D', 200, 5)
                     #--------------------------------------------------------------
                     # 최근 30일 이내에 신규 상장하여 보조 지표를 구하기 어려운 건은 제외
                     #--------------------------------------------------------------
                     if len(indicators_data) < 5:
-                        logging.info('캔들 데이터 부족으로 매수 대상에서 제외....[' + str(coin['market']) + ']')
+                        logging.info('캔들 데이터 부족으로 매수 대상에서 제외....[' + coin + ']')
                         continue
     
                     #--------------------------------------------------------------
