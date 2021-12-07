@@ -8,7 +8,7 @@ import os
 import sys
 import logging
 import traceback
- 
+
 from decimal import Decimal
 access = "NBfy02ssHZPdySYKdZIHHNRyv0Ke2Tk8qzvlxV0z"
 secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"
@@ -121,7 +121,7 @@ def get_ma5(ticker):
     ma5 = df['close'].rolling(5).mean().iloc[-1]
     return ma5
 
-     
+
 
 def rsi(ohlc: pd.DataFrame, period: int = 14): 
     delta = ohlc["close"].diff() 
@@ -317,8 +317,6 @@ while True:
                     print(coin,"curren:",round(globals()['current_price_{}'.format(coin)],3) , "ma5:", ma5 , "rsi:", globals()['rsi_{}'.format(coin)] )
 
                     rsi_continue_chk = False
-        
-  
                     rsi_val = False
                     mfi_val = False
                     ocl_val = False
@@ -435,9 +433,7 @@ while True:
                     if globals()['past_b3_price_{}'.format(coin)] == 0:
                         sell_continue_chk = False 
 
-   
 
-                       
 
 
 
