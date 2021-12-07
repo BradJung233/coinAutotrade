@@ -9,16 +9,16 @@ access = "NBfy02ssHZPdySYKdZIHHNRyv0Ke2Tk8qzvlxV0z"          # 본인 값으로 
 secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"          # 본인 값으로 변경
 upbit = pyupbit.Upbit(access, secret)
 
-def get_balance(ticker):
-    """잔고 조회"""
-    balances = upbit.get_balances()
-    for b in balances:
-        if b['currency'] == ticker:
-            if b['balance'] is not None:
-                return float(b['balance'])
-            else:
-                return 0
-    return 0  
+# def get_balance(ticker):
+#     """잔고 조회"""
+#     balances = upbit.get_balances()
+#     for b in balances:
+#         if b['currency'] == ticker:
+#             if b['balance'] is not None:
+#                 return float(b['balance'])
+#             else:
+#                 return 0
+#     return 0  
 
 # print(upbit.get_balances("KRW-BTC"))     # KRW-BTC 조회
 # print(get_balance("KRW"))         # 보유 현금 조회
@@ -76,11 +76,22 @@ def get_balance(ticker):
 
 
 
-def get_opening_price(ticker):
-    """시가 조회"""
-    df = pyupbit.get_ohlcv(ticker, interval="day", count=1)
-    opening_price = df['open'][-1]
-    return opening_price
-# print(get_opening_price()"KRW-BTG"))    
-# print(get_balance("ETH"))    
-print(upbit.get_balances())
+# def get_opening_price(ticker):
+#     """시가 조회"""
+#     df = pyupbit.get_ohlcv(ticker, interval="day", count=1)
+#     opening_price = df['open'][-1]
+#     return opening_price
+# # print(get_opening_price()"KRW-BTG"))    
+# # print(get_balance("ETH"))    
+# print(upbit.get_balances())
+
+
+import requests
+
+url = "https://api.upbit.com/v1/trades/ticks?count=1"
+
+headers = {"Accept": "application/json"}
+
+response = requests.request("GET", url, headers=headers)
+
+print(response.text)

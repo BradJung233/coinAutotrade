@@ -4,10 +4,18 @@ import datetime
 import numpy as np
 import schedule
 import pandas as pd
-
+import os
+import sys
+import logging
+import traceback
+ 
+from decimal import Decimal
 access = "NBfy02ssHZPdySYKdZIHHNRyv0Ke2Tk8qzvlxV0z"
 secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"
 
+# 공통 모듈 Import
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+import base as upbit
 
 # limit_BTC = 1000000
 # limit_ETH = 1000000
