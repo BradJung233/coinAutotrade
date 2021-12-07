@@ -52,7 +52,7 @@ for coin in coins:
     globals()['rsi_b1_{}'.format(coin)] = 0
     globals()['rsi_{}'.format(coin)] = 0
     globals()['sell_time_{}'.format(coin)]= None
-    globals()['limit_{}'.format(coin)] = 500000
+    globals()['limit_{}'.format(coin)] = 300000
     # print("coin:" + coin)
 
     
@@ -411,10 +411,10 @@ while True:
     
                 sell_continue_chk = False
 
-                # """매도3조건 RSI지수가 35 미만이면 매도"""
-                # if globals()['rsi_{}'.format(coin)] <35:
-                #     trade_message = "sellby_3"                         
-                #     sell_continue_chk = True
+                """매도3조건 RSI지수가 35 미만이면 매도"""
+                if globals()['rsi_{}'.format(coin)] <35:
+                    trade_message = "sellby_3"                         
+                    sell_continue_chk = True
 
 
                 """매수가 대비 5프로 하락시"""
