@@ -169,6 +169,7 @@ def get_rsi_loop():
         if globals()['current_price_{}'.format(coin)]  > ma5:             
             get_rsi("KRW-"+coin)
             time.sleep(1)
+        time.sleep(0.2)
 
 def sell_price_loop():
     for coin in coins:
@@ -238,7 +239,7 @@ for coin in coins:
         globals()['sell_time_{}'.format(coin)] = datetime.datetime.now()
         globals()['buy_time_{}'.format(coin)] = datetime.datetime.now()
         time.sleep(1) # 속도가 느리면 다음 코인 값을 못 갖고와 에러남. 그래서 sleep
-
+    time.sleep(0.2)
 # schedule.every(10).minutes.do(lambda: predict_price_loop())
 schedule.every(3).minutes.do(lambda: get_rsi_loop())
 schedule.every(600).minutes.do(lambda: sell_price_loop()) # sell_price 1시간마다 초기화 안 쓸거면 주석
