@@ -15,7 +15,7 @@ secret = "3ChZhxpxYMcgLpAMZK7x7DpeL8PSFLQap6XDdu80"
 
 # 공통 모듈 Import
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-import base as upbit
+import base as basepy
 
 # limit_BTC = 1000000
 # limit_ETH = 1000000
