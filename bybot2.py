@@ -52,7 +52,7 @@ for coin in coins:
     globals()['rsi_b1_{}'.format(coin)] = 0
     globals()['rsi_{}'.format(coin)] = 0
     globals()['sell_time_{}'.format(coin)]= None
-    globals()['limit_{}'.format(coin)] = 300000
+    globals()['limit_{}'.format(coin)] = 500000
     # print("coin:" + coin)
 
     
