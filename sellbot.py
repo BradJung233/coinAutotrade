@@ -162,7 +162,7 @@ if __name__ == '__main__':
         # ---------------------------------------------------------------------
  
         # 1. 로그레벨
-        log_level = 'D' #input("로그레벨(D:DEBUG, E:ERROR, 그 외:INFO) : ").upper()
+        log_level = 'info' #input("로그레벨(D:DEBUG, E:ERROR, 그 외:INFO) : ").upper()
         sell_pcnt = 7 #input("매도 수익률(ex:2%=2) : ")
         dcnt_pcnt = 2 #input("고점대비 하락률(ex:-1%=-1) : ")
  
@@ -193,4 +193,4 @@ if __name__ == '__main__':
 # 실행되고 있는지 확인: ps ax | grep .py
 # 프로세스 종료(PID는 ps ax | grep .py를 했을때 확인 가능): kill -9 PID     
 # 코인종류 조회 : print(pyupbit.get_tickers())     
-# 로그확인 : tail -f nohup.out
+# 로그확인 : tail -f nohup2.out
