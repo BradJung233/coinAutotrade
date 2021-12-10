@@ -152,13 +152,13 @@ def get_rsi(ticker):
     globals()['rsi_b2_{}'.format(coin)] = globals()['rsi_b1_{}'.format(coin)]
     globals()['rsi_b1_{}'.format(coin)] = globals()['rsi_{}'.format(coin)]
     globals()['rsi_{}'.format(coin)] = now_rsi
-    print(coin, "B5_RSI:", globals()['rsi_b5_{}'.format(coin)])
-    print(coin, "B4_RSI:", globals()['rsi_b4_{}'.format(coin)])
-    print(coin, "B3_RSI:", globals()['rsi_b3_{}'.format(coin)])
-    print(coin, "B2_RSI:", globals()['rsi_b2_{}'.format(coin)])
-    print(coin, "B1_RSI:", globals()['rsi_b1_{}'.format(coin)])
-    print(coin, "RSI:", now_rsi)
-    print("--------")
+    # print(coin, "B5_RSI:", globals()['rsi_b5_{}'.format(coin)])
+    # print(coin, "B4_RSI:", globals()['rsi_b4_{}'.format(coin)])
+    # print(coin, "B3_RSI:", globals()['rsi_b3_{}'.format(coin)])
+    # print(coin, "B2_RSI:", globals()['rsi_b2_{}'.format(coin)])
+    # print(coin, "B1_RSI:", globals()['rsi_b1_{}'.format(coin)])
+    # print(coin, "RSI:", now_rsi)
+    # print("--------")
     globals()['rsi_{}'.format(coin)] = now_rsi
     time.sleep(0.1)
 
@@ -460,7 +460,7 @@ while True:
                 if sell_continue_chk == True:
                     if coinjan * globals()['current_price_{}'.format(coin)]  > 5000:
                         # print("-------sell2",coin, globals()['current_price_{}'.format(coin)] , "---------")
-                        upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
+                        # upbit.sell_market_order("KRW-" + coin, coinjan*0.9995)
                         globals()['sell_price_{}'.format(coin)] =  globals()['current_price_{}'.format(coin)] 
                         globals()['sell_time_{}'.format(coin)] =  datetime.datetime.now() 
                         print("-------sell2",coin, globals()['current_price_{}'.format(coin)] , "---------")

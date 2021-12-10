@@ -743,7 +743,8 @@ def get_accounts(except_yn, market_code):
                          'avg_buy_price': account_data_for['avg_buy_price'],
                          'avg_buy_price_modified': account_data_for['avg_buy_price_modified']})
             else:
-                rtn_data.append(
+                if account_data_for['currency'] != "KRW" :
+                    rtn_data.append(
                     {'market': market_code + '-' + account_data_for['currency'], 'balance': account_data_for['balance'],
                      'locked': account_data_for['locked'],
                      'avg_buy_price': account_data_for['avg_buy_price'],
@@ -776,7 +777,7 @@ def chg_account_to_comma(account_data):
             if rtn_data == '':
                 rtn_data = rtn_data + account_data_for['market']
             else:
-                rtn_data = rtn_data + ',' + accountDataFor['market']
+                rtn_data = rtn_data + ',' + account_data_for['market']
  
         return rtn_data
  
@@ -1496,6 +1497,102 @@ def get_indicators(target_item, tick_kind, inq_range, loop_cnt):
                 indicator_data.append(williams_data)
  
         return indicator_data
+ 
+    # ----------------------------------------
+    # 모든 함수의 공통 부분(Exception 처리)
+    # ----------------------------------------
+    except Exception:
+        raise
+ 
+ 
+# -----------------------------------------------------------------------------
+# - Name : get_order_status
+# - Desc : 주문 조회(상태별)
+# - Input
+#   1) target_item : 대상종목
+#   2) status : 주문상태(wait : 체결 대기, watch : 예약주문 대기, done : 전체 체결 완료, cancel : 주문 취소)
+# - Output
+#   1) 주문 내역
+# -----------------------------------------------------------------------------
+def get_order_status(target_item, status):
+    try:
+ 
+        query = {
+            'market': target_item,
+            'state': status,
+        }
+ 
+        query_string = urlencode(query).encode()
+ 
+        m = hashlib.sha512()
+        m.update(query_string)
+        query_hash = m.hexdigest()
+ 
+        payload = {
+            'access_key': access_key,
+            'nonce': str(uuid.uuid4()),
+            'query_hash': query_hash,
+            'query_hash_alg': 'SHA512',
+        }
+ 
+        jwt_token = jwt.encode(payload, secret_key)
+        authorize_token = 'Bearer {}'.format(jwt_token)
+        headers = {"Authorization": authorize_token}
+ 
+        res = send_request("GET", server_url + "/v1/orders", query, headers)
+        rtn_data = res.json()
+ 
+        return rtn_data
+ 
+    # ----------------------------------------
+    # 모든 함수의 공통 부분(Exception 처리)
+    # ----------------------------------------
+    except Exception:
+        raise
+ 
+ 
+# -----------------------------------------------------------------------------
+# - Name : orderby_dict
+# - Desc : 딕셔너리 정렬
+# - Input
+#   1) target_dict : 정렬 대상 딕셔너리
+#   2) target_column : 정렬 대상 딕셔너리
+#   3) order_by : 정렬방식(False:오름차순, True,내림차순)
+# - Output
+#   1) 정렬된 딕서너리
+# -----------------------------------------------------------------------------
+def orderby_dict(target_dict, target_column, order_by):
+    try:
+ 
+        rtn_dict = sorted(target_dict, key=(lambda x: x[target_column]), reverse=order_by)
+ 
+        return rtn_dict
+ 
+    # ----------------------------------------
+    # 모든 함수의 공통 부분(Exception 처리)
+    # ----------------------------------------
+    except Exception:
+        raise
+ 
+ 
+# -----------------------------------------------------------------------------
+# - Name : filter_dict
+# - Desc : 딕셔너리 필터링
+# - Input
+#   1) target_dict : 정렬 대상 딕셔너리
+#   2) target_column : 정렬 대상 컬럼
+#   3) filter : 필터
+# - Output
+#   1) 필터링된 딕서너리
+# -----------------------------------------------------------------------------
+def filter_dict(target_dict, target_column, filter):
+    try:
+ 
+        for target_dict_for in target_dict[:]:
+            if target_dict_for[target_column] != filter:
+                target_dict.remove(target_dict_for)
+ 
+        return target_dict
  
     # ----------------------------------------
     # 모든 함수의 공통 부분(Exception 처리)
